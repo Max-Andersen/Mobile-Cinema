@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Mobile-Cinema-Lab1</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="i_have_already_account">У меня уже есть аккаунт</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
 </resources>
