@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface CoverApi {
 
     @GET("cover")
-    suspend fun getCovers(): Response<CoverResponse>
+    suspend fun getCover(): Response<CoverResponse>
 }

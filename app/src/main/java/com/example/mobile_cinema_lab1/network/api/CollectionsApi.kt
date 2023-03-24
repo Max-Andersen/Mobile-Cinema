@@ -29,5 +29,5 @@ interface CollectionsApi {
     suspend fun deleteMovieFromCollection(
         @Path("collectionId") collectionId: String,
         @Query("movieId") movieId: String
-    ): Response<List<Nothing>>
+    ): Response<Nothing>
 }
