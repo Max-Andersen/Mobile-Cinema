@@ -8,4 +8,10 @@
     <string name="i_have_already_account">У меня уже есть аккаунт</string>
     <string name="name">Имя</string>
     <string name="surname">Фамилия</string>
+    <string name="watch">Смотреть</string>
+    <string name="in_trend">В тренде</string>
+    <string name="you_watched">Вы смотрели</string>
+    <string name="newMovies">Новое</string>
+    <string name="for_you">Для вас</string>
+    <string name="select_preferences">Указать интересы</string>
 </resources>
