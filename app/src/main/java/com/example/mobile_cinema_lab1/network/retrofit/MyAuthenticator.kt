@@ -2,6 +2,7 @@ package com.example.mobile_cinema_lab1.network.retrofit
 
 
 import com.example.mobile_cinema_lab1.MyApplication
+import com.example.mobile_cinema_lab1.TroubleShooting
 import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.api.AuthApi
 import com.example.mobile_cinema_lab1.network.models.LoginResponse
@@ -20,7 +21,7 @@ class MyAuthenticator : Authenticator {
 
             if (!newTokenResponse.isSuccessful || newTokenResponse.body() == null) {
                 withContext(Dispatchers.Main) {
-                    //TroubleShooting.failToUpdateToken.postValue(true)   TODO(выброс на экран входа)
+                    TroubleShooting.updateLiveDataForRefreshTrouble(true)
                 }
             }
 
@@ -46,6 +47,6 @@ class MyAuthenticator : Authenticator {
             .build()
         val authApi = retrofit.create(AuthApi::class.java)
 
-        return authApi.refresh("Bearer $refreshToken")
+        return authApi.refresh(refreshToken.toString())
     }
 }
