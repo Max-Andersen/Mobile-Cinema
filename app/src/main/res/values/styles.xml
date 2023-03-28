@@ -6,7 +6,7 @@
         <item name="android:textColor">@color/grey</item>
         <item name="android:textColorHint">@color/grey</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontWeight">400</item>
         <item name="android:paddingStart">16dp</item>
@@ -14,10 +14,20 @@
         <item name="android:paddingBottom">13dp</item>
     </style>
 
-    <style name="title_text">
+    <style name="orange_title_text">
+        <item name="android:letterSpacing">0.0</item>
         <item name="android:textColor">@color/orange</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontWeight">700</item>
+    </style>
+
+    <style name="white_title_text">
+        <item name="android:letterSpacing">0.0</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">24sp</item>
         <item name="android:fontWeight">700</item>
     </style>
@@ -29,7 +39,7 @@
         <item name="backgroundTint">@color/orange</item>
         <item name="background">@drawable/full_button_outline</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontWeight">700</item>
     </style>
@@ -43,7 +53,7 @@
         <item name="strokeWidth">@dimen/m3_comp_outlined_button_outline_width</item>
         <item name="backgroundTint">@color/background</item>
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontWeight">700</item>
     </style>
