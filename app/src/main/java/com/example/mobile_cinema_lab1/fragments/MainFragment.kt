@@ -20,6 +20,10 @@ class MainFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = MainFrameBinding.inflate(inflater, container, false)
+        binding.watchPromotedMovie.setOnClickListener {
+            val dialogFragment = ErrorDialogFragment("Ало, ошибку исправьте")
+            activity?.let { it1 -> dialogFragment.show(it1.supportFragmentManager, "AAAAA") }
+        }
         return binding.root
     }
 }
