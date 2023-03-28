@@ -47,6 +47,6 @@ class MyAuthenticator : Authenticator {
             .build()
         val authApi = retrofit.create(AuthApi::class.java)
 
-        return authApi.refresh(refreshToken.toString())
+        return authApi.refresh("Bearer $refreshToken")
     }
 }
