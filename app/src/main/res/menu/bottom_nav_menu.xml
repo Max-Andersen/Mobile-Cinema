@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main"
+        android:title="@string/main"
+        android:icon="@drawable/main_icon">
+    </item>
+    <item
+        android:id="@+id/compilation"
+        android:title="@string/compilation"
+        android:icon="@drawable/compilation_icon">
+    </item>
+    <item
+        android:id="@+id/collections"
+        android:title="@string/collections"
+        android:icon="@drawable/collection_icon">
+    </item>
+
+    <item
+        android:id="@+id/profile"
+        android:title="@string/profile"
+        android:icon="@drawable/profile_icon">
+    </item>
+</menu>
