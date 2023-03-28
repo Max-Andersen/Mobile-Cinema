@@ -17,21 +17,25 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MyAuthenticator : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         return runBlocking {
-            val newTokenResponse = getNewToken(Network.getSharedPrefs(MyApplication.RefreshToken))
+            val refreshToken = Network.getSharedPrefs(MyApplication.RefreshToken)
+            if (refreshToken != ""){
+                val newTokenResponse = getNewToken(refreshToken)
 
-            if (!newTokenResponse.isSuccessful || newTokenResponse.body() == null) {
-                withContext(Dispatchers.Main) {
-                    TroubleShooting.updateLiveDataForRefreshTrouble(true)
+                if (!newTokenResponse.isSuccessful || newTokenResponse.body() == null) {
+                    withContext(Dispatchers.Main) {
+                        TroubleShooting.updateLiveDataForRefreshTrouble(true)
+                    }
+                }
+
+                newTokenResponse.body()?.let {
+                    Network.updateSharedPrefs(MyApplication.AccessToken, it.accessToken)
+                    Network.updateSharedPrefs(MyApplication.RefreshToken, it.refreshToken)
+                    response.request.newBuilder()
+                        .header("Authorization", "Bearer ${it.accessToken}")
+                        .build()
                 }
             }
-
-            newTokenResponse.body()?.let {
-                Network.updateSharedPrefs(MyApplication.AccessToken, it.accessToken)
-                Network.updateSharedPrefs(MyApplication.RefreshToken, it.refreshToken)
-                response.request.newBuilder()
-                    .header("Authorization", "Bearer ${it.accessToken}")
-                    .build()
-            }
+            null
         }
     }
 

@@ -9,12 +9,16 @@ import okhttp3.Response
 
 class MyInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request: Request = chain.request().newBuilder().apply {
+        val request: Request.Builder = chain.request().newBuilder().apply {
             addHeader("accept", "application/json")
-            //addHeader("content-Type", "application/x-www-form-urlencoded")
-            addHeader("Authorization", "Bearer ${Network.getSharedPrefs(MyApplication.AccessToken)}")
-        }.build()
+            addHeader("content-Type", "application/x-www-form-urlencoded")
 
-        return chain.proceed(request)
+        }
+        val accessToken = Network.getSharedPrefs(MyApplication.AccessToken)
+        if (accessToken != ""){
+            request.addHeader("Authorization", "Bearer $accessToken")
+        }
+
+        return chain.proceed(request.build())
     }
 }

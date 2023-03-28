@@ -1,5 +1,6 @@
 package com.example.mobile_cinema_lab1.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mobile_cinema_lab1.network.ApiResponse
@@ -42,12 +43,15 @@ class SignUpViewModel: BaseViewModel() {
             answer +=  "Пароли не совпадают\n"
         }
 
-        if (email.isEmailValid()){
-            answer +=  "Неверный Email не может быть пустым\n"
+        if (!email.isEmailValid()){
+            answer +=  "Неверный Email\n"
         }
+
+        Log.d("!", answer)
 
         if (answer.isNotBlank()){
             _validation.value = answer
+            return
         }
 
         viewModelScope.launch(Dispatchers.IO){

@@ -3,18 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/signInFragment">
 
-    <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.SignInFragment"
-        android:label="SignInFragment"
-        tools:layout="@layout/sign_in_screen" />
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.SignUpFragment"
-        android:label="SignUpFragment"
-        tools:layout="@layout/sign_up_screen" />
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.mobile_cinema_lab1.fragments.MainFragment"
@@ -35,4 +25,25 @@
         android:name="com.example.mobile_cinema_lab1.fragments.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/profile_screen" />
+    <action
+        android:id="@+id/action_global_mainFragment"
+        app:destination="@id/mainFragment" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.mobile_cinema_lab1.fragments.SignUpFragment"
+        android:label="SignUpFragment"
+        tools:layout="@layout/sign_up_screen">
+        <action
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.mobile_cinema_lab1.fragments.SignInFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/sign_in_screen">
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment><action android:id="@+id/action_global_signInFragment" app:destination="@id/signInFragment"/>
 </navigation>

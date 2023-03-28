@@ -29,12 +29,13 @@ class SignInViewModel: BaseViewModel() {
             answer +=  "Пароль не может быть пустым\n"
         }
 
-        if (email.isEmailValid()){
-            answer +=  "Неверный Email не может быть пустым\n"
+        if (!email.isEmailValid()){
+            answer +=  "Неверный Email\n"
         }
 
         if (answer.isNotBlank()){
             _validation.value = answer
+            return
         }
 
         viewModelScope.launch(Dispatchers.IO){
