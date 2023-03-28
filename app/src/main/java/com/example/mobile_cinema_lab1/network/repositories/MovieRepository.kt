@@ -5,7 +5,7 @@ import com.example.mobile_cinema_lab1.network.api.CoverApi
 import com.example.mobile_cinema_lab1.network.api.HistoryApi
 import com.example.mobile_cinema_lab1.network.api.MovieApi
 import com.example.mobile_cinema_lab1.network.apiRequestFlow
-import com.example.mobile_cinema_lab1.network.repositories.interfaces.IMovieRepository
+import com.example.mobile_cinema_lab1.usecases.repositoryinterfaces.IMovieRepository
 
 class MovieRepository: IMovieRepository {
     private val movieApi: MovieApi = Network.getMovieApi()

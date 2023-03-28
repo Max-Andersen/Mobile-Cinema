@@ -5,7 +5,7 @@ import com.example.mobile_cinema_lab1.network.api.PreferencesApi
 import com.example.mobile_cinema_lab1.network.api.TagsApi
 import com.example.mobile_cinema_lab1.network.apiRequestFlow
 import com.example.mobile_cinema_lab1.network.models.Tags
-import com.example.mobile_cinema_lab1.network.repositories.interfaces.IPreferencesRepository
+import com.example.mobile_cinema_lab1.usecases.repositoryinterfaces.IPreferencesRepository
 
 class PreferencesRepository: IPreferencesRepository {
     private val tagsApi: TagsApi = Network.getTagsApi()

@@ -4,7 +4,7 @@ import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.api.ProfileApi
 import com.example.mobile_cinema_lab1.network.apiRequestFlow
 import com.example.mobile_cinema_lab1.network.models.UpdateUserInfo
-import com.example.mobile_cinema_lab1.network.repositories.interfaces.IProfileRepository
+import com.example.mobile_cinema_lab1.usecases.repositoryinterfaces.IProfileRepository
 import okhttp3.MultipartBody
 
 class ProfileRepository: IProfileRepository {

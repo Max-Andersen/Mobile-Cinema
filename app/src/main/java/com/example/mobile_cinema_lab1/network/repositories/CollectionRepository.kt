@@ -3,7 +3,7 @@ package com.example.mobile_cinema_lab1.network.repositories
 import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.api.CollectionsApi
 import com.example.mobile_cinema_lab1.network.apiRequestFlow
-import com.example.mobile_cinema_lab1.network.repositories.interfaces.ICollectionRepository
+import com.example.mobile_cinema_lab1.usecases.repositoryinterfaces.ICollectionRepository
 
 class CollectionRepository: ICollectionRepository {
     private val collectionsApi: CollectionsApi = Network.getCollectionsApi()

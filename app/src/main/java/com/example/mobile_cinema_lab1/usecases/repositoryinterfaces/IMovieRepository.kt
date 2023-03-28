@@ -1,4 +1,4 @@
-package com.example.mobile_cinema_lab1.network.repositories.interfaces
+package com.example.mobile_cinema_lab1.usecases.repositoryinterfaces
 
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.CoverResponse

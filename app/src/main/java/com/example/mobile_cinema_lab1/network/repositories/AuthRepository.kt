@@ -5,7 +5,7 @@ import com.example.mobile_cinema_lab1.network.api.AuthApi
 import com.example.mobile_cinema_lab1.network.apiRequestFlow
 import com.example.mobile_cinema_lab1.network.models.LoginRequestBody
 import com.example.mobile_cinema_lab1.network.models.RegisterRequestBody
-import com.example.mobile_cinema_lab1.network.repositories.interfaces.IAuthRepository
+import com.example.mobile_cinema_lab1.usecases.repositoryinterfaces.IAuthRepository
 
 class AuthRepository: IAuthRepository {
     private val authApi: AuthApi = Network.getAuthApi()

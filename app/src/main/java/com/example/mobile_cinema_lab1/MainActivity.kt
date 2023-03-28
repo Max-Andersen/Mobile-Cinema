@@ -5,12 +5,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.forEach
-import androidx.core.view.iterator
 import com.example.mobile_cinema_lab1.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
