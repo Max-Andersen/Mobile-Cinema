@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/background">
 
 
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/sign_in"
-        app:layout_constraintBottom_toTopOf="@+id/toLogInButton"
+        app:layout_constraintBottom_toTopOf="@+id/toSignUpButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
@@ -47,7 +48,7 @@
         app:layout_constraintGuide_end="16dp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/toLogInButton"
+        android:id="@+id/toSignUpButton"
         style="@style/empty_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

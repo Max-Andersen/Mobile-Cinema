@@ -1,4 +1,4 @@
-package com.example.mobile_cinema_lab1
+package com.example.mobile_cinema_lab1.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -2,10 +2,9 @@ package com.example.mobile_cinema_lab1.network.repositories
 
 import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.api.EpisodesApi
-import com.example.mobile_cinema_lab1.network.apiRequestFlow
 import com.example.mobile_cinema_lab1.usecases.repositoryinterfaces.IEpisodeRepository
 
-class EpisodeRepository : IEpisodeRepository {
+class EpisodeRepository : IEpisodeRepository, BaseRepository() {
     private val episodesApi: EpisodesApi = Network.getEpisodesApi()
 
     override fun getCommentsOnEpisode(episodeId: String) =

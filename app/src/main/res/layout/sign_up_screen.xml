@@ -49,7 +49,7 @@
                 app:srcCompat="@drawable/main_text" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/toLogInButton"
+                android:id="@+id/toSignInButton"
                 style="@style/empty_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="@string/register"
-                app:layout_constraintBottom_toTopOf="@+id/toLogInButton"
+                app:layout_constraintBottom_toTopOf="@+id/toSignInButton"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="@+id/guideline" />
 

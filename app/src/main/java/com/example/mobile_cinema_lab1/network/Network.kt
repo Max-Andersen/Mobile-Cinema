@@ -6,14 +6,8 @@ import com.example.mobile_cinema_lab1.MyApplication
 import com.example.mobile_cinema_lab1.network.api.*
 import com.example.mobile_cinema_lab1.network.retrofit.MyAuthenticator
 import com.example.mobile_cinema_lab1.network.retrofit.MyInterceptor
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -91,30 +85,3 @@ object Network {
     fun getTagsApi(): TagsApi = retrofit.create(TagsApi::class.java)
 }
 
-fun <T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T>> = flow {
-    emit(ApiResponse.Loading)
-
-    withTimeoutOrNull(15000L) {
-        val response = call()
-
-        try {
-            if (response.isSuccessful) {
-                response.body()?.let { data ->
-                    emit(ApiResponse.Success(data))
-                }
-            } else {
-                val code = response.code()
-                response.errorBody()?.let { error ->
-                    error.close()
-//                    val parsedError: ErrorResponse =
-//                        Gson().fromJson(error.charStream(), ErrorResponse::class.java)
-//                    emit(ApiResponse.Failure(parsedError.message, parsedError.code))
-                }
-                emit(ApiResponse.Failure("Жесть", code))
-
-            }
-        } catch (e: Exception) {
-            emit(ApiResponse.Failure(e.message ?: e.toString(), 400))
-        }
-    } ?: emit(ApiResponse.Failure("Timeout! Please try again.", 408))
-}.flowOn(Dispatchers.IO)
