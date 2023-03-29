@@ -6,7 +6,7 @@
     app:cardBackgroundColor="@color/background">
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/image"
         android:layout_width="331dp"
         android:layout_height="198dp"
         app:srcCompat="@drawable/thirteen_reasons_why" />

@@ -11,7 +11,7 @@ object TroubleShooting {
 
     val coroutinesErrorHandler = object : CoroutinesErrorHandler{
         override fun onError(message: String) {
-            Log.e("!", "Coroutine Error")
+            Log.e("!", "Coroutine Error $message")
         }
     }
 

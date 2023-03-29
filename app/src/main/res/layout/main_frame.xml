@@ -82,6 +82,7 @@
                 tools:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
+                android:orientation="horizontal"
                 android:id="@+id/inTrendRecyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -176,6 +177,7 @@
                 tools:listitem="@layout/vertical_image_item_for_recyclerview"
                 tools:itemCount="10"
                 tools:orientation="horizontal"
+                android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:id="@+id/moviesForYouRecyclerView"
                 android:layout_width="match_parent"
