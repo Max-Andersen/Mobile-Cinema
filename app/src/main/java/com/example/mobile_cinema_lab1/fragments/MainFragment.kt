@@ -1,5 +1,6 @@
 package com.example.mobile_cinema_lab1.fragments
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -51,6 +52,10 @@ class MainFragment : Fragment() {
         binding.newMoviesRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.moviesForYouRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
+        binding.inTrendRecyclerView.addItemDecoration(MarginItemDecoration(16))
+        binding.newMoviesRecyclerView.addItemDecoration(MarginItemDecoration(16))
+        binding.moviesForYouRecyclerView.addItemDecoration(MarginItemDecoration(16))
+
         viewModel.getMovies()
         updateUi()
 
@@ -62,42 +67,94 @@ class MainFragment : Fragment() {
     private fun updateUi() {
         viewModel.getLiveDataForInTrendMovies().observe(requireActivity()) {
             when (it) {
-                ApiResponse.Loading -> {}
+                ApiResponse.Loading -> {
+
+                }
                 is ApiResponse.Failure -> {
                     Log.d("!", "Fail")
                 }
                 is ApiResponse.Success -> {
-                    viewModel.inTrendMovies = it.data as ArrayList<Movie>
+                    binding.progressBarInTrend.visibility = View.INVISIBLE
+
+                    viewModel.inTrendMovies.clear()
+                    it.data.forEach { movie ->
+                        viewModel.inTrendMovies.add(movie)
+                    }
                     inTrendAdapter.notifyDataSetChanged()
                 }
             }
         }
         viewModel.getLiveDataForMoviesForYou().observe(requireActivity()) {
             when (it) {
-                ApiResponse.Loading -> {}
+                ApiResponse.Loading -> {
+
+                }
                 is ApiResponse.Failure -> {
                     Log.d("!", "Fail")
                 }
                 is ApiResponse.Success -> {
-                    viewModel.moviesForYou = it.data as ArrayList<Movie>
+                    binding.progressBarForYou.visibility = View.INVISIBLE
+
+                    viewModel.moviesForYou.clear()
+                    it.data.forEach { movie ->
+                        viewModel.moviesForYou.add(movie)
+                    }
                     forYouAdapter.notifyDataSetChanged()
                 }
             }
         }
         viewModel.getLiveDataForNewMovies().observe(requireActivity()) {
             when (it) {
-                ApiResponse.Loading -> {}
+                ApiResponse.Loading -> {
+
+                }
                 is ApiResponse.Failure -> {
                     Log.d("!", "Fail")
                 }
                 is ApiResponse.Success -> {
-
+                    binding.progressBarNew.visibility = View.INVISIBLE
                     viewModel.newMovies.clear()
                     it.data.forEach { movie ->
                         viewModel.newMovies.add(movie)
                     }
 
                     newMovieAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+
+        viewModel.getLiveDataForCoverImage().observe(viewLifecycleOwner){
+            when (it) {
+                ApiResponse.Loading -> {
+
+                }
+                is ApiResponse.Failure -> {
+                    Log.d("!", "Fail")
+                }
+                is ApiResponse.Success -> {
+                    binding.progressBarPromotedMovie.visibility = View.INVISIBLE
+
+                    Glide.with(requireActivity()).load(it.data.backgroundImage).into(binding.backgroundImagePromotedMovie)
+                    Glide.with(requireActivity()).load(it.data.foregroundImage).into(binding.foregroundImagePromotedMovie)
+                }
+            }
+        }
+
+        viewModel.getLiveDataForYouWatchedMovie().observe(viewLifecycleOwner){
+            when (it) {
+                ApiResponse.Loading -> {
+
+                }
+                is ApiResponse.Failure -> {
+                    Log.d("!", "Fail")
+                }
+                is ApiResponse.Success -> {
+                    binding.progressBarYouWatched.visibility = View.INVISIBLE
+                    if (it.data.isNotEmpty()){
+                        val lastMovie = it.data.last()
+                        Glide.with(requireActivity()).load(lastMovie.poster).into(binding.lastWatchedMovie)
+                        binding.lastWatchedMovieTitle.text = lastMovie.name
+                    }
                 }
             }
         }
@@ -129,5 +186,17 @@ class MainFragment : Fragment() {
             holder.bind(movie)
         }
 
+    }
+    class MarginItemDecoration(private val spaceSize: Int) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect, view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            with(outRect) {
+                left = spaceSize
+                right = spaceSize
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.example.mobile_cinema_lab1.usecases.repositoryinterfaces
 
 import com.example.mobile_cinema_lab1.network.ApiResponse
-import com.example.mobile_cinema_lab1.network.models.CoverResponse
+import com.example.mobile_cinema_lab1.network.models.CoverImage
 import com.example.mobile_cinema_lab1.network.models.Episode
 import com.example.mobile_cinema_lab1.network.models.EpisodeShort
 import com.example.mobile_cinema_lab1.network.models.Movie
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface IMovieRepository {
 
-    fun getCoverOnPromotedFilm(): Flow<ApiResponse<CoverResponse>>
+    fun getCoverOnPromotedFilm(): Flow<ApiResponse<CoverImage>>
 
     fun getMoviesByFilter(filter: String): Flow<ApiResponse<List<Movie>>>
 

@@ -9,6 +9,7 @@ import com.example.mobile_cinema_lab1.usecases.SignInUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignInViewModel: BaseViewModel() {
     private val _data = MutableLiveData<ApiResponse<LoginResponse>>()
@@ -38,8 +39,12 @@ class SignInViewModel: BaseViewModel() {
             return
         }
 
-        viewModelScope.launch(Dispatchers.IO){
-            mJob = SignInUseCase(LoginRequestBody(email, password), _data)()
+        mJob = viewModelScope.launch(Dispatchers.IO){
+            SignInUseCase(LoginRequestBody(email, password))().collect{
+                withContext(Dispatchers.Main){
+                    _data.value = it
+                }
+            }
         }
     }
 

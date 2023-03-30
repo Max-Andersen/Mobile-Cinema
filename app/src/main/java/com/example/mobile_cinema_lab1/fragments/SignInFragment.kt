@@ -1,7 +1,6 @@
 package com.example.mobile_cinema_lab1.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +49,7 @@ class SignInFragment : Fragment() {
         viewModel.getLiveDataForRequest().observe(viewLifecycleOwner){
             when (it){
                 is ApiResponse.Failure -> {
+                    binding.progressBar.visibility = View.INVISIBLE
                     val dialogFragment = ErrorDialogFragment(it.errorMessage)
                     dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
                 }
@@ -58,7 +58,9 @@ class SignInFragment : Fragment() {
                     Network.updateSharedPrefs(MyApplication.RefreshToken, it.data.refreshToken)
                     findNavController().navigate(NavGraphXmlDirections.actionGlobalMainFragment())
                 }
-                is ApiResponse.Loading -> Log.d("!", "Loading")
+                is ApiResponse.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
             }
         }
     }
