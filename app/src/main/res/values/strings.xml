@@ -18,4 +18,6 @@
     <string name="compilation">Подборка</string>
     <string name="collections">Коллекции</string>
     <string name="profile">Профиль</string>
+    <string name="shots">Кадры</string>
+    <string name="episodes">Эпизоды</string>
 </resources>

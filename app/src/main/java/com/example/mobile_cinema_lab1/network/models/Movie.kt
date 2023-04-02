@@ -7,7 +7,7 @@ data class Movie(
     val description: String,
     val age: String,
     val chatInfo: Chat,
-    val images: List<String>,
+    val imageUrls: List<String>,
     val poster: String,
-    val tags: List<Tags>
+    val tags: List<Tag>
 )

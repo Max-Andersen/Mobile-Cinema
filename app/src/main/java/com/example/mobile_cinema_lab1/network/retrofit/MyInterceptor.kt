@@ -11,7 +11,7 @@ class MyInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request: Request.Builder = chain.request().newBuilder().apply {
             addHeader("accept", "application/json")
-            addHeader("content-Type", "application/x-www-form-urlencoded")
+            //addHeader("content-Type", "application/x-www-form-urlencoded")
 
         }
         val accessToken = Network.getSharedPrefs(MyApplication.AccessToken)
