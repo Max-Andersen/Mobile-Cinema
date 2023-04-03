@@ -18,4 +18,5 @@
     <string name="compilation">Подборка</string>
     <string name="collections">Коллекции</string>
     <string name="profile">Профиль</string>
+    <string name="empty_compilation">Новые фильмы\nв подборке закончились</string>
 </resources>

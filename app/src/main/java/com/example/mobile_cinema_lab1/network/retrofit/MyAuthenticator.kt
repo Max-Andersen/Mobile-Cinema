@@ -23,7 +23,9 @@ class MyAuthenticator : Authenticator {
 
                 if (!newTokenResponse.isSuccessful || newTokenResponse.body() == null) {
                     withContext(Dispatchers.Main) {
-                        TroubleShooting.updateLiveDataForRefreshTrouble(true)
+                        if (TroubleShooting.getLiveDataForRefreshTrouble().value != true){
+                            TroubleShooting.updateLiveDataForRefreshTrouble(true)
+                        }
                     }
                 }
 

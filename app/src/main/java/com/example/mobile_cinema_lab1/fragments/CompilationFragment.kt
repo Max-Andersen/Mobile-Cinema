@@ -1,14 +1,33 @@
 package com.example.mobile_cinema_lab1.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.example.mobile_cinema_lab1.CardStackAdapter
 import com.example.mobile_cinema_lab1.databinding.CompilationScreenBinding
+import com.example.mobile_cinema_lab1.network.ApiResponse
+import com.example.mobile_cinema_lab1.network.models.Movie
+import com.example.mobile_cinema_lab1.viewmodels.CompilationViewModel
+import com.yuyakaido.android.cardstackview.*
 
-class CompilationFragment : Fragment() {
+class CompilationFragment : Fragment(), CardStackListener {
     private lateinit var binding: CompilationScreenBinding
+
+    private val viewModel by lazy { ViewModelProvider(this)[CompilationViewModel::class.java] }
+
+    private lateinit var cardStackView: CardStackView
+    private lateinit var manager: CardStackLayoutManager
+
+
+    private val adapter by lazy { CardStackAdapter(viewModel.compilationMovies) }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -16,6 +35,99 @@ class CompilationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = CompilationScreenBinding.inflate(inflater, container, false)
+
+        viewModel.getCompilation()
+
+        cardStackView = binding.stackView
+
+        manager = CardStackLayoutManager(requireContext(), this)
+        manager.setStackFrom(StackFrom.Top)
+        manager.setVisibleCount(3)
+        manager.setTranslationInterval(8.0f)
+        manager.setScaleInterval(0.95f)
+        manager.setSwipeThreshold(0.3f)
+        manager.setMaxDegree(30.0f)
+        manager.setDirections(Direction.HORIZONTAL)
+        manager.setCanScrollHorizontal(true)
+        manager.setCanScrollVertical(false)
+        manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
+        manager.setOverlayInterpolator(LinearInterpolator())
+        cardStackView.layoutManager = manager
+        cardStackView.adapter = adapter
+
+
+        binding.likeLayer.setOnClickListener {
+            val setting = SwipeAnimationSetting.Builder()
+                .setDirection(Direction.Right)
+                .setDuration(Duration.Slow.duration)
+                .setInterpolator(LinearInterpolator())
+                .build()
+            manager.setSwipeAnimationSetting(setting)
+            cardStackView.swipe()
+        }
+
+        binding.dislikeLayer.setOnClickListener {
+            val setting = SwipeAnimationSetting.Builder()
+                .setDirection(Direction.Left)
+                .setDuration(Duration.Slow.duration)
+                .setInterpolator(LinearInterpolator())
+                .build()
+            manager.setSwipeAnimationSetting(setting)
+            cardStackView.swipe()
+        }
+
+        binding.playLayer.setOnClickListener {
+
+        }
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getCompilationLiveData().observe(viewLifecycleOwner){
+            when (it) {
+                ApiResponse.Loading -> {
+
+                }
+                is ApiResponse.Failure -> {
+                    Log.d("!", "Fail")
+                }
+                is ApiResponse.Success -> {
+                    binding.progressBar.visibility = View.INVISIBLE
+                    binding.emptyCompilationGroup.visibility = View.VISIBLE
+                    Log.d("!", "going to read")
+                    Log.d("!", adapter.itemCount.toString())
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
+
+    override fun onCardDragging(direction: Direction, ratio: Float) {
+        Log.d("CardStackView", "onCardDragging: d = ${direction.name}, r = $ratio")
+    }
+
+    override fun onCardSwiped(direction: Direction) {
+        Log.d("CardStackView", "onCardSwiped: p = ${manager.topPosition}, d = $direction")
+    }
+
+    override fun onCardRewound() {
+        Log.d("CardStackView", "onCardRewound: ${manager.topPosition}")
+    }
+
+    override fun onCardCanceled() {
+        Log.d("CardStackView", "onCardCanceled: ${manager.topPosition}")
+    }
+
+    override fun onCardAppeared(view: View, position: Int) {
+//        val textView = view.findViewById<TextView>(R.id.item_name)
+//        Log.d("CardStackView", "onCardAppeared: ($position) ${textView.text}")
+    }
+
+    override fun onCardDisappeared(view: View, position: Int) {
+//        val textView = view.findViewById<TextView>(R.id.item_name)
+//        Log.d("CardStackView", "onCardDisappeared: ($position) ${textView.text}")
     }
 }
