@@ -67,6 +67,15 @@ class MovieFragment : Fragment() {
 
         binding.descriptionText.text = movie.description
         binding.ageLimit.text = movie.age
+
+        when (movie.age) {
+            "18+" -> binding.ageLimit.setTextColor(requireActivity().getColor(R.color.orange))
+            "16+" -> binding.ageLimit.setTextColor(requireActivity().getColor(R.color.sixteen_years))
+            "12+" -> binding.ageLimit.setTextColor(requireActivity().getColor(R.color.twelve_years))
+            "6+" -> binding.ageLimit.setTextColor(requireActivity().getColor(R.color.six_years))
+            else -> binding.ageLimit.setTextColor(requireActivity().getColor(R.color.white))
+        }
+
         binding.promotedMovieName.text = movie.name
 
         binding.flow.setup(binding.data, movie.tags)
@@ -133,7 +142,7 @@ class MovieFragment : Fragment() {
     }
 
 
-    private inner class EpisodeHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private inner class EpisodeHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var data: Episode
         private val imageView = itemView.findViewById<ImageView>(R.id.episodeImage)
         fun bind(data: Episode) {
@@ -142,6 +151,14 @@ class MovieFragment : Fragment() {
             itemView.findViewById<TextView>(R.id.episodeDescription).text = data.description
             itemView.findViewById<TextView>(R.id.episodeName).text = data.name
             itemView.findViewById<TextView>(R.id.episodeYear).text = data.year.toString()
+        }
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            // TODO( Routing to episode )
         }
     }
 
@@ -166,8 +183,6 @@ class MovieFragment : Fragment() {
             holder.bind(movie)
         }
     }
-
-
 
 
 }

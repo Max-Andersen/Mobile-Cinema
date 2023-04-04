@@ -16,4 +16,10 @@
     <color name="another_grey">#AFAFAF</color>
     <color name="bottom_navigation">#1C1A19</color>
 
+
+    <color name="sixteen_years">#F26E45</color>
+    <color name="twelve_years">#F4A992</color>
+    <color name="six_years">#FAD5C9</color>
+
+
 </resources>
