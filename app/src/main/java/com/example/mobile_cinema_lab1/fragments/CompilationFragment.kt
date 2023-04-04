@@ -57,6 +57,9 @@ class CompilationFragment : Fragment(), CardStackListener {
 
 
         binding.likeLayer.setOnClickListener {
+
+            //TODO( like )
+
             val setting = SwipeAnimationSetting.Builder()
                 .setDirection(Direction.Right)
                 .setDuration(Duration.Slow.duration)
@@ -67,6 +70,10 @@ class CompilationFragment : Fragment(), CardStackListener {
         }
 
         binding.dislikeLayer.setOnClickListener {
+
+            //TODO( unlike )
+
+
             val setting = SwipeAnimationSetting.Builder()
                 .setDirection(Direction.Left)
                 .setDuration(Duration.Slow.duration)
@@ -77,6 +84,8 @@ class CompilationFragment : Fragment(), CardStackListener {
         }
 
         binding.playLayer.setOnClickListener {
+
+            //TODO( Routing to episode )
 
         }
 
@@ -96,9 +105,8 @@ class CompilationFragment : Fragment(), CardStackListener {
                 is ApiResponse.Success -> {
                     binding.progressBar.visibility = View.INVISIBLE
                     binding.emptyCompilationGroup.visibility = View.VISIBLE
-                    Log.d("!", "going to read")
-                    Log.d("!", adapter.itemCount.toString())
                     adapter.notifyDataSetChanged()
+                    binding.titleText.text = viewModel.getCurrentItemText()
                 }
             }
         }
@@ -110,6 +118,8 @@ class CompilationFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardSwiped(direction: Direction) {
+        viewModel.nextItem()
+        binding.titleText.text = viewModel.getCurrentItemText()
         Log.d("CardStackView", "onCardSwiped: p = ${manager.topPosition}, d = $direction")
     }
 

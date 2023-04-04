@@ -1,6 +1,5 @@
 package com.example.mobile_cinema_lab1.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +16,16 @@ class CompilationViewModel : ViewModel() {
 
     var compilationMovies = arrayListOf<Movie>()
 
+    private var currentIdx: Int = 0
+
+    fun nextItem() {
+        currentIdx += 1
+    }
+
+    fun getCurrentItemText(): String {
+        return if (currentIdx < compilationMovies.size) compilationMovies[currentIdx].name else ""
+    }
+
     fun getCompilationLiveData() = compilationLiveData
 
     fun getCompilation() {
@@ -28,14 +37,13 @@ class CompilationViewModel : ViewModel() {
                         it.data.forEach { movie ->
                             compilationMovies.add(movie)
                         }
-                        Log.d("!", "saved")
                     }
+                    currentIdx = 0
                     compilationLiveData.value = it
                 }
             }
         }
 
     }
-
 
 }

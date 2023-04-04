@@ -28,14 +28,6 @@ class CardStackAdapter(
         return movies.size
     }
 
-    fun setSpots(movies: List<Movie>) {
-        this.movies = movies
-    }
-
-    fun getSpots(): List<Movie> {
-        return movies
-    }
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var image: ImageView = view.findViewById(R.id.cardImage)
     }
