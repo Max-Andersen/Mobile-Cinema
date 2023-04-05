@@ -1,6 +1,5 @@
 package com.example.mobile_cinema_lab1.fragments
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,6 +18,7 @@ import com.example.mobile_cinema_lab1.databinding.MainFrameBinding
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Movie
 import com.example.mobile_cinema_lab1.viewmodels.MainFragmentViewModel
+import com.google.gson.Gson
 
 
 class MainFragment : Fragment() {
@@ -52,9 +53,11 @@ class MainFragment : Fragment() {
         binding.newMoviesRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.moviesForYouRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        binding.inTrendRecyclerView.addItemDecoration(MarginItemDecoration(16))
-        binding.newMoviesRecyclerView.addItemDecoration(MarginItemDecoration(16))
-        binding.moviesForYouRecyclerView.addItemDecoration(MarginItemDecoration(16))
+        val itemDecoration = (requireActivity() as MainActivity).getMarginItemDecoration(16)
+
+        binding.inTrendRecyclerView.addItemDecoration(itemDecoration)
+        binding.newMoviesRecyclerView.addItemDecoration(itemDecoration)
+        binding.moviesForYouRecyclerView.addItemDecoration(itemDecoration)
 
         viewModel.getMovies()
         updateUi()
@@ -76,11 +79,14 @@ class MainFragment : Fragment() {
                 is ApiResponse.Success -> {
                     binding.progressBarInTrend.visibility = View.INVISIBLE
 
-                    viewModel.inTrendMovies.clear()
-                    it.data.forEach { movie ->
-                        viewModel.inTrendMovies.add(movie)
+                    if (it.data.isNotEmpty()){
+                        viewModel.saveInTrendMovies(it.data)
+                        inTrendAdapter.notifyDataSetChanged()
                     }
-                    inTrendAdapter.notifyDataSetChanged()
+                    else{
+                        binding.inTrendGroup.visibility = View.GONE
+                    }
+
                 }
             }
         }
@@ -95,11 +101,13 @@ class MainFragment : Fragment() {
                 is ApiResponse.Success -> {
                     binding.progressBarForYou.visibility = View.INVISIBLE
 
-                    viewModel.moviesForYou.clear()
-                    it.data.forEach { movie ->
-                        viewModel.moviesForYou.add(movie)
+                    if (it.data.isNotEmpty()){
+                        viewModel.saveForYouMovies(it.data)
+                        forYouAdapter.notifyDataSetChanged()
                     }
-                    forYouAdapter.notifyDataSetChanged()
+                    else{
+                        binding.forYouGroup.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -113,12 +121,16 @@ class MainFragment : Fragment() {
                 }
                 is ApiResponse.Success -> {
                     binding.progressBarNew.visibility = View.INVISIBLE
-                    viewModel.newMovies.clear()
-                    it.data.forEach { movie ->
-                        viewModel.newMovies.add(movie)
+
+                    if (it.data.isNotEmpty()){
+                        viewModel.saveNewMovies(it.data)
+                        newMovieAdapter.notifyDataSetChanged()
+                    }
+                    else{
+                        binding.newMoviesGroup.visibility = View.GONE
                     }
 
-                    newMovieAdapter.notifyDataSetChanged()
+
                 }
             }
         }
@@ -155,17 +167,28 @@ class MainFragment : Fragment() {
                         Glide.with(requireActivity()).load(lastMovie.poster).into(binding.lastWatchedMovie)
                         binding.lastWatchedMovieTitle.text = lastMovie.name
                     }
+                    else{
+                        binding.lastWatchedMovieGroup.visibility = View.GONE
+                    }
                 }
             }
         }
     }
 
-    private inner class MovieHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private inner class MovieHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var data: Movie
         private val imageView = itemView.findViewById<ImageView>(R.id.image)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
         fun bind(data: Movie) {
             this.data = data
             Glide.with(requireActivity()).load(data.poster).into(imageView)
+        }
+
+        override fun onClick(p0: View?) {
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToMovieFragment(selectedMovie =  Gson().toJson(data)))
         }
     }
 
@@ -186,17 +209,5 @@ class MainFragment : Fragment() {
             holder.bind(movie)
         }
 
-    }
-    class MarginItemDecoration(private val spaceSize: Int) : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect, view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            with(outRect) {
-                left = spaceSize
-                right = spaceSize
-            }
-        }
     }
 }

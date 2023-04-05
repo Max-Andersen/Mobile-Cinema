@@ -25,6 +25,28 @@ class MainFragmentViewModel: BaseViewModel() {
     var newMovies = arrayListOf<Movie>()
     var moviesForYou = arrayListOf<Movie>()
 
+    fun saveInTrendMovies(movies: List<Movie>){
+        inTrendMovies.clear()
+        movies.forEach{
+            inTrendMovies.add(it)
+        }
+    }
+
+    fun saveNewMovies(movies: List<Movie>){
+        newMovies.clear()
+        movies.forEach{
+            newMovies.add(it)
+        }
+    }
+
+    fun saveForYouMovies(movies: List<Movie>){
+        moviesForYou.clear()
+        movies.forEach{
+            moviesForYou.add(it)
+        }
+    }
+
+
     fun getLiveDataForInTrendMovies() = inTrendMoviesLiveData
     fun getLiveDataForYouWatchedMovie() = youWatchedMovieLiveData
     fun getLiveDataForNewMovies() = newMoviesLiveData
@@ -32,7 +54,6 @@ class MainFragmentViewModel: BaseViewModel() {
     fun getLiveDataForCoverImage() = coverImageLiveData
 
     fun getMovies(){
-
         mJobs.add(viewModelScope.launch(Dispatchers.IO){
             GetMoviesUseCase("new")().collect{
                 withContext(Dispatchers.Main){

@@ -7,9 +7,9 @@
     android:background="@color/background">
 
     <ScrollView
-        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,6 +19,24 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/newMoviesGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="moviesForYouRecyclerView,textView5,newMoviesRecyclerView,textView4" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/inTrendGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="inTrendRecyclerView,textView" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/forYouGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="textView5,moviesForYouRecyclerView" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/lastWatchedMovieGroup"
@@ -35,8 +53,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/the_magicians" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/foregroundImagePromotedMovie"
@@ -110,8 +127,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lastWatchMovieText"/>
-<!--                tools:srcCompat="@drawable/altered_carbon"-->
+                app:layout_constraintTop_toBottomOf="@+id/lastWatchMovieText" />
+            <!--                tools:srcCompat="@drawable/altered_carbon"-->
 
 
             <ImageView
@@ -267,4 +284,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

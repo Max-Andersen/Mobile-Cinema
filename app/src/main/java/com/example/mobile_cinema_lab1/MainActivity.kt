@@ -1,5 +1,6 @@
 package com.example.mobile_cinema_lab1
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import androidx.core.view.forEach
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile_cinema_lab1.databinding.ActivityMainBinding
 import com.example.mobile_cinema_lab1.fragments.ErrorDialogFragment
 import com.example.mobile_cinema_lab1.network.Network
@@ -55,5 +57,24 @@ class MainActivity : AppCompatActivity() {
 
     fun hideBottomNavigation(){
         binding.bottomNavigation.visibility = View.INVISIBLE
+    }
+
+    class MarginItemDecoration(private val spaceSize: Int) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect, view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            with(outRect) {
+                top = spaceSize
+                bottom = spaceSize
+                left = spaceSize
+                right = spaceSize
+            }
+        }
+    }
+
+    fun getMarginItemDecoration(dp: Int): MarginItemDecoration {
+        return MarginItemDecoration(dp)
     }
 }
