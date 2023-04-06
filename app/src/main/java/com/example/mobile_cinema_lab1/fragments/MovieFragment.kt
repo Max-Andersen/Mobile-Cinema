@@ -10,19 +10,18 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.MovieScreenBinding
+import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Episode
 import com.example.mobile_cinema_lab1.network.models.Movie
 import com.example.mobile_cinema_lab1.viewmodels.MovieFrameViewModel
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
 
 class MovieFragment : Fragment() {
     lateinit var binding: MovieScreenBinding
@@ -31,6 +30,10 @@ class MovieFragment : Fragment() {
 
     private lateinit var episodesAdapter: EpisodeAdapter
 
+    private val args: MovieFragmentArgs by navArgs()
+
+    private lateinit var movie: com.example.mobile_cinema_lab1.navigationmodels.Movie
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,10 +41,7 @@ class MovieFragment : Fragment() {
     ): View {
         binding = MovieScreenBinding.inflate(inflater, container, false)
 
-        val data = requireArguments().getString("selectedMovie")
-
-        val type: Type = object : TypeToken<Movie>() {}.type
-        val movie: Movie = Gson().fromJson(data, type)
+        movie = args.selectedMovie
 
         viewModel.getEpisodesOfMovie(movie.movieId)
 
@@ -119,7 +119,7 @@ class MovieFragment : Fragment() {
         }
     }
 
-    private inner class MovieAdapter(var movie: Movie) :
+    private inner class MovieAdapter(var movie: com.example.mobile_cinema_lab1.navigationmodels.Movie) :
         RecyclerView.Adapter<ImageHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
             val view =
@@ -158,7 +158,7 @@ class MovieFragment : Fragment() {
         }
 
         override fun onClick(p0: View?) {
-            // TODO( Routing to episode )
+            findNavController().navigate(MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(data.getNavigationModel(), movie.name))
         }
     }
 

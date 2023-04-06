@@ -15,7 +15,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MyAuthenticator : Authenticator {
-    override fun authenticate(route: Route?, response: Response): Request? {
+    override fun authenticate(route: Route?, response: Response): Request {
         return runBlocking {
             val refreshToken = Network.getSharedPrefs(MyApplication.RefreshToken)
             if (refreshToken != ""){
@@ -37,7 +37,7 @@ class MyAuthenticator : Authenticator {
                         .build()
                 }
             }
-            null
+            return@runBlocking response.request
         }
     }
 

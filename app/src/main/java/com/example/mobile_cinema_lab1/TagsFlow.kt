@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.mobile_cinema_lab1.network.models.Tag
 
 class TagsFlow (context: Context, attrs: AttributeSet?) : Flow(context, attrs) {
     fun setup(
         parentView: ViewGroup,
-        tags: List<Tag>
+        tags: List<com.example.mobile_cinema_lab1.navigationmodels.Tag>
     ) {
         val referencedIds = IntArray(tags.size)
         for (i in tags.indices) {

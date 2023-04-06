@@ -15,10 +15,10 @@ import com.bumptech.glide.Glide
 import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.MainFrameBinding
+import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Movie
 import com.example.mobile_cinema_lab1.viewmodels.MainFragmentViewModel
-import com.google.gson.Gson
 
 
 class MainFragment : Fragment() {
@@ -188,7 +188,7 @@ class MainFragment : Fragment() {
         }
 
         override fun onClick(p0: View?) {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToMovieFragment(selectedMovie =  Gson().toJson(data)))
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToMovieFragment(data.getNavigationModel()))
         }
     }
 
