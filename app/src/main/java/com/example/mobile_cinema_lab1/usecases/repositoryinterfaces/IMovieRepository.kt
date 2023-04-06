@@ -6,6 +6,7 @@ import com.example.mobile_cinema_lab1.network.models.Episode
 import com.example.mobile_cinema_lab1.network.models.EpisodeShort
 import com.example.mobile_cinema_lab1.network.models.Movie
 import kotlinx.coroutines.flow.Flow
+import okhttp3.ResponseBody
 
 interface IMovieRepository {
 
@@ -15,7 +16,7 @@ interface IMovieRepository {
 
     fun getEpisodeListOfMovie(movieId: String): Flow<ApiResponse<List<Episode>>>
 
-    fun removeMovieFromCompilation(movieId: String): Flow<ApiResponse<Nothing>>
+    fun removeMovieFromCompilation(movieId: String): Flow<ApiResponse<ResponseBody>>
 
     fun getUserHistory(): Flow<ApiResponse<List<EpisodeShort>>>
 }

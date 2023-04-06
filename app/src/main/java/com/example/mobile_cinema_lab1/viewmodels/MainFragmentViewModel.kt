@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainFragmentViewModel: BaseViewModel() {
-    private val mJobs = mutableListOf<Job>()
 
     private val inTrendMoviesLiveData = MutableLiveData<ApiResponse<List<Movie>>>()
     private val youWatchedMovieLiveData = MutableLiveData<ApiResponse<List<Movie>>>()
@@ -93,16 +92,5 @@ class MainFragmentViewModel: BaseViewModel() {
                 }
             }
         })
-
-
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        mJobs.forEach{
-            if (it.isActive) {
-                it.cancel()
-            }
-        }
     }
 }

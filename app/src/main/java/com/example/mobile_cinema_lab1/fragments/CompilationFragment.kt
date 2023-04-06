@@ -9,12 +9,15 @@ import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.mobile_cinema_lab1.CardStackAdapter
+import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.databinding.CompilationScreenBinding
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Movie
 import com.example.mobile_cinema_lab1.viewmodels.CompilationViewModel
+import com.google.gson.Gson
 import com.yuyakaido.android.cardstackview.*
 
 class CompilationFragment : Fragment(), CardStackListener {
@@ -35,6 +38,8 @@ class CompilationFragment : Fragment(), CardStackListener {
         savedInstanceState: Bundle?
     ): View {
         binding = CompilationScreenBinding.inflate(inflater, container, false)
+
+        (requireActivity() as MainActivity).showBottomNavigation()
 
         viewModel.getCompilation()
 
@@ -58,7 +63,10 @@ class CompilationFragment : Fragment(), CardStackListener {
 
         binding.likeLayer.setOnClickListener {
 
-            //TODO( like )
+            // Nothing
+
+            viewModel.nextItem()
+            binding.titleText.text = viewModel.getCurrentItemText()
 
             val setting = SwipeAnimationSetting.Builder()
                 .setDirection(Direction.Right)
@@ -70,9 +78,8 @@ class CompilationFragment : Fragment(), CardStackListener {
         }
 
         binding.dislikeLayer.setOnClickListener {
-
-            //TODO( unlike )
-
+            binding.titleText.text = viewModel.getCurrentItemText()
+            viewModel.onDislikeClick()
 
             val setting = SwipeAnimationSetting.Builder()
                 .setDirection(Direction.Left)
@@ -84,8 +91,13 @@ class CompilationFragment : Fragment(), CardStackListener {
         }
 
         binding.playLayer.setOnClickListener {
-
-            //TODO( Routing to episode )
+            val currentMovie = viewModel.getCurrentItem()
+            if ( currentMovie != null){
+                findNavController().navigate(CompilationFragmentDirections.actionCompilationFragmentToMovieFragment(selectedMovie =  Gson().toJson(currentMovie)))
+            } else{
+                val dialogFragment = ErrorDialogFragment("Фильмы закончились! :(")
+                requireActivity().let { it1 -> dialogFragment.show(it1.supportFragmentManager, "Problems") }
+            }
 
         }
 
@@ -118,6 +130,11 @@ class CompilationFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardSwiped(direction: Direction) {
+
+        if (direction == Direction.Left){
+            viewModel.onDislikeClick()
+        }
+
         viewModel.nextItem()
         binding.titleText.text = viewModel.getCurrentItemText()
         Log.d("CardStackView", "onCardSwiped: p = ${manager.topPosition}, d = $direction")

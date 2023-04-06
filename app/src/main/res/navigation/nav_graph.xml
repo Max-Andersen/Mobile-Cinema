@@ -23,16 +23,22 @@
         android:id="@+id/compilationFragment"
         android:name="com.example.mobile_cinema_lab1.fragments.CompilationFragment"
         android:label="CompilationFragment"
-        tools:layout="@layout/compilation_screen" />
+        tools:layout="@layout/compilation_screen" >
+        <action
+            android:id="@+id/action_compilationFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.mobile_cinema_lab1.fragments.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/profile_screen" />
     <action
-        app:popUpTo="@layout/main_frame"
         android:id="@+id/action_global_mainFragment"
-        app:destination="@id/mainFragment" />
+        app:destination="@id/mainFragment"
+        app:launchSingleTop="false"
+        app:popUpTo="@id/nav_graph.xml"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.example.mobile_cinema_lab1.fragments.SignUpFragment"
@@ -53,7 +59,9 @@
     </fragment>
     <action
         android:id="@+id/action_global_signInFragment"
-        app:destination="@id/signInFragment" />
+        app:destination="@id/signInFragment"
+        app:popUpTo="@id/nav_graph.xml"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/movieFragment"
         android:name="com.example.mobile_cinema_lab1.fragments.MovieFragment"

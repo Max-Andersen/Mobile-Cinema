@@ -2,6 +2,7 @@ package com.example.mobile_cinema_lab1.network.api
 
 import com.example.mobile_cinema_lab1.network.models.Episode
 import com.example.mobile_cinema_lab1.network.models.Movie
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -16,6 +17,6 @@ interface MovieApi {
     @GET("movies/{movieId}/episodes")
     suspend fun getEpisodesFromMovie(@Path("movieId") movieId: String): Response<List<Episode>>
 
-    @POST("movies/{movieId}/episodes")
-    suspend fun removeFilmFromCompilation(@Path("movieId") movieId: String): Response<Nothing>
+    @POST("movies/{movieId}/dislike")
+    suspend fun removeFilmFromCompilation(@Path("movieId") movieId: String): Response<ResponseBody>
 }

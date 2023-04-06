@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.databinding.CollectionScreenBinding
 
 class CollectionFragment: Fragment() {
@@ -16,6 +17,9 @@ class CollectionFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = CollectionScreenBinding.inflate(inflater, container, false)
+
+        (requireActivity() as MainActivity).showBottomNavigation()
+
         return binding.root
     }
 }

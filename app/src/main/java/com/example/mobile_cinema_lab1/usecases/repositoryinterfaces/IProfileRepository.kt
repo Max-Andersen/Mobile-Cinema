@@ -12,5 +12,5 @@ interface IProfileRepository {
 
     fun editUserData(newUserData: UpdateUserInfo): Flow<ApiResponse<UserInfo>>
 
-    fun loadUserPhoto(photo: MultipartBody.Part): Flow<ApiResponse<Nothing>>
+    fun loadUserPhoto(photo: MultipartBody): Flow<ApiResponse<Nothing>>
 }

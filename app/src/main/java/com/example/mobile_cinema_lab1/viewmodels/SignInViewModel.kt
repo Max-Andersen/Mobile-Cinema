@@ -7,53 +7,41 @@ import com.example.mobile_cinema_lab1.network.models.LoginRequestBody
 import com.example.mobile_cinema_lab1.network.models.LoginResponse
 import com.example.mobile_cinema_lab1.usecases.SignInUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SignInViewModel: BaseViewModel() {
+class SignInViewModel : BaseViewModel() {
     private val _data = MutableLiveData<ApiResponse<LoginResponse>>()
     private val _validation = MutableLiveData<String>()
-
-    private var mJob: Job? = null
 
     fun getLiveDataForRequest() = _data
     fun getLiveDataForValidation() = _validation
 
-    fun login(email: String, password: String){
+    fun login(email: String, password: String) {
         var answer = ""
-        if (email.isBlank()){
+        if (email.isBlank()) {
             answer += "Email не может быть пустым\n"
         }
 
-        if (password.isBlank()){
-            answer +=  "Пароль не может быть пустым\n"
+        if (password.isBlank()) {
+            answer += "Пароль не может быть пустым\n"
         }
 
-        if (!email.isEmailValid()){
-            answer +=  "Неверный Email\n"
+        if (!email.isEmailValid()) {
+            answer += "Неверный Email\n"
         }
 
-        if (answer.isNotBlank()){
+        if (answer.isNotBlank()) {
             _validation.value = answer
             return
         }
 
-        mJob = viewModelScope.launch(Dispatchers.IO){
-            SignInUseCase(LoginRequestBody(email, password))().collect{
-                withContext(Dispatchers.Main){
+        mJobs.add(viewModelScope.launch(Dispatchers.IO) {
+            SignInUseCase(LoginRequestBody(email, password))().collect {
+                withContext(Dispatchers.Main) {
                     _data.value = it
                 }
             }
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        mJob?.let {
-            if (it.isActive) {
-                it.cancel()
-            }
-        }
+        })
     }
 }

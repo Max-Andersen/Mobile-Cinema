@@ -21,4 +21,9 @@
     <string name="empty_compilation">Новые фильмы\nв подборке закончились</string>
     <string name="shots">Кадры</string>
     <string name="episodes">Эпизоды</string>
+    <string name="edit">Изменить</string>
+    <string name="discussions">Обсуждения</string>
+    <string name="history">История</string>
+    <string name="settings">Настройки</string>
+    <string name="exit">Выход</string>
 </resources>

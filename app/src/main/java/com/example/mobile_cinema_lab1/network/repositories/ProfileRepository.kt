@@ -14,6 +14,6 @@ class ProfileRepository: IProfileRepository, BaseRepository() {
     override fun editUserData(newUserData: UpdateUserInfo) =
         apiRequestFlow { profileApi.updateUserInfo(newUserData) }
 
-    override fun loadUserPhoto(photo: MultipartBody.Part) =
+    override fun loadUserPhoto(photo: MultipartBody) =
         apiRequestFlow { profileApi.uploadProfileImage(photo) }
 }
