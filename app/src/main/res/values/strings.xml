@@ -27,4 +27,8 @@
     <string name="settings">Настройки</string>
     <string name="exit">Выход</string>
     <string name="description">Описание</string>
+    <string name="type_message">Напишите сообщение...</string>
+
+
+    <string name="author_plus_date">%1$s • %2$s</string>
 </resources>

@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:letterSpacing="0.0"
-        android:textColor="@color/anotherGray"
+        android:textColor="@color/another_grey"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/movieName"
         app:layout_constraintTop_toBottomOf="@+id/movieName"

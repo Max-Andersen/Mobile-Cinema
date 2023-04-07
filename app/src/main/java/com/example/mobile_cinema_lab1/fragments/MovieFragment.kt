@@ -84,6 +84,10 @@ class MovieFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        binding.chatButton.setOnClickListener {
+            findNavController().navigate(MovieFragmentDirections.actionMovieFragmentToChatFragment(movie.chatInfo.chatId))
+        }
+
 
         viewModel.getLiveDataForEpisodes().observe(viewLifecycleOwner) {
             when (it) {
