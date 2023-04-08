@@ -5,7 +5,7 @@ import com.example.mobile_cinema_lab1.network.repositories.ProfileRepository
 import com.example.mobile_cinema_lab1.usecases.repositoryinterfaces.IProfileRepository
 import okhttp3.MultipartBody
 
-class UserDataUseCase {
+class GetUserDataUseCase {
     private val userRepository: IProfileRepository = ProfileRepository()
 
     fun getUserData() = userRepository.getUserData()

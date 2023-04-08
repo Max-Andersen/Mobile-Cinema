@@ -1,13 +1,15 @@
 package com.example.mobile_cinema_lab1.additionalmodels
 
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 data class MyMessage(
-    val creationDate: LocalDate,
+    val creationDate: LocalDateTime,
     val authorId: String,
     val authorName: String,
-    val authorAvatar: String,
+    val authorAvatar: String?,
     val text: String,
-    val isLoading: Boolean,
-    val fail: Boolean = false
+    var showAvatar: Boolean = true,
+    var isLoading: Boolean,
+    var fail: Boolean = false
 )

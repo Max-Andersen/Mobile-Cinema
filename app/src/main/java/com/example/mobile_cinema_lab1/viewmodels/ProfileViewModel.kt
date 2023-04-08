@@ -1,14 +1,11 @@
 package com.example.mobile_cinema_lab1.viewmodels
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.UserInfo
-import com.example.mobile_cinema_lab1.usecases.UserDataUseCase
+import com.example.mobile_cinema_lab1.usecases.GetUserDataUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -18,7 +15,7 @@ class ProfileViewModel: BaseViewModel() {
 
     fun getLiveDataForUseInfo() = userLiveData
 
-    private val userUseCase = UserDataUseCase()
+    private val userUseCase = GetUserDataUseCase()
 
     fun getUserInfo(){
         mJobs.add(

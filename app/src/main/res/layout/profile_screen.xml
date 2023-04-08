@@ -13,7 +13,7 @@
         android:layout_height="88dp"
         android:layout_marginTop="40dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/lucifer"
+        android:src="@drawable/empty_profile_photo"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/roundedImageViewRounded" />

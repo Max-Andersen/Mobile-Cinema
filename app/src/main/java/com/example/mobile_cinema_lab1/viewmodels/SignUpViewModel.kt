@@ -3,9 +3,13 @@ package com.example.mobile_cinema_lab1.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.mobile_cinema_lab1.MyApplication
 import com.example.mobile_cinema_lab1.network.ApiResponse
+import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.models.LoginResponse
 import com.example.mobile_cinema_lab1.network.models.RegisterRequestBody
+import com.example.mobile_cinema_lab1.network.models.UserInfo
+import com.example.mobile_cinema_lab1.usecases.GetUserDataUseCase
 import com.example.mobile_cinema_lab1.usecases.SignUpUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,9 +18,12 @@ import kotlinx.coroutines.withContext
 class SignUpViewModel : BaseViewModel() {
     private val _data = MutableLiveData<ApiResponse<LoginResponse>>()
     private val _validation = MutableLiveData<String>()
+    private val _userData = MutableLiveData<ApiResponse<UserInfo>>()
 
     fun getLiveDataForRequest() = _data
     fun getLiveDataForValidation() = _validation
+
+    fun getLiveDataForUserInfo() = _userData
 
     fun register(
         name: String,
@@ -65,5 +72,17 @@ class SignUpViewModel : BaseViewModel() {
                 }
             }
         })
+    }
+
+    fun getUserInfo(){
+        mJobs.add(
+            viewModelScope.launch(Dispatchers.IO){
+                GetUserDataUseCase().getUserData().collect{
+                    withContext(Dispatchers.Main){
+                        _userData.value = it
+                    }
+                }
+            }
+        )
     }
 }

@@ -7,16 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.NavGraphXmlDirections
+import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.ProfileScreenBinding
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.viewmodels.ProfileViewModel
 
-class ProfileFragment: Fragment() {
+class ProfileFragment : Fragment() {
     private lateinit var binding: ProfileScreenBinding
 
     private val viewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
@@ -32,7 +33,7 @@ class ProfileFragment: Fragment() {
 
         viewModel.getUserInfo()
 
-        viewModel.getLiveDataForUseInfo().observe(viewLifecycleOwner){
+        viewModel.getLiveDataForUseInfo().observe(viewLifecycleOwner) {
             when (it) {
                 ApiResponse.Loading -> {
 
@@ -43,9 +44,16 @@ class ProfileFragment: Fragment() {
                 is ApiResponse.Success -> {
                     binding.progressBar.visibility = View.INVISIBLE
                     binding.dataGroup.visibility = View.VISIBLE
-                    binding.userName.text = it.data.firstName + " " + it.data.lastName
+                    binding.userName.text = String.format(
+                        getString(R.string.first_and_last_name),
+                        it.data.firstName,
+                        it.data.lastName
+                    )
                     binding.userEmail.text = it.data.email
 
+                    it.data.avatar?.let { photo ->
+                        Glide.with(requireContext()).load(photo).into(binding.userImageView)
+                    }
                 }
             }
         }

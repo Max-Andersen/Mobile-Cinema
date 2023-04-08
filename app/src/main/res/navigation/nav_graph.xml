@@ -42,7 +42,7 @@
         app:destination="@id/mainFragment"
         app:launchSingleTop="false"
         app:popUpTo="@id/nav_graph.xml"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="false" />
 
     <fragment
         android:id="@+id/signUpFragment"
@@ -108,7 +108,7 @@
         android:label="ChatFragment"
         tools:layout="@layout/chat_screen">
         <argument
-            android:name="chatId"
-            app:argType="string" />
+            android:name="chatInfo"
+            app:argType="com.example.mobile_cinema_lab1.navigationmodels.Chat" />
     </fragment>
 </navigation>

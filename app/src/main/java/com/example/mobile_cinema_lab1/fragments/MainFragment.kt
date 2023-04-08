@@ -30,6 +30,7 @@ class MainFragment : Fragment() {
     private lateinit var newMovieAdapter: MovieAdapter
     private lateinit var forYouAdapter: MovieAdapter
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

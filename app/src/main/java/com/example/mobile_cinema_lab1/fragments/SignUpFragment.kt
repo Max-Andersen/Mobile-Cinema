@@ -63,11 +63,25 @@ class SignUpFragment : Fragment() {
                 is ApiResponse.Success -> {
                     Network.updateSharedPrefs(MyApplication.AccessToken, it.data.accessToken)
                     Network.updateSharedPrefs(MyApplication.RefreshToken, it.data.refreshToken)
-                    findNavController().navigate(NavGraphXmlDirections.actionGlobalMainFragment())
+                    viewModel.getUserInfo()
                 }
                 is ApiResponse.Loading -> {binding.progressBar.visibility = View.VISIBLE}
             }
         }
-    }
 
+        viewModel.getLiveDataForUserInfo().observe(viewLifecycleOwner){
+            when (it){
+                is ApiResponse.Failure -> {
+                    // TODO( Problems )
+                }
+                is ApiResponse.Success -> {
+                    Network.updateSharedPrefs(MyApplication.UserId, it.data.userId)
+                    findNavController().navigate(NavGraphXmlDirections.actionGlobalMainFragment())
+                }
+                is ApiResponse.Loading -> {
+
+                }
+            }
+        }
+    }
 }

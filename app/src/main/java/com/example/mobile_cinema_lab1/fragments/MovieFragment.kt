@@ -85,7 +85,7 @@ class MovieFragment : Fragment() {
         }
 
         binding.chatButton.setOnClickListener {
-            findNavController().navigate(MovieFragmentDirections.actionMovieFragmentToChatFragment(movie.chatInfo.chatId))
+            findNavController().navigate(MovieFragmentDirections.actionMovieFragmentToChatFragment(movie.chatInfo))
         }
 
 

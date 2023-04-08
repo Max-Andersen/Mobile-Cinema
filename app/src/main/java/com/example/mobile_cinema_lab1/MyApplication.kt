@@ -18,6 +18,7 @@ class MyApplication: Application() {
 
         const val AccessToken: String = "access_token"
         const val RefreshToken: String = "refresh_token"
+        const val UserId: String = "user_id"
 
     }
 }

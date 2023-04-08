@@ -47,11 +47,8 @@ class MyWebSocketListener : WebSocketListener(){
 //    fun getLiveData() = liveData
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
-//        Handler(Looper.getMainLooper()).post{
-//            liveData.value = response.message
-//        }
+
         Log.d("!", "OPENED!")
-        Log.d("!", Thread.currentThread().name)
 
         runBlocking {
             flow.emit(response.message)
@@ -61,14 +58,13 @@ class MyWebSocketListener : WebSocketListener(){
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-//        Handler(Looper.getMainLooper()).post{
-//            liveData.value = text
-//        }
         runBlocking {
             flow.emit(text)
         }
-        Log.d("!", "MESSAGE! $text")
-
     }
 
+    override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+        Log.d("!", "Closing!  $code")
+        super.onClosing(webSocket, code, reason)
+    }
 }

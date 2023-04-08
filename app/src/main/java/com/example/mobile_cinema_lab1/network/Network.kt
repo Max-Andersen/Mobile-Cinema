@@ -8,6 +8,7 @@ import com.example.mobile_cinema_lab1.network.retrofit.MyAuthenticator
 import com.example.mobile_cinema_lab1.network.retrofit.MyInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -38,6 +39,7 @@ object Network {
     fun clearUserData() {
         updateSharedPrefs(MyApplication.AccessToken, "")
         updateSharedPrefs(MyApplication.RefreshToken, "")
+        updateSharedPrefs(MyApplication.UserId, "")
     }
 
     private fun getHttpClient(): OkHttpClient {
@@ -84,4 +86,6 @@ object Network {
 
     fun getTagsApi(): TagsApi = retrofit.create(TagsApi::class.java)
 }
+
+
 

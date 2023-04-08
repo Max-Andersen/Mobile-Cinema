@@ -15,31 +15,44 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MyAuthenticator : Authenticator {
-    override fun authenticate(route: Route?, response: Response): Request {
-        return runBlocking {
-            val refreshToken = Network.getSharedPrefs(MyApplication.RefreshToken)
-            if (refreshToken != ""){
-                val newTokenResponse = getNewToken(refreshToken)
+    override fun authenticate(route: Route?, response: Response): Request? {
 
-                if (!newTokenResponse.isSuccessful || newTokenResponse.body() == null) {
-                    withContext(Dispatchers.Main) {
-                        if (TroubleShooting.getLiveDataForRefreshTrouble().value != true){
-                            TroubleShooting.updateLiveDataForRefreshTrouble(true)
-                        }
+        val refreshToken = Network.getSharedPrefs(MyApplication.RefreshToken)
+        if (refreshToken != "") {
+            runBlocking {
+                val newTokenResponse = getNewToken(refreshToken)// }runBlocking {
+
+            if (!newTokenResponse.isSuccessful || newTokenResponse.body() == null) {
+                withContext(Dispatchers.Main) {
+                    if (TroubleShooting.getLiveDataForRefreshTrouble().value != true) {
+                        TroubleShooting.updateLiveDataForRefreshTrouble(true)
                     }
                 }
+            }
 
                 newTokenResponse.body()?.let {
                     Network.updateSharedPrefs(MyApplication.AccessToken, it.accessToken)
                     Network.updateSharedPrefs(MyApplication.RefreshToken, it.refreshToken)
-                    response.request.newBuilder()
-                        .header("Authorization", "Bearer ${it.accessToken}")
-                        .build()
+//                response.request.newBuilder()
+//                    .header("Authorization", "Bearer ${it.accessToken}")
+//                    .build()
                 }
             }
-            return@runBlocking response.request
+        }
+
+        return if (response.responseCount >= 1) {
+            null
+        } else {
+            response.request.newBuilder().header(
+                "Authorization",
+                "Bearer ${Network.getSharedPrefs(MyApplication.AccessToken)}"
+            ).build()
         }
     }
+
+
+    private val Response.responseCount: Int
+        get() = generateSequence(this) { it.priorResponse }.count()
 
     private suspend fun getNewToken(refreshToken: String?): retrofit2.Response<LoginResponse> {
         val loggingInterceptor = HttpLoggingInterceptor()
@@ -55,4 +68,5 @@ class MyAuthenticator : Authenticator {
 
         return authApi.refresh("Bearer $refreshToken")
     }
+
 }

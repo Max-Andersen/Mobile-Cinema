@@ -37,17 +37,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
+
         if (Network.getSharedPrefs(MyApplication.AccessToken) != ""){
             navController.navigate(NavGraphXmlDirections.actionGlobalMainFragment())
         }
 
         TroubleShooting.getLiveDataForRefreshTrouble().observe(this){
             if (it == true){
-                navController.navigate(NavGraphXmlDirections.actionGlobalSignInFragment())
                 TroubleShooting.updateLiveDataForRefreshTrouble(false)
                 val dialogFragment = ErrorDialogFragment("Ошибка обновления токена")
                 dialogFragment.show(this.supportFragmentManager, "Problems")
                 Network.clearUserData()
+                navController.navigate(NavGraphXmlDirections.actionGlobalSignInFragment())
+
             }
         }
     }
