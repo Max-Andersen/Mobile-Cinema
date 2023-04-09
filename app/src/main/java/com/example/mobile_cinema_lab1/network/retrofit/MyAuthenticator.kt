@@ -17,37 +17,51 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MyAuthenticator : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
 
-        val refreshToken = Network.getSharedPrefs(MyApplication.RefreshToken)
-        if (refreshToken != "") {
+        if (response.responseCount >= 3){
             runBlocking {
-                val newTokenResponse = getNewToken(refreshToken)// }runBlocking {
-
-            if (!newTokenResponse.isSuccessful || newTokenResponse.body() == null) {
                 withContext(Dispatchers.Main) {
                     if (TroubleShooting.getLiveDataForRefreshTrouble().value != true) {
                         TroubleShooting.updateLiveDataForRefreshTrouble(true)
                     }
                 }
             }
+            return null
+        }
 
-                newTokenResponse.body()?.let {
-                    Network.updateSharedPrefs(MyApplication.AccessToken, it.accessToken)
-                    Network.updateSharedPrefs(MyApplication.RefreshToken, it.refreshToken)
-//                response.request.newBuilder()
-//                    .header("Authorization", "Bearer ${it.accessToken}")
-//                    .build()
+        val refreshToken = Network.getSharedPrefs(MyApplication.RefreshToken)
+        if (refreshToken != "") {
+                //runBlocking {  }
+                val newTokenResponse = runBlocking {   getNewToken(refreshToken) }// }runBlocking {
+
+                if (newTokenResponse.isSuccessful) {
+//                    withContext(Dispatchers.Main) {
+//                        if (TroubleShooting.getLiveDataForRefreshTrouble().value != true) {
+//                            TroubleShooting.updateLiveDataForRefreshTrouble(true)
+//                        }
+//                    }
+                    newTokenResponse.body()?.let {
+                        Network.updateSharedPrefs(MyApplication.AccessToken, it.accessToken)
+                        Network.updateSharedPrefs(MyApplication.RefreshToken, it.refreshToken)
+
+                        response.request.newBuilder()
+                            .header("Authorization", "Bearer ${it.accessToken}")
+                            .build()
+                    }
+                } else{
+                    return null
                 }
-            }
-        }
 
-        return if (response.responseCount >= 1) {
-            null
-        } else {
-            response.request.newBuilder().header(
-                "Authorization",
-                "Bearer ${Network.getSharedPrefs(MyApplication.AccessToken)}"
-            ).build()
         }
+        return null
+
+//        return if (response.responseCount >= 1) {
+//            null
+//        } else {
+//            response.request.newBuilder().header(
+//                "Authorization",
+//                "Bearer ${Network.getSharedPrefs(MyApplication.AccessToken)}"
+//            ).build()
+//        }
     }
 
 
@@ -65,6 +79,8 @@ class MyAuthenticator : Authenticator {
             .client(okHttpClient)
             .build()
         val authApi = retrofit.create(AuthApi::class.java)
+
+
 
         return authApi.refresh("Bearer $refreshToken")
     }

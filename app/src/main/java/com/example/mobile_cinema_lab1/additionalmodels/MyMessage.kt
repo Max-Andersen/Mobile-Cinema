@@ -4,10 +4,10 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
 data class MyMessage(
-    val creationDate: LocalDateTime,
+    var creationDate: LocalDateTime,
     val authorId: String,
-    val authorName: String,
-    val authorAvatar: String?,
+    var authorName: String,
+    var authorAvatar: String?,
     val text: String,
     var showAvatar: Boolean = true,
     var isLoading: Boolean,

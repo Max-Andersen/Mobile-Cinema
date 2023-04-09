@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
         if (Network.getSharedPrefs(MyApplication.AccessToken) != ""){
             navController.navigate(NavGraphXmlDirections.actionGlobalMainFragment())
         }

@@ -5,6 +5,8 @@ import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.mobile_cinema_lab1.MyApplication
+import com.example.mobile_cinema_lab1.additionalmodels.*
 import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.models.ChatMessage
 import com.example.mobile_cinema_lab1.usecases.GetSocketConnectionUseCase
@@ -13,6 +15,12 @@ import com.example.mobile_cinema_lab1.usecases.SendMessageToSocketUseCase
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import okhttp3.WebSocket
 
 
@@ -20,10 +28,26 @@ class ChatViewModel: BaseViewModel() {
 
     private var chatLiveData = MutableLiveData<ChatMessage>()
 
+    private var validationLiveData = MutableLiveData<String>()
+
+    private var updateStateRecyclerViewLiveData = MutableLiveData<Int>()
+
+    private var waitingForMyMessage = MutableLiveData(false)
+
+    var troubleWithMyMessage = MutableLiveData(false)
+
+    var messages = arrayListOf<ChatUIModel>()
+
+    private var mySentMessageIdx = -1
+
     private lateinit var socket: WebSocket
     private lateinit var socketListener: MyWebSocketListener
 
+
     fun getChatLiveData() = chatLiveData
+    fun getValidationLiveData() = validationLiveData
+    fun getUpdateStateRecyclerViewLiveData() = updateStateRecyclerViewLiveData
+    fun getTroubleWithMyMessageLiveData() = troubleWithMyMessage
 
     fun getSocket(chatId: String){
         mJobs.add(viewModelScope.launch(Dispatchers.IO) {
@@ -36,8 +60,11 @@ class ChatViewModel: BaseViewModel() {
                     val gson = Gson()
                     val data = gson.fromJson(it, ChatMessage::class.java)
                     Log.d("!", data.toString())
+
+
                     Handler(Looper.getMainLooper()).post{
-                        chatLiveData.value = data
+                        //chatLiveData.value = data
+                        onReceiveData(data)
                     }
 
                 }
@@ -48,14 +75,139 @@ class ChatViewModel: BaseViewModel() {
         })
     }
 
+    private fun onReceiveData(it: ChatMessage){
+
+        val uiModel: ChatUIModel
+
+        if (messages.size != 0) {
+            if (getCreationDateByMessageModel(messages.last()) != null) {
+                if (getCreationDateByMessageModel(messages.last())!!.toString()
+                        .subSequence(0, 10)
+                        .toString() < LocalDateTime.parse(it.creationDateTime).toString()
+                        .subSequence(0, 10).toString()
+                ) {
+                    val dateModel =
+                        ChatUIModel.DaySeparationModel(DaySeparation(LocalDateTime.parse(it.creationDateTime)))
+                    messages.add(dateModel)
+                    updateStateRecyclerViewLiveData.value = messages.size - 1
+                    //adapter.notifyItemChanged(messages.size - 1)
+                }
+            }
+
+            val prevMessageUserId = getUserIdByMessageModel(messages.last())
+            val curMessageUserId = it.authorId
+
+            if (prevMessageUserId == curMessageUserId) {
+                if ((messages.last() as? ChatUIModel.MyMessageModel) != null) {
+                    (messages.last() as ChatUIModel.MyMessageModel).myMessage.showAvatar =
+                        false
+                    updateStateRecyclerViewLiveData.value = messages.size - 1
+                    //adapter.notifyItemChanged()
+                }
+                if ((messages.last() as? ChatUIModel.NotMyMessageModel) != null) {
+                    (messages.last() as ChatUIModel.NotMyMessageModel).notMyMessage.showAvatar =
+                        false
+                    updateStateRecyclerViewLiveData.value = messages.size - 1
+
+                    //adapter.notifyItemChanged(messages.size - 1)
+                }
+            }
+        } else {
+            val dateModel =
+                ChatUIModel.DaySeparationModel(DaySeparation(LocalDateTime.parse(it.creationDateTime)))
+            messages.add(dateModel)
+            updateStateRecyclerViewLiveData.value = messages.size - 1
+
+            //adapter.notifyItemChanged(messages.size - 1)
+        }
+
+        if (it.authorId == Network.getSharedPrefs(MyApplication.UserId)) {
+
+            if (waitingForMyMessage.value == true) {
+                waitingForMyMessage.value = false
+                (messages.last() as ChatUIModel.MyMessageModel).myMessage.apply {
+                    creationDate = LocalDateTime.parse(it.creationDateTime)
+                    authorName = it.authorName
+                    authorAvatar = it.authorAvatar
+                    showAvatar = true
+                    isLoading = false
+                }
+            } else {
+                uiModel = ChatUIModel.MyMessageModel(
+                    MyMessage(
+                        creationDate = LocalDateTime.parse(it.creationDateTime),
+                        authorId = it.authorId,
+                        authorAvatar = it.authorAvatar,
+                        authorName = it.authorName,
+                        text = it.text,
+                        isLoading = false
+                    )
+                )
+                messages.add(uiModel)
+            }
+        } else {
+            uiModel = ChatUIModel.NotMyMessageModel(
+                NotMyMessage(
+                    creationDate = LocalDateTime.parse(it.creationDateTime),
+                    authorId = it.authorId,
+                    authorAvatar = it.authorAvatar,
+                    authorName = it.authorName,
+                    text = it.text,
+                )
+            )
+            messages.add(uiModel)
+        }
+        updateStateRecyclerViewLiveData.value = messages.size - 1
+
+        //adapter.notifyItemChanged(messages.size - 1)
+    }
+
     fun closeSocket(){
+        waitingForMyMessage.value = false
         socket.close(1000, "Ok")
     }
 
     fun sendMessage(messageText: String){
-        // TODO(ВАЛИДАЦИЯ)
         if (messageText.isNotBlank()){
+            messages.add(
+                ChatUIModel.MyMessageModel(
+                    MyMessage(
+                        Clock.System.now().toLocalDateTime(
+                            TimeZone.UTC
+                        ),
+                        authorId = Network.getSharedPrefs(MyApplication.UserId) ?: "",
+                        authorName = "",
+                        authorAvatar = null,
+                        text = messageText,
+                        showAvatar = true,
+                        isLoading = true,
+                    )
+                )
+            )
+
+            mySentMessageIdx = messages.size - 1
+
+            updateStateRecyclerViewLiveData.value = messages.size - 1
+
+            waitingForMyMessage.value = true
             SendMessageToSocketUseCase(socket)(messageText)
+
+            viewModelScope.launch(Dispatchers.IO) {
+                Log.d("!", "START SLEEP")
+                Thread.sleep(5000)
+                Log.d("!", "STOP SLEEP")
+
+                withContext(Dispatchers.Main){
+                    Log.d("!", "${waitingForMyMessage.value}")
+
+                    if (waitingForMyMessage.value == true){
+                        (messages[mySentMessageIdx] as ChatUIModel.MyMessageModel).myMessage.fail = true
+                        updateStateRecyclerViewLiveData.value = mySentMessageIdx
+                    }
+                }
+            }
+        } else{
+            validationLiveData.value = "Message is empty!"
         }
 
     }

@@ -1,6 +1,7 @@
 package com.example.mobile_cinema_lab1.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +20,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
-import com.example.mobile_cinema_lab1.MyApplication
 import com.example.mobile_cinema_lab1.R
-import com.example.mobile_cinema_lab1.additionalmodels.*
+import com.example.mobile_cinema_lab1.additionalmodels.ChatUIModel
+import com.example.mobile_cinema_lab1.additionalmodels.getUserIdByMessageModel
 import com.example.mobile_cinema_lab1.databinding.ChatScreenBinding
-import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.viewmodels.ChatViewModel
-import kotlinx.datetime.LocalDateTime
 
 
 class ChatFragment : Fragment() {
@@ -33,8 +32,6 @@ class ChatFragment : Fragment() {
     private lateinit var binding: ChatScreenBinding
 
     private val viewModel by lazy { ViewModelProvider(this)[ChatViewModel::class.java] }
-
-    private val messages = arrayListOf<ChatUIModel>()
 
     private lateinit var adapter: ChatAdapter
 
@@ -49,82 +46,21 @@ class ChatFragment : Fragment() {
 
         binding.chatName.text = args.chatInfo.chatName
 
-        adapter = ChatAdapter(messages)
+        adapter = ChatAdapter(viewModel.messages)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
 
         viewModel.getSocket(args.chatInfo.chatId)
 
-
-        viewModel.getChatLiveData().observe(viewLifecycleOwner) {
+        viewModel.getUpdateStateRecyclerViewLiveData().observe(viewLifecycleOwner){
             if (binding.progressBar.visibility == View.VISIBLE) binding.progressBar.visibility =
                 View.INVISIBLE
+            adapter.notifyItemChanged(it)
+        }
 
-            val uiModel: ChatUIModel
-
-            if (messages.size != 0) {
-                if (getCreationDateByMessageModel(messages.last()) != null) {
-                    if (getCreationDateByMessageModel(messages.last())!!.toString()
-                            .subSequence(0, 10)
-                            .toString() < LocalDateTime.parse(it.creationDateTime).toString()
-                            .subSequence(0, 10).toString()
-                    ) {
-                        val dateModel =
-                            ChatUIModel.DaySeparationModel(DaySeparation(LocalDateTime.parse(it.creationDateTime)))
-                        messages.add(dateModel)
-                        adapter.notifyItemChanged(messages.size - 1)
-                    }
-                }
-
-                val prevMessageUserId = getUserIdByMessageModel(messages.last())
-                val curMessageUserId = it.authorId
-
-                if (prevMessageUserId == curMessageUserId) {
-                    if ((messages.last() as? ChatUIModel.MyMessageModel) != null) {
-                        (messages.last() as ChatUIModel.MyMessageModel).myMessage.showAvatar =
-                            false
-                        adapter.notifyItemChanged(messages.size - 1)
-                    }
-                    if ((messages.last() as? ChatUIModel.NotMyMessageModel) != null) {
-                        (messages.last() as ChatUIModel.NotMyMessageModel).notMyMessage.showAvatar =
-                            false
-                        adapter.notifyItemChanged(messages.size - 1)
-                    }
-                }
-            }
-            else{
-                val dateModel =
-                    ChatUIModel.DaySeparationModel(DaySeparation(LocalDateTime.parse(it.creationDateTime)))
-                messages.add(dateModel)
-                adapter.notifyItemChanged(messages.size - 1)
-            }
-
-            if (it.authorId == Network.getSharedPrefs(MyApplication.UserId)) {
-                uiModel = ChatUIModel.MyMessageModel(
-                    MyMessage(
-                        creationDate = LocalDateTime.parse(it.creationDateTime),
-                        authorId = it.authorId,
-                        authorAvatar = it.authorAvatar,
-                        authorName = it.authorName,
-                        text = it.text,
-                        isLoading = false
-                    )
-                )
-            } else {
-                uiModel = ChatUIModel.NotMyMessageModel(
-                    NotMyMessage(
-                        creationDate = LocalDateTime.parse(it.creationDateTime),
-                        authorId = it.authorId,
-                        authorAvatar = it.authorAvatar,
-                        authorName = it.authorName,
-                        text = it.text,
-                    )
-                )
-            }
-
-            messages.add(uiModel)
-            adapter.notifyItemChanged(messages.size - 1)
-            binding.recyclerView.scrollToPosition(messages.size - 1)
+        viewModel.getValidationLiveData().observe(viewLifecycleOwner) {
+            val dialogFragment = ErrorDialogFragment(it)
+            dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
         }
 
         val callback: OnBackPressedCallback =
@@ -135,11 +71,12 @@ class ChatFragment : Fragment() {
 
                 }
             }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         binding.sendMessage.setOnClickListener {
             viewModel.sendMessage(binding.editTextMessage.text.toString())
+            binding.editTextMessage.text.clear()
         }
 
         binding.backButton.setOnClickListener {
@@ -148,6 +85,25 @@ class ChatFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun printMessagesData(messages: java.util.ArrayList<ChatUIModel>) {
+        var i = 0
+        messages.forEach {
+            if (it as? ChatUIModel.MyMessageModel != null) {
+                Log.d("check", "$i   ${it.myMessage.text}")
+                Log.d("check", "$i   ${it.myMessage.showAvatar}")
+                Log.d("check", "$i   ${it.myMessage.authorAvatar}")
+            }
+
+            if (it as? ChatUIModel.NotMyMessageModel != null) {
+                Log.d("check", "$i   ${it.notMyMessage.text}")
+                Log.d("check", "$i   ${it.notMyMessage.showAvatar}")
+                Log.d("check", "$i   ${it.notMyMessage.authorAvatar}")
+            }
+            Log.d("check", "")
+            i += 1
+        }
     }
 
     private inner class ChatAdapter(private var arrayList: ArrayList<ChatUIModel>) :
@@ -238,17 +194,32 @@ class ChatFragment : Fragment() {
         private val authorAvatar = itemView.findViewById<ImageView>(R.id.userAvatar)
         private val commentText = itemView.findViewById<TextView>(R.id.messageText)
         private val authorName = itemView.findViewById<TextView>(R.id.authorName)
-        private val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar) // TODO()
+        private val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
+        private val errorIcon = itemView.findViewById<ImageView>(R.id.error)
 
         fun bind(data: ChatUIModel.MyMessageModel) {
             this.data = data
+
+            progressBar.visibility = if (data.myMessage.isLoading) View.VISIBLE else View.INVISIBLE
+            if (data.myMessage.fail){
+                errorIcon.visibility = View.VISIBLE
+                progressBar.visibility = View.INVISIBLE
+            } else{
+                errorIcon.visibility =View.INVISIBLE
+            }
+
             if (data.myMessage.showAvatar) {
                 if (data.myMessage.authorAvatar != null) {
                     Glide.with(requireActivity()).load(data.myMessage.authorAvatar)
                         .into(authorAvatar)
                 } else {
+                    Glide.with(requireContext()).clear(authorAvatar)
                     authorAvatar.setImageResource(R.drawable.empty_profile_photo)
                 }
+                authorAvatar.visibility = View.VISIBLE
+            } else {
+                Glide.with(requireContext()).clear(authorAvatar)
+                authorAvatar.visibility = View.INVISIBLE
             }
             commentText.text = data.myMessage.text
             authorName.text =
@@ -275,8 +246,13 @@ class ChatFragment : Fragment() {
                     Glide.with(requireActivity()).load(data.notMyMessage.authorAvatar)
                         .into(authorAvatar)
                 } else {
+                    Glide.with(requireContext()).clear(authorAvatar)
                     authorAvatar.setImageResource(R.drawable.empty_profile_photo)
                 }
+                authorAvatar.visibility = View.VISIBLE
+            } else {
+                Glide.with(requireContext()).clear(authorAvatar)
+                authorAvatar.visibility = View.INVISIBLE
             }
             commentText.text = data.notMyMessage.text
             authorName.text = String.format(

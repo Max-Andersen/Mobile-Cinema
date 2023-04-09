@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.mobile_cinema_lab1.databinding.EpisodeScreenBinding
@@ -49,6 +50,11 @@ class EpisodeFragment: Fragment() {
         binding.description.text = episode.description
 
         Glide.with(binding.movieImage).load(episode.preview).into(binding.movieImage)
+
+        binding.backButton.setOnClickListener {
+            // TODO ( stop player & send time )
+            findNavController().navigateUp()
+        }
 
         return binding.root
     }
