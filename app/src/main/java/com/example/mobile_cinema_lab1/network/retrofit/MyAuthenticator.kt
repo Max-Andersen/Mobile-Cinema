@@ -1,6 +1,5 @@
 package com.example.mobile_cinema_lab1.network.retrofit
 
-
 import com.example.mobile_cinema_lab1.MyApplication
 import com.example.mobile_cinema_lab1.TroubleShooting
 import com.example.mobile_cinema_lab1.network.Network
@@ -17,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MyAuthenticator : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
 
-        if (response.responseCount >= 3){
+        if (response.responseCount >= 5){
             runBlocking {
                 withContext(Dispatchers.Main) {
                     if (TroubleShooting.getLiveDataForRefreshTrouble().value != true) {
@@ -30,38 +29,25 @@ class MyAuthenticator : Authenticator {
 
         val refreshToken = Network.getSharedPrefs(MyApplication.RefreshToken)
         if (refreshToken != "") {
-                //runBlocking {  }
-                val newTokenResponse = runBlocking {   getNewToken(refreshToken) }// }runBlocking {
+                val newTokenResponse = runBlocking { getNewToken(refreshToken) }
 
                 if (newTokenResponse.isSuccessful) {
-//                    withContext(Dispatchers.Main) {
-//                        if (TroubleShooting.getLiveDataForRefreshTrouble().value != true) {
-//                            TroubleShooting.updateLiveDataForRefreshTrouble(true)
-//                        }
-//                    }
                     newTokenResponse.body()?.let {
                         Network.updateSharedPrefs(MyApplication.AccessToken, it.accessToken)
                         Network.updateSharedPrefs(MyApplication.RefreshToken, it.refreshToken)
 
-                        response.request.newBuilder()
+                        return response.request.newBuilder()
                             .header("Authorization", "Bearer ${it.accessToken}")
                             .build()
                     }
-                } else{
-                    return null
+                } else {
+                    return response.request.newBuilder()
+                        .header("Authorization", "Bearer ${Network.getSharedPrefs(MyApplication.AccessToken)}")
+                        .build()
                 }
 
         }
         return null
-
-//        return if (response.responseCount >= 1) {
-//            null
-//        } else {
-//            response.request.newBuilder().header(
-//                "Authorization",
-//                "Bearer ${Network.getSharedPrefs(MyApplication.AccessToken)}"
-//            ).build()
-//        }
     }
 
 

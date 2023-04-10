@@ -16,25 +16,19 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import okhttp3.WebSocket
 
-
 class ChatViewModel: BaseViewModel() {
-
-    private var chatLiveData = MutableLiveData<ChatMessage>()
 
     private var validationLiveData = MutableLiveData<String>()
 
     private var updateStateRecyclerViewLiveData = MutableLiveData<Int>()
 
-    private var waitingForMyMessage = MutableLiveData(false)
-
-    var troubleWithMyMessage = MutableLiveData(false)
+    private var waitingForMyMessage = false
 
     var messages = arrayListOf<ChatUIModel>()
 
@@ -43,11 +37,8 @@ class ChatViewModel: BaseViewModel() {
     private lateinit var socket: WebSocket
     private lateinit var socketListener: MyWebSocketListener
 
-
-    fun getChatLiveData() = chatLiveData
     fun getValidationLiveData() = validationLiveData
     fun getUpdateStateRecyclerViewLiveData() = updateStateRecyclerViewLiveData
-    fun getTroubleWithMyMessageLiveData() = troubleWithMyMessage
 
     fun getSocket(chatId: String){
         mJobs.add(viewModelScope.launch(Dispatchers.IO) {
@@ -63,7 +54,6 @@ class ChatViewModel: BaseViewModel() {
 
 
                     Handler(Looper.getMainLooper()).post{
-                        //chatLiveData.value = data
                         onReceiveData(data)
                     }
 
@@ -90,7 +80,6 @@ class ChatViewModel: BaseViewModel() {
                         ChatUIModel.DaySeparationModel(DaySeparation(LocalDateTime.parse(it.creationDateTime)))
                     messages.add(dateModel)
                     updateStateRecyclerViewLiveData.value = messages.size - 1
-                    //adapter.notifyItemChanged(messages.size - 1)
                 }
             }
 
@@ -102,14 +91,11 @@ class ChatViewModel: BaseViewModel() {
                     (messages.last() as ChatUIModel.MyMessageModel).myMessage.showAvatar =
                         false
                     updateStateRecyclerViewLiveData.value = messages.size - 1
-                    //adapter.notifyItemChanged()
                 }
                 if ((messages.last() as? ChatUIModel.NotMyMessageModel) != null) {
                     (messages.last() as ChatUIModel.NotMyMessageModel).notMyMessage.showAvatar =
                         false
                     updateStateRecyclerViewLiveData.value = messages.size - 1
-
-                    //adapter.notifyItemChanged(messages.size - 1)
                 }
             }
         } else {
@@ -117,14 +103,12 @@ class ChatViewModel: BaseViewModel() {
                 ChatUIModel.DaySeparationModel(DaySeparation(LocalDateTime.parse(it.creationDateTime)))
             messages.add(dateModel)
             updateStateRecyclerViewLiveData.value = messages.size - 1
-
-            //adapter.notifyItemChanged(messages.size - 1)
         }
 
         if (it.authorId == Network.getSharedPrefs(MyApplication.UserId)) {
 
-            if (waitingForMyMessage.value == true) {
-                waitingForMyMessage.value = false
+            if (waitingForMyMessage) {
+                waitingForMyMessage = false
                 (messages.last() as ChatUIModel.MyMessageModel).myMessage.apply {
                     creationDate = LocalDateTime.parse(it.creationDateTime)
                     authorName = it.authorName
@@ -158,12 +142,10 @@ class ChatViewModel: BaseViewModel() {
             messages.add(uiModel)
         }
         updateStateRecyclerViewLiveData.value = messages.size - 1
-
-        //adapter.notifyItemChanged(messages.size - 1)
     }
 
     fun closeSocket(){
-        waitingForMyMessage.value = false
+        waitingForMyMessage = false
         socket.close(1000, "Ok")
     }
 
@@ -189,18 +171,14 @@ class ChatViewModel: BaseViewModel() {
 
             updateStateRecyclerViewLiveData.value = messages.size - 1
 
-            waitingForMyMessage.value = true
+            waitingForMyMessage = true
             SendMessageToSocketUseCase(socket)(messageText)
 
             viewModelScope.launch(Dispatchers.IO) {
-                Log.d("!", "START SLEEP")
                 Thread.sleep(5000)
-                Log.d("!", "STOP SLEEP")
 
                 withContext(Dispatchers.Main){
-                    Log.d("!", "${waitingForMyMessage.value}")
-
-                    if (waitingForMyMessage.value == true){
+                    if (waitingForMyMessage){
                         (messages[mySentMessageIdx] as ChatUIModel.MyMessageModel).myMessage.fail = true
                         updateStateRecyclerViewLiveData.value = mySentMessageIdx
                     }
@@ -209,7 +187,5 @@ class ChatViewModel: BaseViewModel() {
         } else{
             validationLiveData.value = "Message is empty!"
         }
-
     }
-
 }

@@ -1,21 +1,14 @@
 package com.example.mobile_cinema_lab1.usecases
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.mobile_cinema_lab1.network.retrofit.MyAuthenticator
 import com.example.mobile_cinema_lab1.network.retrofit.MyInterceptor
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
 import okhttp3.*
 import java.util.concurrent.TimeUnit
 
 class GetSocketConnectionUseCase(private val url: String) {
-
     operator fun invoke(): Pair<WebSocket, MyWebSocketListener> {
         val client = OkHttpClient.Builder()
             .readTimeout(0, TimeUnit.MILLISECONDS)
