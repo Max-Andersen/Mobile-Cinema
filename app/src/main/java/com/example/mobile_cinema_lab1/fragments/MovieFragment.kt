@@ -20,7 +20,6 @@ import com.example.mobile_cinema_lab1.databinding.MovieScreenBinding
 import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Episode
-import com.example.mobile_cinema_lab1.network.models.Movie
 import com.example.mobile_cinema_lab1.viewmodels.MovieFrameViewModel
 
 class MovieFragment : Fragment() {
@@ -117,7 +116,7 @@ class MovieFragment : Fragment() {
 
 
     private inner class ImageHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imageView = itemView.findViewById<ImageView>(R.id.image)
+        private val imageView = itemView.findViewById<ImageView>(R.id.collectionImage)
         fun bind(data: String) {
             Glide.with(requireActivity()).load(data).into(imageView)
         }

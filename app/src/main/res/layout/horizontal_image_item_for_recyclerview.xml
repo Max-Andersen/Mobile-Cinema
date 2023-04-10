@@ -6,7 +6,7 @@
     app:cardBackgroundColor="@color/background">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/collectionImage"
         android:layout_width="240dp"
         android:layout_height="144dp"
         android:scaleType="centerCrop"

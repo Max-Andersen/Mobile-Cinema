@@ -178,7 +178,7 @@ class MainFragment : Fragment() {
 
     private inner class MovieHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var data: Movie
-        private val imageView = itemView.findViewById<ImageView>(R.id.image)
+        private val imageView = itemView.findViewById<ImageView>(R.id.collectionImage)
 
         init {
             itemView.setOnClickListener(this)
