@@ -2,6 +2,7 @@ package com.example.mobile_cinema_lab1.network.repositories
 
 import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.api.CollectionsApi
+import com.example.mobile_cinema_lab1.network.models.MovieId
 import com.example.mobile_cinema_lab1.usecases.repositoryinterfaces.ICollectionRepository
 
 class CollectionRepository: ICollectionRepository, BaseRepository() {
@@ -18,7 +19,7 @@ class CollectionRepository: ICollectionRepository, BaseRepository() {
     override fun getMoviesInCollection(collectionId: String) =
         apiRequestFlow { collectionsApi.getMoviesInCollection(collectionId) }
 
-    override fun addMoviesInCollection(collectionId: String, movieId: String) =
+    override fun addMoviesInCollection(collectionId: String, movieId: MovieId) =
         apiRequestFlow { collectionsApi.addMovieInCollection(collectionId, movieId) }
 
     override fun deleteMovieFromCollection(collectionId: String, movieId: String) =

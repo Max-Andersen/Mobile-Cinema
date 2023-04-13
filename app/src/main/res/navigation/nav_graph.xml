@@ -107,6 +107,9 @@
         <action
             android:id="@+id/action_episodeFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+        <argument
+            android:name="movieId"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -160,6 +163,9 @@
             android:name="iconId"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="collectionName"
+            app:argType="string" />
     </fragment>
 
     <fragment

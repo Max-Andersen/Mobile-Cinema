@@ -142,6 +142,8 @@ class MovieFragment : Fragment() {
             val movie = movie.imageUrls[position]
             holder.bind(movie)
         }
+
+
     }
 
 
@@ -161,7 +163,7 @@ class MovieFragment : Fragment() {
         }
 
         override fun onClick(p0: View?) {
-            findNavController().navigate(MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(data.getNavigationModel(), movie.name))
+            findNavController().navigate(MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(data.getNavigationModel(), movie.name, movie.movieId))
         }
     }
 

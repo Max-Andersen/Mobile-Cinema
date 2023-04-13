@@ -1,15 +1,14 @@
 package com.example.mobile_cinema_lab1
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Rect
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile_cinema_lab1.fragments.AllCollectionFragment
+import com.example.mobile_cinema_lab1.fragments.SpecificCollectionFragment
 
-
-class SimpleItemTouchHelperCallback(private val adapter: AllCollectionFragment.CollectionAdapter) :
+class SimpleItemTouchHelperCollectionCallback (private val adapter: Any) :
     ItemTouchHelper.Callback() {
 
     override fun onChildDraw(
@@ -67,6 +66,10 @@ class SimpleItemTouchHelperCallback(private val adapter: AllCollectionFragment.C
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        adapter.deleteCollection(viewHolder.absoluteAdapterPosition)
+        when (adapter){
+            is AllCollectionFragment.CollectionAdapter -> adapter.deleteCollection(viewHolder.absoluteAdapterPosition)
+            is SpecificCollectionFragment.CollectionMovieAdapter -> adapter.deleteCollection(viewHolder.absoluteAdapterPosition)
+        }
+
     }
 }

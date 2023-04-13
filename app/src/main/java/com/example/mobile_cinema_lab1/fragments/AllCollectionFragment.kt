@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.R
-import com.example.mobile_cinema_lab1.SimpleItemTouchHelperCallback
+import com.example.mobile_cinema_lab1.SimpleItemTouchHelperCollectionCallback
 import com.example.mobile_cinema_lab1.databinding.AllCollectionScreenBinding
 import com.example.mobile_cinema_lab1.databinding.CollectionItemBinding
 import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
@@ -36,6 +37,8 @@ class AllCollectionFragment : Fragment() {
     ): View {
         binding = AllCollectionScreenBinding.inflate(inflater, container, false)
 
+        (requireActivity() as MainActivity).showBottomNavigation()
+
         adapter = CollectionAdapter(viewModel.userCollections)
 
         binding.collectionRecyclerView.adapter = adapter
@@ -44,7 +47,7 @@ class AllCollectionFragment : Fragment() {
             RecyclerView.VERTICAL, false
         )
 
-        val callback = SimpleItemTouchHelperCallback(adapter)
+        val callback = SimpleItemTouchHelperCollectionCallback(adapter)
         val helper = ItemTouchHelper(callback)
         helper.attachToRecyclerView(binding.collectionRecyclerView)
 
@@ -95,7 +98,6 @@ class AllCollectionFragment : Fragment() {
             // TODO viewModel request
             Log.d("!", "SWIPED!!   $position")
         }
-
     }
 
     inner class CollectionItemViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {

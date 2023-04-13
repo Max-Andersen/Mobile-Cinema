@@ -39,7 +39,7 @@ class ChatFragment : Fragment() {
 
         adapter = ChatAdapter(viewModel.messages)
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false).apply { stackFromEnd = true }
 
         viewModel.getSocket(args.chatInfo.chatId)
 
@@ -47,6 +47,7 @@ class ChatFragment : Fragment() {
             if (binding.progressBar.visibility == View.VISIBLE) binding.progressBar.visibility =
                 View.INVISIBLE
             adapter.notifyItemChanged(it)
+            binding.recyclerView.scrollToPosition( adapter.itemCount - 1 )
         }
 
         viewModel.getValidationLiveData().observe(viewLifecycleOwner) {
