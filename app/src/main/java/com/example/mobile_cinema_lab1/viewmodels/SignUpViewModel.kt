@@ -1,16 +1,14 @@
 package com.example.mobile_cinema_lab1.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.mobile_cinema_lab1.MyApplication
 import com.example.mobile_cinema_lab1.network.ApiResponse
-import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.models.LoginResponse
 import com.example.mobile_cinema_lab1.network.models.RegisterRequestBody
 import com.example.mobile_cinema_lab1.network.models.UserInfo
-import com.example.mobile_cinema_lab1.usecases.GetUserDataUseCase
+import com.example.mobile_cinema_lab1.usecases.UserDataUseCase
 import com.example.mobile_cinema_lab1.usecases.SignUpUseCase
+import com.example.mobile_cinema_lab1.usecases.ValidateAuthDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,36 +30,10 @@ class SignUpViewModel : BaseViewModel() {
         password: String,
         passwordConfirmation: String
     ) {
-        var answer = ""
+        val validationAnswer = ValidateAuthDataUseCase()(email, password, name, surname, passwordConfirmation)
 
-        if (name.isBlank()) {
-            answer += "Имя не может быть пустым\n"
-        }
-
-        if (surname.isBlank()) {
-            answer += "Фамилия не может быть пустой\n"
-        }
-
-        if (email.isBlank()) {
-            answer += "Email не может быть пустым\n"
-        }
-
-        if (password.isBlank()) {
-            answer += "Пароль не может быть пустым\n"
-        }
-
-        if (password != passwordConfirmation) {
-            answer += "Пароли не совпадают\n"
-        }
-
-        if (!email.isEmailValid()) {
-            answer += "Неверный Email\n"
-        }
-
-        Log.d("!", answer)
-
-        if (answer.isNotBlank()) {
-            _validation.value = answer
+        if (validationAnswer.isNotBlank()) {
+            _validation.value = validationAnswer
             return
         }
 
@@ -77,7 +49,7 @@ class SignUpViewModel : BaseViewModel() {
     fun getUserInfo(){
         mJobs.add(
             viewModelScope.launch(Dispatchers.IO){
-                GetUserDataUseCase().getUserData().collect{
+                UserDataUseCase().getUserData().collect{
                     withContext(Dispatchers.Main){
                         _userData.value = it
                     }

@@ -86,5 +86,6 @@ dependencies {
     implementation "androidx.media3:media3-ui:1.0.0"
 
 
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.8'
 
 }

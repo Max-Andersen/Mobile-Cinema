@@ -31,13 +31,9 @@ class GetSocketConnectionUseCase(private val url: String) {
 }
 
 class MyWebSocketListener : WebSocketListener(){
-    //private val liveData = MutableLiveData<String>()
-
     private val flow = MutableSharedFlow<String>()
 
     fun getFlow() = flow
-
-//    fun getLiveData() = liveData
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
 

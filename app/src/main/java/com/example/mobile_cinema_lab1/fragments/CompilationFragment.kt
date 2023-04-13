@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.mobile_cinema_lab1.CardStackAdapter
 import com.example.mobile_cinema_lab1.MainActivity
+import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.CompilationScreenBinding
 import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
 import com.example.mobile_cinema_lab1.network.ApiResponse
@@ -89,7 +90,7 @@ class CompilationFragment : Fragment(), CardStackListener {
             if ( currentMovie != null){
                 findNavController().navigate(CompilationFragmentDirections.actionCompilationFragmentToMovieFragment(currentMovie.getNavigationModel()))
             } else{
-                val dialogFragment = ErrorDialogFragment("Фильмы закончились! :(")
+                val dialogFragment = ErrorDialogFragment(requireContext().getString(R.string.error_films_is_empty))
                 requireActivity().let { it1 -> dialogFragment.show(it1.supportFragmentManager, "Problems") }
             }
 

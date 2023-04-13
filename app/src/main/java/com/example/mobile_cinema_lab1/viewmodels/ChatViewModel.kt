@@ -56,7 +56,6 @@ class ChatViewModel: BaseViewModel() {
                     Handler(Looper.getMainLooper()).post{
                         onReceiveData(data)
                     }
-
                 }
                 catch (e: Exception){
                     Log.d("!", "FAIL TO PARSE!  ${e.message}")

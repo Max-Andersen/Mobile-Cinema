@@ -11,7 +11,6 @@ import com.example.mobile_cinema_lab1.additionalmodels.getUserIdByMessageModel
 
 class ChatAdapter(private var arrayList: ArrayList<ChatUIModel>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     override fun getItemCount(): Int = arrayList.size
 
     override fun getItemViewType(position: Int) = when (arrayList[position]) {

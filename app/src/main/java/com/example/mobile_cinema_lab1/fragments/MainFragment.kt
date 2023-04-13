@@ -38,7 +38,7 @@ class MainFragment : Fragment() {
     ): View {
         binding = MainFrameBinding.inflate(inflater, container, false)
         binding.watchPromotedMovie.setOnClickListener {
-            val dialogFragment = ErrorDialogFragment("Не надо сюда нажимать!!")
+            val dialogFragment = ErrorDialogFragment(requireContext().getString(R.string.error_dont_touch_here))
             activity?.let { it1 -> dialogFragment.show(it1.supportFragmentManager, "Problems") }
         }
 

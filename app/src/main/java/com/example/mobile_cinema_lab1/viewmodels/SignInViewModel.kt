@@ -1,22 +1,15 @@
 package com.example.mobile_cinema_lab1.viewmodels
 
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.fragment.findNavController
-import com.example.mobile_cinema_lab1.MyApplication
-import com.example.mobile_cinema_lab1.NavGraphXmlDirections
-import com.example.mobile_cinema_lab1.fragments.ErrorDialogFragment
 import com.example.mobile_cinema_lab1.network.ApiResponse
-import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.models.LoginRequestBody
 import com.example.mobile_cinema_lab1.network.models.LoginResponse
 import com.example.mobile_cinema_lab1.network.models.UserInfo
 import com.example.mobile_cinema_lab1.usecases.SignInUseCase
-import com.example.mobile_cinema_lab1.usecases.GetUserDataUseCase
+import com.example.mobile_cinema_lab1.usecases.UserDataUseCase
+import com.example.mobile_cinema_lab1.usecases.ValidateAuthDataUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -31,21 +24,11 @@ class SignInViewModel : BaseViewModel() {
     fun getLiveDataForUserInfo() = _userData
 
     fun login(email: String, password: String) {
-        var answer = ""
-        if (email.isBlank()) {
-            answer += "Email не может быть пустым\n"
-        }
 
-        if (password.isBlank()) {
-            answer += "Пароль не может быть пустым\n"
-        }
+        val validationAnswer = ValidateAuthDataUseCase()(email, password)
 
-        if (!email.isEmailValid()) {
-            answer += "Неверный Email\n"
-        }
-
-        if (answer.isNotBlank()) {
-            _validation.value = answer
+        if (validationAnswer.isNotBlank()) {
+            _validation.value = validationAnswer
             return
         }
 
@@ -61,7 +44,7 @@ class SignInViewModel : BaseViewModel() {
     fun getUserInfo(){
         mJobs.add(
             viewModelScope.launch(Dispatchers.IO){
-                GetUserDataUseCase().getUserData().collect{
+                UserDataUseCase().getUserData().collect{
                     withContext(Dispatchers.Main){
                         _userData.value = it
                     }

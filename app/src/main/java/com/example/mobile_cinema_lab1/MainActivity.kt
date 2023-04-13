@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         TroubleShooting.getLiveDataForRefreshTrouble().observe(this){
             if (it == true){
                 TroubleShooting.updateLiveDataForRefreshTrouble(false)
-                val dialogFragment = ErrorDialogFragment("Ошибка обновления токена")
+                val dialogFragment = ErrorDialogFragment(getString(R.string.error_update_token))
                 dialogFragment.show(this.supportFragmentManager, "Problems")
                 Network.clearUserData()
                 navController.navigate(NavGraphXmlDirections.actionGlobalSignInFragment())

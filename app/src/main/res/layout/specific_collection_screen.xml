@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/arrow_back" />
 
     <ImageView
-        android:id="@+id/imageView15"
+        android:id="@+id/editCollection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-3dp"
@@ -40,8 +40,8 @@
         android:singleLine="true"
         android:textSize="20sp"
         android:textStyle="normal"
-        app:layout_constraintEnd_toStartOf="@+id/imageView15"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintEnd_toStartOf="@+id/editCollection"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="@+id/guideline9"
         tools:text="Когда-нибудь" />
 
