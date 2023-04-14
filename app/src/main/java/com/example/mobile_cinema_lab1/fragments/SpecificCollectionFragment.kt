@@ -16,13 +16,14 @@ import com.bumptech.glide.Glide
 import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.SimpleItemTouchHelperCollectionCallback
+import com.example.mobile_cinema_lab1.SwipeAdapter
 import com.example.mobile_cinema_lab1.databinding.CollectionMovieItemBinding
 import com.example.mobile_cinema_lab1.databinding.SpecificCollectionScreenBinding
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Movie
 import com.example.mobile_cinema_lab1.viewmodels.SpecificCollectionViewModel
 
-class SpecificCollectionFragment: Fragment() {
+class SpecificCollectionFragment : Fragment() {
     private lateinit var binding: SpecificCollectionScreenBinding
 
     private val viewModel by lazy { ViewModelProvider(this)[SpecificCollectionViewModel::class.java] }
@@ -50,16 +51,21 @@ class SpecificCollectionFragment: Fragment() {
         }
 
         binding.editCollection.setOnClickListener {
-            findNavController().navigate(SpecificCollectionFragmentDirections.actionSpecificCollectionFragmentToEditCollectionFragment(null, args.collectionShortModel.collectionName))
+            findNavController().navigate(
+                SpecificCollectionFragmentDirections.actionSpecificCollectionFragmentToEditCollectionFragment(
+                    null,
+                    args.collectionShortModel.collectionName
+                )
+            )
         }
 
-        viewModel.getCollectionItemsLiveData().observe(viewLifecycleOwner){
-            when (it){
+        viewModel.getCollectionItemsLiveData().observe(viewLifecycleOwner) {
+            when (it) {
                 is ApiResponse.Success -> {
                     binding.progressBar.visibility = View.INVISIBLE
                     adapter.notifyDataSetChanged()
                 }
-                is ApiResponse.Failure -> {  } // FAIL TO GET DATA
+                is ApiResponse.Failure -> {} // FAIL TO GET DATA
                 else -> {}
             }
         }
@@ -67,7 +73,8 @@ class SpecificCollectionFragment: Fragment() {
         adapter = CollectionMovieAdapter(viewModel.movies)
 
         binding.collectionItemsRecyclerView.adapter = adapter
-        binding.collectionItemsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.collectionItemsRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         val callback = SimpleItemTouchHelperCollectionCallback(adapter)
         val helper = ItemTouchHelper(callback)
         helper.attachToRecyclerView(binding.collectionItemsRecyclerView)
@@ -76,10 +83,13 @@ class SpecificCollectionFragment: Fragment() {
     }
 
     inner class CollectionMovieAdapter(private var movies: ArrayList<Movie>) :
-        RecyclerView.Adapter<CollectionItemViewHolder>() {
+        RecyclerView.Adapter<CollectionItemViewHolder>(), SwipeAdapter {
         override fun getItemCount(): Int = movies.size
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionItemViewHolder {
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): CollectionItemViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val v = layoutInflater.inflate(R.layout.collection_movie_item, parent, false)
             return CollectionItemViewHolder(v)
@@ -90,11 +100,12 @@ class SpecificCollectionFragment: Fragment() {
             holder.bind(item)
         }
 
-        fun deleteCollection(position: Int) {
+        override fun deleteCollection(position: Int) {
             viewModel.deleteMovieFromCollection(movies[position])
             notifyDataSetChanged()
         }
     }
+
     class CollectionItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding by viewBinding(CollectionMovieItemBinding::bind)
 

@@ -2,13 +2,18 @@ package com.example.mobile_cinema_lab1
 
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile_cinema_lab1.fragments.AllCollectionFragment
 import com.example.mobile_cinema_lab1.fragments.SpecificCollectionFragment
 
-class SimpleItemTouchHelperCollectionCallback (private val adapter: Any) :
+interface SwipeAdapter{
+    fun deleteCollection(position: Int): Unit
+}
+
+class SimpleItemTouchHelperCollectionCallback (private val adapter: SwipeAdapter) :
     ItemTouchHelper.Callback() {
 
     override fun onChildDraw(
@@ -25,19 +30,22 @@ class SimpleItemTouchHelperCollectionCallback (private val adapter: Any) :
         c.clipRect(0f, viewHolder.itemView.top.toFloat(), dX, viewHolder.itemView.bottom.toFloat())
 
         if (trashIcon != null) {
+            val intrinsicHeight = trashIcon.intrinsicHeight
+            val xMarkTop = viewHolder.itemView.top + ((viewHolder.itemView.bottom - viewHolder.itemView.top) - intrinsicHeight) / 2
+            val xMarkBottom = xMarkTop + intrinsicHeight
+
             trashIcon.bounds = Rect(
-                30,
-                viewHolder.itemView.top + 30,
-                0 + trashIcon.intrinsicWidth,
-                viewHolder.itemView.top + trashIcon.intrinsicHeight
-                        - 50
+                viewHolder.itemView.left + 50,
+                xMarkTop,
+                viewHolder.itemView.left + trashIcon.intrinsicWidth + 50,
+                xMarkBottom
             )
+            trashIcon.draw(c)
+
         }
 
-        trashIcon?.draw(c)
-
-
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+
     }
 
     override fun isLongPressDragEnabled(): Boolean {
@@ -66,10 +74,6 @@ class SimpleItemTouchHelperCollectionCallback (private val adapter: Any) :
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        when (adapter){
-            is AllCollectionFragment.CollectionAdapter -> adapter.deleteCollection(viewHolder.absoluteAdapterPosition)
-            is SpecificCollectionFragment.CollectionMovieAdapter -> adapter.deleteCollection(viewHolder.absoluteAdapterPosition)
-        }
-
+        adapter.deleteCollection(viewHolder.absoluteAdapterPosition)
     }
 }

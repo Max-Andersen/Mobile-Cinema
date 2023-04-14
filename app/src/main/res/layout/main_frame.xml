@@ -24,25 +24,33 @@
                 android:id="@+id/newMoviesGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="moviesForYouRecyclerView,textView5,newMoviesRecyclerView,textView4" />
+                android:visibility="gone"
+                app:constraint_referenced_ids="newMoviesRecyclerView,textView4"
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/inTrendGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="inTrendRecyclerView,textView" />
+                android:visibility="gone"
+                app:constraint_referenced_ids="inTrendRecyclerView,textView"
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/forYouGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="textView5,moviesForYouRecyclerView" />
+                android:visibility="gone"
+                app:constraint_referenced_ids="textView5,moviesForYouRecyclerView"
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/lastWatchedMovieGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="lastWatchMovieText,lastWatchedMovie,lastWatchedMovieTitle" />
+                android:visibility="gone"
+                app:constraint_referenced_ids="lastWatchMovieText,lastWatchedMovie,lastWatchedMovieTitle"
+                tools:visibility="visible" />
 
             <ImageView
                 android:id="@+id/backgroundImagePromotedMovie"
@@ -229,18 +237,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/moviesForYouRecyclerView" />
 
             <ProgressBar
-                android:id="@+id/progressBarPromotedMovie"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/backgroundImagePromotedMovie"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/backgroundImagePromotedMovie" />
-
-            <ProgressBar
-                android:id="@+id/progressBarInTrend"
+                android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -248,40 +245,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/inTrendRecyclerView" />
-
-            <ProgressBar
-                android:id="@+id/progressBarForYou"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/moviesForYouRecyclerView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/moviesForYouRecyclerView" />
-
-            <ProgressBar
-                android:id="@+id/progressBarNew"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/newMoviesRecyclerView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/newMoviesRecyclerView" />
-
-            <ProgressBar
-                android:id="@+id/progressBarYouWatched"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/lastWatchedMovie"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/lastWatchedMovie" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -20,6 +20,9 @@ class MainFragmentViewModel: BaseViewModel() {
     private val moviesForYouLiveData = MutableLiveData<ApiResponse<List<Movie>>>()
     private val coverImageLiveData = MutableLiveData<ApiResponse<CoverImage>>()
 
+    private val itemsLoadedLiveData = MutableLiveData(0)
+
+
     var inTrendMovies = arrayListOf<Movie>()
     var newMovies = arrayListOf<Movie>()
     var moviesForYou = arrayListOf<Movie>()
@@ -45,12 +48,18 @@ class MainFragmentViewModel: BaseViewModel() {
         }
     }
 
+    fun itemLoaded(){
+        itemsLoadedLiveData.value = itemsLoadedLiveData.value?.plus(1)
+    }
+
 
     fun getLiveDataForInTrendMovies() = inTrendMoviesLiveData
     fun getLiveDataForYouWatchedMovie() = youWatchedMovieLiveData
     fun getLiveDataForNewMovies() = newMoviesLiveData
     fun getLiveDataForMoviesForYou() = moviesForYouLiveData
     fun getLiveDataForCoverImage() = coverImageLiveData
+
+    fun getLiveDataForLoadedItems() = itemsLoadedLiveData
 
     fun getMovies(){
         mJobs.add(viewModelScope.launch(Dispatchers.IO){

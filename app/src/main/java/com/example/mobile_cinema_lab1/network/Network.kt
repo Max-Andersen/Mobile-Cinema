@@ -16,31 +16,7 @@ import java.util.concurrent.TimeUnit
 object Network {
     const val BASE_URL = "http://107684.web.hosting-russia.ru:8000/api/"
 
-    private var masterKey = MasterKey.Builder(MyApplication.applicationContext())
-        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-        .build()
 
-    private var sharedPreferences = EncryptedSharedPreferences.create(
-        MyApplication.applicationContext(),
-        "secret_shared_prefs",
-        masterKey,
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
-
-    fun updateSharedPrefs(typeOfData: String, newToken: String) {
-        sharedPreferences.edit().putString(typeOfData, newToken).apply()
-    }
-
-    fun getSharedPrefs(typeOfData: String): String? {
-        return sharedPreferences.getString(typeOfData, "")
-    }
-
-    fun clearUserData() {
-        updateSharedPrefs(MyApplication.AccessToken, "")
-        updateSharedPrefs(MyApplication.RefreshToken, "")
-        updateSharedPrefs(MyApplication.UserId, "")
-    }
 
     private fun getHttpClient(): OkHttpClient {
         val client = OkHttpClient.Builder().apply {

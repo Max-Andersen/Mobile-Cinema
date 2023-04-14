@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile_cinema_lab1.databinding.ActivityMainBinding
 import com.example.mobile_cinema_lab1.fragments.ErrorDialogFragment
 import com.example.mobile_cinema_lab1.network.Network
+import com.example.mobile_cinema_lab1.usecases.SharedPreferencesUseCase
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        if (Network.getSharedPrefs(MyApplication.AccessToken) != ""){
+        if ( SharedPreferencesUseCase().getAccessToken() != ""){
             navController.navigate(NavGraphXmlDirections.actionGlobalMainFragment())
         }
 
@@ -50,9 +51,8 @@ class MainActivity : AppCompatActivity() {
                 TroubleShooting.updateLiveDataForRefreshTrouble(false)
                 val dialogFragment = ErrorDialogFragment(getString(R.string.error_update_token))
                 dialogFragment.show(this.supportFragmentManager, "Problems")
-                Network.clearUserData()
+                SharedPreferencesUseCase().clearUserData()
                 navController.navigate(NavGraphXmlDirections.actionGlobalSignInFragment())
-
             }
         }
     }

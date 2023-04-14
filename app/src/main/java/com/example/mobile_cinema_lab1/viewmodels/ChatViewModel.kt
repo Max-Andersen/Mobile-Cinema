@@ -12,6 +12,7 @@ import com.example.mobile_cinema_lab1.network.models.ChatMessage
 import com.example.mobile_cinema_lab1.usecases.GetSocketConnectionUseCase
 import com.example.mobile_cinema_lab1.usecases.MyWebSocketListener
 import com.example.mobile_cinema_lab1.usecases.SendMessageToSocketUseCase
+import com.example.mobile_cinema_lab1.usecases.SharedPreferencesUseCase
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,6 +37,8 @@ class ChatViewModel: BaseViewModel() {
 
     private lateinit var socket: WebSocket
     private lateinit var socketListener: MyWebSocketListener
+
+    private val sharedPreferencesUseCase = SharedPreferencesUseCase()
 
     fun getValidationLiveData() = validationLiveData
     fun getUpdateStateRecyclerViewLiveData() = updateStateRecyclerViewLiveData
@@ -104,7 +107,7 @@ class ChatViewModel: BaseViewModel() {
             updateStateRecyclerViewLiveData.value = messages.size - 1
         }
 
-        if (it.authorId == Network.getSharedPrefs(MyApplication.UserId)) {
+        if (it.authorId == sharedPreferencesUseCase.getUserId()) {
 
             if (waitingForMyMessage) {
                 waitingForMyMessage = false
@@ -156,8 +159,8 @@ class ChatViewModel: BaseViewModel() {
                         Clock.System.now().toLocalDateTime(
                             TimeZone.UTC
                         ),
-                        authorId = Network.getSharedPrefs(MyApplication.UserId) ?: "",
-                        authorName = "",
+                        authorId = sharedPreferencesUseCase.getUserId() ?: "",
+                        authorName = sharedPreferencesUseCase.getUserName() ?: "",
                         authorAvatar = null,
                         text = messageText,
                         showAvatar = true,

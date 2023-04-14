@@ -15,6 +15,7 @@ import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.ProfileScreenBinding
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.Network
+import com.example.mobile_cinema_lab1.usecases.SharedPreferencesUseCase
 import com.example.mobile_cinema_lab1.viewmodels.ProfileViewModel
 
 class ProfileFragment : Fragment() {
@@ -59,7 +60,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.exitButton.setOnClickListener {
-            Network.clearUserData()
+            SharedPreferencesUseCase().clearUserData()
             findNavController().navigate(NavGraphXmlDirections.actionGlobalSignInFragment())
         }
 

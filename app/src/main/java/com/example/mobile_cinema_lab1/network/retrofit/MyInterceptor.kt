@@ -3,6 +3,7 @@ package com.example.mobile_cinema_lab1.network.retrofit
 
 import com.example.mobile_cinema_lab1.MyApplication
 import com.example.mobile_cinema_lab1.network.Network
+import com.example.mobile_cinema_lab1.usecases.SharedPreferencesUseCase
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -13,7 +14,7 @@ class MyInterceptor : Interceptor {
             addHeader("accept", "application/json")
             //addHeader("content-Type", "application/json")
         }
-        val accessToken = Network.getSharedPrefs(MyApplication.AccessToken)
+        val accessToken = SharedPreferencesUseCase().getAccessToken()
         if (accessToken != ""){
             request.addHeader("Authorization", "Bearer $accessToken")
         }

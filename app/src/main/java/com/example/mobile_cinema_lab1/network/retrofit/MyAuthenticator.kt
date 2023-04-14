@@ -5,6 +5,7 @@ import com.example.mobile_cinema_lab1.TroubleShooting
 import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.api.AuthApi
 import com.example.mobile_cinema_lab1.network.models.LoginResponse
+import com.example.mobile_cinema_lab1.usecases.SharedPreferencesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -14,6 +15,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MyAuthenticator : Authenticator {
+
+    private val sharedPreferencesUseCase = SharedPreferencesUseCase()
+
     override fun authenticate(route: Route?, response: Response): Request? {
 
         if (response.responseCount >= 5){
@@ -27,14 +31,14 @@ class MyAuthenticator : Authenticator {
             return null
         }
 
-        val refreshToken = Network.getSharedPrefs(MyApplication.RefreshToken)
+        val refreshToken = sharedPreferencesUseCase.getRefreshToken()
         if (refreshToken != "") {
                 val newTokenResponse = runBlocking { getNewToken(refreshToken) }
 
                 if (newTokenResponse.isSuccessful) {
                     newTokenResponse.body()?.let {
-                        Network.updateSharedPrefs(MyApplication.AccessToken, it.accessToken)
-                        Network.updateSharedPrefs(MyApplication.RefreshToken, it.refreshToken)
+                        sharedPreferencesUseCase.updateAccessToken(it.accessToken)
+                        sharedPreferencesUseCase.updateRefreshToken(it.refreshToken)
 
                         return response.request.newBuilder()
                             .header("Authorization", "Bearer ${it.accessToken}")
@@ -42,7 +46,7 @@ class MyAuthenticator : Authenticator {
                     }
                 } else {
                     return response.request.newBuilder()
-                        .header("Authorization", "Bearer ${Network.getSharedPrefs(MyApplication.AccessToken)}")
+                        .header("Authorization", "Bearer ${sharedPreferencesUseCase.getAccessToken()}")
                         .build()
                 }
 

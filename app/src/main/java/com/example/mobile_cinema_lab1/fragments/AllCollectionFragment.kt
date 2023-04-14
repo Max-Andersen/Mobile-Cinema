@@ -16,6 +16,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.SimpleItemTouchHelperCollectionCallback
+import com.example.mobile_cinema_lab1.SwipeAdapter
 import com.example.mobile_cinema_lab1.databinding.AllCollectionScreenBinding
 import com.example.mobile_cinema_lab1.databinding.CollectionItemBinding
 import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
@@ -76,7 +77,7 @@ class AllCollectionFragment : Fragment() {
 
 
     inner class CollectionAdapter(private val collections: ArrayList<Collection>) :
-        RecyclerView.Adapter<CollectionItemViewHolder>() {
+        RecyclerView.Adapter<CollectionItemViewHolder>(), SwipeAdapter {
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -92,7 +93,7 @@ class AllCollectionFragment : Fragment() {
             holder.bind(collections[position])
         }
 
-        fun deleteCollection(position: Int) {
+        override fun deleteCollection(position: Int) {
             collections.removeAt(position)
             notifyDataSetChanged()
             // TODO viewModel request

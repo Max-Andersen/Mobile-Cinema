@@ -6,8 +6,9 @@ import android.content.Context
 class MyApplication: Application() {
     init {
         instance = this
-    }
 
+    }
+    
     companion object {
 
         private var instance: MyApplication? = null
@@ -16,9 +17,6 @@ class MyApplication: Application() {
             return instance!!.applicationContext
         }
 
-        const val AccessToken: String = "access_token"
-        const val RefreshToken: String = "refresh_token"
-        const val UserId: String = "user_id"
 
     }
 }
