@@ -72,8 +72,7 @@ class ChatFragment : Fragment() {
         }
 
         binding.backButton.setOnClickListener {
-            viewModel.closeSocket()
-            findNavController().navigateUp()
+            callback.handleOnBackPressed()
         }
 
         return binding.root

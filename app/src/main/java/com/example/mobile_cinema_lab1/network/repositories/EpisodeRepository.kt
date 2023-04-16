@@ -2,6 +2,7 @@ package com.example.mobile_cinema_lab1.network.repositories
 
 import com.example.mobile_cinema_lab1.network.Network
 import com.example.mobile_cinema_lab1.network.api.EpisodesApi
+import com.example.mobile_cinema_lab1.network.models.Time
 import com.example.mobile_cinema_lab1.usecases.repositoryinterfaces.IEpisodeRepository
 
 class EpisodeRepository : IEpisodeRepository, BaseRepository() {
@@ -16,6 +17,6 @@ class EpisodeRepository : IEpisodeRepository, BaseRepository() {
     override fun getEpisodeTime(episodeId: String) =
         apiRequestFlow { episodesApi.getEpisodeTime(episodeId) }
 
-    override fun saveEpisodeTime(episodeId: String, episodeTime: String) =
-        apiRequestFlow { episodesApi.saveEpisodeTime(episodeId, episodeTime) }
+    override fun saveEpisodeTime(episodeId: String, episodeTime: Int) =
+        apiRequestFlow { episodesApi.saveEpisodeTime(episodeId, Time(timeInSeconds = episodeTime) ) }
 }

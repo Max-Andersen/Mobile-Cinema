@@ -84,7 +84,11 @@ class MovieFragment : Fragment() {
         }
 
         binding.chatButton.setOnClickListener {
-            findNavController().navigate(MovieFragmentDirections.actionMovieFragmentToChatFragment(movie.chatInfo))
+            findNavController().navigate(
+                MovieFragmentDirections.actionMovieFragmentToChatFragment(
+                    movie.chatInfo
+                )
+            )
         }
 
 
@@ -147,7 +151,8 @@ class MovieFragment : Fragment() {
     }
 
 
-    private inner class EpisodeHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    private inner class EpisodeHolder(view: View) : RecyclerView.ViewHolder(view),
+        View.OnClickListener {
         private lateinit var data: Episode
         private val imageView = itemView.findViewById<ImageView>(R.id.episodeImage)
         fun bind(data: Episode) {
@@ -163,8 +168,21 @@ class MovieFragment : Fragment() {
         }
 
         override fun onClick(p0: View?) {
-            findNavController().navigate(MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(data.getNavigationModel(), movie.name, movie.movieId))
+            findNavController().navigate(
+                MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(
+                    data.getNavigationModel(),
+                    movie,
+                    getYearDurationOfMovie(viewModel.episodesList)
+                )
+            )
         }
+    }
+
+    fun getYearDurationOfMovie(episodes: ArrayList<Episode>): String {
+        val list = mutableListOf<Int>()
+        episodes.forEach { list.add(it.year) }
+        list.sort()
+        return if (list.first() != list.last()) "${list.first()} - ${list.last()}" else "${list.first()}"
     }
 
     private inner class EpisodeAdapter(var movie: List<Episode>) :

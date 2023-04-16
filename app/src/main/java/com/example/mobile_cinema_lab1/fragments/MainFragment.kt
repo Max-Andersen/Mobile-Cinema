@@ -30,6 +30,8 @@ class MainFragment : Fragment() {
     private lateinit var newMovieAdapter: MovieAdapter
     private lateinit var forYouAdapter: MovieAdapter
 
+    private lateinit var lastWatchedMovie: Movie
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +65,10 @@ class MainFragment : Fragment() {
         binding.inTrendRecyclerView.addItemDecoration(itemDecoration)
         binding.newMoviesRecyclerView.addItemDecoration(itemDecoration)
         binding.moviesForYouRecyclerView.addItemDecoration(itemDecoration)
+
+        binding.lastWatchedMovieButton.setOnClickListener {
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToMovieFragment(lastWatchedMovie.getNavigationModel()))
+        }
 
         viewModel.getMovies()
         updateUi()
@@ -162,10 +168,11 @@ class MainFragment : Fragment() {
                 is ApiResponse.Success -> {
                     viewModel.itemLoaded()
                     if (it.data.isNotEmpty()) {
-                        val lastMovie = it.data.last()
-                        Glide.with(requireActivity()).load(lastMovie.poster)
+                        lastWatchedMovie = it.data.last()
+
+                        Glide.with(requireActivity()).load(lastWatchedMovie.imageUrls.first())
                             .into(binding.lastWatchedMovie)
-                        binding.lastWatchedMovieTitle.text = lastMovie.name
+                        binding.lastWatchedMovieTitle.text = lastWatchedMovie.name
                         binding.lastWatchedMovieGroup.visibility = View.VISIBLE
                     }
                 }

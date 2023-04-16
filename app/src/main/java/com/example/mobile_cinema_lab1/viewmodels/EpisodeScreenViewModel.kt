@@ -1,21 +1,74 @@
 package com.example.mobile_cinema_lab1.viewmodels
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mobile_cinema_lab1.network.ApiResponse
-import com.example.mobile_cinema_lab1.usecases.GetCollectionsUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import com.example.mobile_cinema_lab1.network.models.Collection
 import com.example.mobile_cinema_lab1.network.models.MovieId
+import com.example.mobile_cinema_lab1.network.models.Time
 import com.example.mobile_cinema_lab1.usecases.AddMovieToCollectionUseCase
-import kotlinx.coroutines.flow.collect
+import com.example.mobile_cinema_lab1.usecases.GetCollectionsUseCase
+import com.example.mobile_cinema_lab1.usecases.GetEpisodeTimeUseCase
+import com.example.mobile_cinema_lab1.usecases.SaveEpisodeTimeUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 
 class EpisodeScreenViewModel: BaseViewModel() {
+
+    private val episodeLiveData = MutableLiveData<ApiResponse<Time>>()
+
+    private val addToCollectionLiveData = MutableLiveData<ApiResponse<ResponseBody>>()
+
+    private val navigationUpAccept = MutableLiveData(false)
+
+    private val navigationToChatAccept = MutableLiveData(false)
 
     var collectionsLoaded = false
 
     lateinit var collectionList: List<Collection>
+
+    fun getLiveDataForEpisodeTime() = episodeLiveData
+    fun getLiveDataForAddToCollection() = addToCollectionLiveData
+
+    fun getLiveDataForNavigationUp() = navigationUpAccept
+
+    fun navigationSuccessful(){
+        navigationUpAccept.value = false
+    }
+
+    fun getEpisodeTime(episodeId: String){
+        mJobs.add(viewModelScope.launch(Dispatchers.IO){
+            GetEpisodeTimeUseCase(episodeId)().collect{data ->
+                withContext(Dispatchers.Main){
+                    episodeLiveData.value = data
+                }
+            }
+        })
+    }
+
+    fun saveEpisodeTime(episodeId: String, currentTime: Int, isNavigateUp: Boolean = false){
+        mJobs.add(viewModelScope.launch(Dispatchers.IO){
+            SaveEpisodeTimeUseCase(episodeId, currentTime)().collect{
+                withContext(Dispatchers.Main){
+                    when (it) {
+                        is ApiResponse.Loading -> {
+                            Log.d("!", "LOAD")
+                        }
+                        is ApiResponse.Failure -> {
+                            if (isNavigateUp) navigationUpAccept.value = true
+                        }
+                        is ApiResponse.Success -> {
+                            if (isNavigateUp) navigationUpAccept.value = true
+                        }
+                    }
+                }
+
+            }
+        })
+    }
 
     fun getCollections(){
         mJobs.add(viewModelScope.launch(Dispatchers.IO) {
@@ -35,10 +88,8 @@ class EpisodeScreenViewModel: BaseViewModel() {
     fun addMovieToCollection(position: Int, movieId: String){
         mJobs.add(viewModelScope.launch(Dispatchers.IO){
             AddMovieToCollectionUseCase(collectionList[position].collectionId, MovieId(movieId = movieId) )().collect{
-                when(it){
-                    is ApiResponse.Loading -> {  }
-                    is ApiResponse.Failure -> { Log.d("!", "FAIL ADD TO COLLECTION") }
-                    is ApiResponse.Success -> { Log.d("!", "SUCCESS ADD TO COLLECTION") }
+                withContext(Dispatchers.Main){
+                    addToCollectionLiveData.value = it
                 }
             }
         })

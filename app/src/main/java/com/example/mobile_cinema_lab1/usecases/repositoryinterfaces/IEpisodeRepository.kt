@@ -4,6 +4,7 @@ import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Comment
 import com.example.mobile_cinema_lab1.network.models.Time
 import kotlinx.coroutines.flow.Flow
+import okhttp3.ResponseBody
 
 interface IEpisodeRepository {
 
@@ -13,5 +14,5 @@ interface IEpisodeRepository {
 
     fun getEpisodeTime(episodeId: String): Flow<ApiResponse<Time>>
 
-    fun saveEpisodeTime(episodeId: String, episodeTime: String): Flow<ApiResponse<Nothing>>
+    fun saveEpisodeTime(episodeId: String, episodeTime: Int): Flow<ApiResponse<ResponseBody>>
 }

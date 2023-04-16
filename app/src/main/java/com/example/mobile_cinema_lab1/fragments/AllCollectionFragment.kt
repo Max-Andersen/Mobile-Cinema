@@ -88,7 +88,6 @@ class AllCollectionFragment : Fragment() {
         }
 
         override fun getItemViewType(position: Int): Int {
-            Log.d("1", position.toString())
             return if (position == 0) 0 else 1 // 0 equals Favourite collection
         }
 

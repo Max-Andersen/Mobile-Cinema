@@ -102,14 +102,14 @@
         <argument
             android:name="episodeData"
             app:argType="com.example.mobile_cinema_lab1.navigationmodels.Episode" />
-        <argument
-            android:name="movieName"
-            app:argType="string" />
         <action
             android:id="@+id/action_episodeFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
         <argument
-            android:name="movieId"
+            android:name="movieData"
+            app:argType="com.example.mobile_cinema_lab1.navigationmodels.Movie" />
+        <argument
+            android:name="movieYearDuration"
             app:argType="string" />
     </fragment>
 

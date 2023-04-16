@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-
-<!--    app:controller_layout_id="@layout/video_controller"-->
-
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="0dp"
@@ -87,7 +84,7 @@
         tools:text="Идёт вечно." />
 
     <ImageView
-        android:id="@+id/imageView12"
+        android:id="@+id/discussionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
@@ -100,10 +97,10 @@
         android:id="@+id/addToCollection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView12"
+        app:layout_constraintBottom_toBottomOf="@+id/discussionButton"
         app:layout_constraintEnd_toStartOf="@+id/imageView14"
-        app:layout_constraintStart_toEndOf="@+id/imageView12"
-        app:layout_constraintTop_toTopOf="@+id/imageView12"
+        app:layout_constraintStart_toEndOf="@+id/discussionButton"
+        app:layout_constraintTop_toTopOf="@+id/discussionButton"
         app:srcCompat="@drawable/plus" />
 
     <ImageView

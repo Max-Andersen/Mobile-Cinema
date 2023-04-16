@@ -16,8 +16,6 @@ import java.util.concurrent.TimeUnit
 object Network {
     const val BASE_URL = "http://107684.web.hosting-russia.ru:8000/api/"
 
-
-
     private fun getHttpClient(): OkHttpClient {
         val client = OkHttpClient.Builder().apply {
             connectTimeout(15, TimeUnit.SECONDS)

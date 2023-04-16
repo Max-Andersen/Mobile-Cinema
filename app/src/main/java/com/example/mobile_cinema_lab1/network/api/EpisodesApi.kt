@@ -2,6 +2,7 @@ package com.example.mobile_cinema_lab1.network.api
 
 import com.example.mobile_cinema_lab1.network.models.Comment
 import com.example.mobile_cinema_lab1.network.models.Time
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,6 +21,6 @@ interface EpisodesApi {
     suspend fun getEpisodeTime(@Path("episodeId") episodeId: String): Response<Time>
 
     @POST("episodes/{episodeId}/time")
-    suspend fun saveEpisodeTime(@Path("episodeId") episodeId: String, @Body time: String): Response<Nothing>
+    suspend fun saveEpisodeTime(@Path("episodeId") episodeId: String, @Body time: Time): Response<ResponseBody>
 
 }

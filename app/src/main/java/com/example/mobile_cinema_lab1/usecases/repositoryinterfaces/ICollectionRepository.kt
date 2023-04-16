@@ -5,6 +5,7 @@ import com.example.mobile_cinema_lab1.network.models.Collection
 import com.example.mobile_cinema_lab1.network.models.Movie
 import com.example.mobile_cinema_lab1.network.models.MovieId
 import kotlinx.coroutines.flow.Flow
+import okhttp3.ResponseBody
 
 interface ICollectionRepository {
     fun getUserCollection(): Flow<ApiResponse<List<Collection>>>
@@ -15,7 +16,7 @@ interface ICollectionRepository {
 
     fun getMoviesInCollection(collectionId: String): Flow<ApiResponse<List<Movie>>>
 
-    fun addMoviesInCollection(collectionId: String, movieId: MovieId): Flow<ApiResponse<Void>>
+    fun addMoviesInCollection(collectionId: String, movieId: MovieId): Flow<ApiResponse<ResponseBody>>
 
-    fun deleteMovieFromCollection(collectionId: String, movieId: String): Flow<ApiResponse<Void>>
+    fun deleteMovieFromCollection(collectionId: String, movieId: String): Flow<ApiResponse<ResponseBody>>
 }
