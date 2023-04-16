@@ -45,7 +45,6 @@ class SimpleItemTouchHelperCollectionCallback (private val adapter: SwipeAdapter
         }
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-
     }
 
     override fun isLongPressDragEnabled(): Boolean {
@@ -62,15 +61,17 @@ class SimpleItemTouchHelperCollectionCallback (private val adapter: SwipeAdapter
     ): Int {
         val dragFlags = 0
         val swipeFlags = ItemTouchHelper.END
-        return makeMovementFlags(dragFlags, swipeFlags)
+        return if (viewHolder.itemViewType != 0) makeMovementFlags(dragFlags, swipeFlags) else 0 // you cannot delete favourite collection
     }
+
+
 
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        return true
+        return viewHolder.itemViewType != 0 // you cannot delete favourite collection
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

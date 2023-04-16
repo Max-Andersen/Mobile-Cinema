@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var dialogFragment: ErrorDialogFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,8 +40,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
+        dialogFragment = ErrorDialogFragment(getString(R.string.error_update_token))
 
 
         if ( SharedPreferencesUseCase().getAccessToken() != ""){
@@ -49,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         TroubleShooting.getLiveDataForRefreshTrouble().observe(this){
             if (it == true){
                 TroubleShooting.updateLiveDataForRefreshTrouble(false)
-                val dialogFragment = ErrorDialogFragment(getString(R.string.error_update_token))
                 dialogFragment.show(this.supportFragmentManager, "Problems")
                 SharedPreferencesUseCase().clearUserData()
                 navController.navigate(NavGraphXmlDirections.actionGlobalSignInFragment())

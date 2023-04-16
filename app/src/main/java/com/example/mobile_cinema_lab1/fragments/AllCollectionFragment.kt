@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -76,7 +76,7 @@ class AllCollectionFragment : Fragment() {
     }
 
 
-    inner class CollectionAdapter(private val collections: ArrayList<Collection>) :
+    class CollectionAdapter(private val collections: ArrayList<Collection>) :
         RecyclerView.Adapter<CollectionItemViewHolder>(), SwipeAdapter {
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -85,6 +85,11 @@ class AllCollectionFragment : Fragment() {
             val layoutInflater = LayoutInflater.from(parent.context)
             val v = layoutInflater.inflate(R.layout.collection_item, parent, false)
             return CollectionItemViewHolder(v)
+        }
+
+        override fun getItemViewType(position: Int): Int {
+            Log.d("1", position.toString())
+            return if (position == 0) 0 else 1 // 0 equals Favourite collection
         }
 
         override fun getItemCount(): Int = collections.size
@@ -101,7 +106,7 @@ class AllCollectionFragment : Fragment() {
         }
     }
 
-    inner class CollectionItemViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
+    class CollectionItemViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
         private val binding by viewBinding(CollectionItemBinding::bind)
         private lateinit var data: Collection
 
@@ -117,7 +122,8 @@ class AllCollectionFragment : Fragment() {
         }
 
         override fun onClick(p0: View?) {
-            findNavController().navigate(AllCollectionFragmentDirections.actionCollectionFragmentToSpecificCollectionFragment(data.getNavigationModel()))
+            itemView.findNavController().navigate(AllCollectionFragmentDirections.actionCollectionFragmentToSpecificCollectionFragment(data.getNavigationModel()))
         }
     }
+
 }

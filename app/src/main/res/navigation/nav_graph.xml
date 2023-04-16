@@ -74,6 +74,7 @@
     <action
         android:id="@+id/action_global_signInFragment"
         app:destination="@id/signInFragment"
+        app:launchSingleTop="true"
         app:popUpTo="@id/nav_graph.xml"
         app:popUpToInclusive="true" />
 

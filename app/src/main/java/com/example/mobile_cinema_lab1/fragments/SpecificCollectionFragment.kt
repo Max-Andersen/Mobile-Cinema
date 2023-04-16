@@ -86,6 +86,10 @@ class SpecificCollectionFragment : Fragment() {
         RecyclerView.Adapter<CollectionItemViewHolder>(), SwipeAdapter {
         override fun getItemCount(): Int = movies.size
 
+        override fun getItemViewType(position: Int): Int {
+            return 1
+        }
+
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
