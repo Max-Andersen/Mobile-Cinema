@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.helper.widget.Flow
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -21,6 +24,7 @@ import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Episode
 import com.example.mobile_cinema_lab1.viewmodels.MovieFrameViewModel
+import com.google.android.material.chip.Chip
 
 class MovieFragment : Fragment() {
     lateinit var binding: MovieScreenBinding
@@ -77,7 +81,17 @@ class MovieFragment : Fragment() {
 
         binding.promotedMovieName.text = movie.name
 
-        binding.flow.setup(binding.data, movie.tags)
+        movie.tags.forEach {
+            val chip = inflate(
+                context,
+                R.layout.tag_chip,
+                null
+            ) as Chip
+            chip.text = it.tagName
+
+            binding.chipGroup.addView(chip)
+        }
+
 
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()

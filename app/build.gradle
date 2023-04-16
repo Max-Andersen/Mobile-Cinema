@@ -88,4 +88,8 @@ dependencies {
 
     implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.8'
 
+
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+
 }
