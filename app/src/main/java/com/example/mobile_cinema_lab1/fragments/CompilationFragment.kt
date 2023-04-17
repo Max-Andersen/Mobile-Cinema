@@ -144,12 +144,10 @@ class CompilationFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardAppeared(view: View, position: Int) {
-//        val textView = view.findViewById<TextView>(R.id.item_name)
-//        Log.d("CardStackView", "onCardAppeared: ($position) ${textView.text}")
+
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
-//        val textView = view.findViewById<TextView>(R.id.item_name)
-//        Log.d("CardStackView", "onCardDisappeared: ($position) ${textView.text}")
+
     }
 }

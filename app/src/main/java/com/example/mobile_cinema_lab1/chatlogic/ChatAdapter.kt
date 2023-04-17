@@ -47,7 +47,7 @@ class ChatAdapter(private var arrayList: ArrayList<ChatUIModel>) :
                 }
 
                 drawableId?.let {
-                    holder.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout).background =
+                    (holder as SpecificBackgroundItem).getBackgroundView().background =
                         AppCompatResources.getDrawable(
                             holder.itemView.context,
                             it
@@ -63,7 +63,7 @@ class ChatAdapter(private var arrayList: ArrayList<ChatUIModel>) :
                 }
 
                 drawableId?.let {
-                    holder.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout).background =
+                    (holder as SpecificBackgroundItem).getBackgroundView().background =
                         AppCompatResources.getDrawable(
                             holder.itemView.context,
                             it
@@ -89,4 +89,9 @@ class ChatAdapter(private var arrayList: ArrayList<ChatUIModel>) :
             is DaySeparationViewHolder -> holder.bind(item as ChatUIModel.DaySeparationModel)
         }
     }
+}
+
+
+interface SpecificBackgroundItem {
+    fun getBackgroundView(): ConstraintLayout
 }

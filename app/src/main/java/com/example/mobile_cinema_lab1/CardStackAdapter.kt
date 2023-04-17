@@ -5,7 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.example.mobile_cinema_lab1.databinding.CardStackItemBinding
 import com.example.mobile_cinema_lab1.network.models.Movie
 
 class CardStackAdapter(
@@ -19,9 +21,9 @@ class CardStackAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = movies[position]
-        Glide.with(holder.image)
+        Glide.with(holder.getImageView())
             .load(movie.poster)
-            .into(holder.image)
+            .into(holder.getImageView())
     }
 
     override fun getItemCount(): Int {
@@ -29,7 +31,8 @@ class CardStackAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var image: ImageView = view.findViewById(R.id.cardImage)
+        private val binding by viewBinding(CardStackItemBinding::bind)
+        fun getImageView() = binding.cardImage
     }
 
 }

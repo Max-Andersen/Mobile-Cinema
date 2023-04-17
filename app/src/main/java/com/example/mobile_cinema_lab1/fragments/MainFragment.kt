@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.MainFrameBinding
+import com.example.mobile_cinema_lab1.databinding.VerticalImageItemForRecyclerviewBinding
 import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Movie
@@ -189,7 +191,8 @@ class MainFragment : Fragment() {
     private inner class MovieHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
         private lateinit var data: Movie
-        private val imageView = itemView.findViewById<ImageView>(R.id.collectionImage)
+
+        private val binding by viewBinding(VerticalImageItemForRecyclerviewBinding::bind)
 
         init {
             itemView.setOnClickListener(this)
@@ -197,7 +200,7 @@ class MainFragment : Fragment() {
 
         fun bind(data: Movie) {
             this.data = data
-            Glide.with(requireActivity()).load(data.poster).into(imageView)
+            Glide.with(requireActivity()).load(data.poster).into(binding.collectionImage)
         }
 
         override fun onClick(p0: View?) {

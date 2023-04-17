@@ -16,9 +16,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.R
+import com.example.mobile_cinema_lab1.databinding.EpisodeCardBinding
+import com.example.mobile_cinema_lab1.databinding.HorizontalImageItemForRecyclerviewBinding
 import com.example.mobile_cinema_lab1.databinding.MovieScreenBinding
 import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
 import com.example.mobile_cinema_lab1.network.ApiResponse
@@ -134,9 +137,10 @@ class MovieFragment : Fragment() {
 
 
     private inner class ImageHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imageView = itemView.findViewById<ImageView>(R.id.collectionImage)
+        private val binding by viewBinding(HorizontalImageItemForRecyclerviewBinding::bind)
+
         fun bind(data: String) {
-            Glide.with(requireActivity()).load(data).into(imageView)
+            Glide.with(requireActivity()).load(data).into(binding.collectionImage)
         }
     }
 
@@ -168,13 +172,15 @@ class MovieFragment : Fragment() {
     private inner class EpisodeHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
         private lateinit var data: Episode
-        private val imageView = itemView.findViewById<ImageView>(R.id.episodeImage)
+
+        private val binding by viewBinding(EpisodeCardBinding::bind)
+
         fun bind(data: Episode) {
             this.data = data
-            Glide.with(requireActivity()).load(data.preview).into(imageView)
-            itemView.findViewById<TextView>(R.id.episodeDescription).text = data.description
-            itemView.findViewById<TextView>(R.id.episodeName).text = data.name
-            itemView.findViewById<TextView>(R.id.episodeYear).text = data.year.toString()
+            Glide.with(requireActivity()).load(data.preview).into(binding.episodeImage)
+            binding.episodeDescription.text = data.description
+            binding.episodeName.text = data.name
+            binding.episodeYear.text = data.year.toString()
         }
 
         init {
