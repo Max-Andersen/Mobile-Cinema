@@ -59,6 +59,8 @@ object Network {
     fun getProfileApi(): ProfileApi = retrofit.create(ProfileApi::class.java)
 
     fun getTagsApi(): TagsApi = retrofit.create(TagsApi::class.java)
+
+    fun getUserChats(): ChatApi = retrofit.create(ChatApi::class.java)
 }
 
 

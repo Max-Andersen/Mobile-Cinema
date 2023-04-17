@@ -1,7 +1,6 @@
 package com.example.mobile_cinema_lab1.network.models
 
-import kotlinx.datetime.LocalDateTime
-
+@kotlinx.serialization.Serializable
 data class ChatMessage(
     val messageId: String,
     val creationDateTime: String,

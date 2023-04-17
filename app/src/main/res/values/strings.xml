@@ -43,4 +43,7 @@
     <string name="error_get_collections">"Не удалось загрузить коллекции"</string>
     <string name="error_dont_touch_here">Не надо сюда нажимать!!</string>
     <string name="error_films_is_empty">Фильмы закончились! :(</string>
+
+    <string name="chat_short_name">%1$s%2$s</string>
+
 </resources>

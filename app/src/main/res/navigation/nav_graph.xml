@@ -42,7 +42,11 @@
         android:id="@+id/profileFragment"
         android:name="com.example.mobile_cinema_lab1.fragments.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/profile_screen" />
+        tools:layout="@layout/profile_screen" >
+        <action
+            android:id="@+id/action_profileFragment_to_activeUserChatsFragment"
+            app:destination="@id/activeUserChatsFragment" />
+    </fragment>
 
     <action
         android:id="@+id/action_global_mainFragment"
@@ -184,5 +188,14 @@
             app:destination="@id/createCollectionFragment"
             app:popUpTo="@id/createCollectionFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/active_user_chats_screen"
+        android:id="@+id/activeUserChatsFragment"
+        android:name="com.example.mobile_cinema_lab1.fragments.ActiveUserChatsFragment"
+        android:label="ActiveUserChatsFragment" >
+        <action
+            android:id="@+id/action_activeUserChatsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
 </navigation>

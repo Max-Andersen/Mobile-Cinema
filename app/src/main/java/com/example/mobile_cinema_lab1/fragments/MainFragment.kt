@@ -168,7 +168,7 @@ class MainFragment : Fragment() {
                 is ApiResponse.Success -> {
                     viewModel.itemLoaded()
                     if (it.data.isNotEmpty()) {
-                        lastWatchedMovie = it.data.last()
+                        lastWatchedMovie = it.data.first()
 
                         Glide.with(requireActivity()).load(lastWatchedMovie.imageUrls.first())
                             .into(binding.lastWatchedMovie)

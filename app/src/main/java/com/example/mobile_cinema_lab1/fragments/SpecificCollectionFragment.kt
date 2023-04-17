@@ -19,6 +19,7 @@ import com.example.mobile_cinema_lab1.SimpleItemTouchHelperCollectionCallback
 import com.example.mobile_cinema_lab1.SwipeAdapter
 import com.example.mobile_cinema_lab1.databinding.CollectionMovieItemBinding
 import com.example.mobile_cinema_lab1.databinding.SpecificCollectionScreenBinding
+import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Movie
 import com.example.mobile_cinema_lab1.viewmodels.SpecificCollectionViewModel
@@ -82,8 +83,8 @@ class SpecificCollectionFragment : Fragment() {
         return binding.root
     }
 
-    inner class CollectionMovieAdapter(private var movies: ArrayList<Movie>) :
-        RecyclerView.Adapter<CollectionItemViewHolder>(), SwipeAdapter {
+    private inner class CollectionMovieAdapter(private var movies: ArrayList<Movie>) :
+        RecyclerView.Adapter<CollectionMovieItemViewHolder>(), SwipeAdapter {
         override fun getItemCount(): Int = movies.size
 
         override fun getItemViewType(position: Int): Int {
@@ -93,13 +94,13 @@ class SpecificCollectionFragment : Fragment() {
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-        ): CollectionItemViewHolder {
+        ): CollectionMovieItemViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val v = layoutInflater.inflate(R.layout.collection_movie_item, parent, false)
-            return CollectionItemViewHolder(v)
+            return CollectionMovieItemViewHolder(v)
         }
 
-        override fun onBindViewHolder(holder: CollectionItemViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: CollectionMovieItemViewHolder, position: Int) {
             val item = movies[position]
             holder.bind(item)
         }
@@ -110,15 +111,24 @@ class SpecificCollectionFragment : Fragment() {
         }
     }
 
-    class CollectionItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private inner class CollectionMovieItemViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private val binding by viewBinding(CollectionMovieItemBinding::bind)
+        private lateinit var movieData: Movie
+
+        init {
+            itemView.setOnClickListener(this)
+        }
 
         fun bind(data: Movie) {
+            movieData = data
             binding.movieDescription.text = data.description
             Glide.with(itemView).load(data.poster).into(binding.movieImage)
             binding.movieName.text = data.name
         }
-    }
 
+        override fun onClick(p0: View?) {
+            findNavController().navigate(SpecificCollectionFragmentDirections.actionSpecificCollectionFragmentToMovieFragment(movieData.getNavigationModel()))
+        }
+    }
 
 }
