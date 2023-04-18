@@ -4,16 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.mobile_cinema_lab1.CollectionIconsEnum
 import com.example.mobile_cinema_lab1.MainActivity
 import com.example.mobile_cinema_lab1.databinding.EditCollectionBinding
+import com.example.mobile_cinema_lab1.viewmodels.EditCollectionViewModel
 
 class EditCollectionFragment: Fragment() {
     private lateinit var binding: EditCollectionBinding
 
     private val args: EditCollectionFragmentArgs by navArgs()
+
+    private val viewModel by lazy { ViewModelProvider(this)[EditCollectionViewModel::class.java] }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,9 +31,14 @@ class EditCollectionFragment: Fragment() {
 
         (requireActivity() as MainActivity).hideBottomNavigation()
 
+        setFragmentResultListener(SelectCollectionIconFragment.ICON_RESULT_KEY) { _, bundle ->
+            viewModel.selectedIcon = bundle.getString("icon")!!
+            binding.selectedCollectionIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), CollectionIconsEnum().icons[viewModel.selectedIcon]!!));
+        }
 
-        args.iconId?.let {
-            // TODO load image into binding.selectedCollectionIcon
+
+        args.iconId.let {
+            binding.selectedCollectionIcon.setImageResource(CollectionIconsEnum().icons[it]!!)
         }
 
         binding.backButton.setOnClickListener {
@@ -37,7 +49,17 @@ class EditCollectionFragment: Fragment() {
             findNavController().navigate(EditCollectionFragmentDirections.actionEditCollectionFragmentToSelectCollectionIconFragment())
         }
 
-        binding.enterCollectionName.setText(args.collectionName)
+        binding.saveButton.setOnClickListener {
+            viewModel.saveChanges(args.collectionShortModel.collectionId, binding.enterCollectionName.text.toString())
+            findNavController().navigateUp()
+        }
+
+        binding.deleteButton.setOnClickListener {
+            viewModel.deleteCollection(args.collectionShortModel.collectionId)
+            findNavController().navigate(EditCollectionFragmentDirections.actionEditCollectionFragmentToCollectionFragment())
+        }
+
+        binding.enterCollectionName.setText(args.collectionShortModel.collectionName)
 
         return binding.root
     }

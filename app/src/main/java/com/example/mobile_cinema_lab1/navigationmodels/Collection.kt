@@ -6,7 +6,7 @@ import com.example.mobile_cinema_lab1.network.models.Collection
 @kotlinx.parcelize.Parcelize
 data class Collection(
     val collectionId: String,
-    val collectionName: String
+    val collectionName: String,
 ) : Parcelable
 
 

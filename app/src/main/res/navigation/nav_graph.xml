@@ -140,6 +140,9 @@
         <action
             android:id="@+id/action_specificCollectionFragment_to_movieFragment"
             app:destination="@id/movieFragment" />
+        <argument
+            android:name="iconId"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -166,29 +169,22 @@
             app:destination="@id/selectCollectionIconFragment" />
         <argument
             android:name="iconId"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="collectionName"
             app:argType="string" />
+        <argument
+            android:name="collectionShortModel"
+            app:argType="com.example.mobile_cinema_lab1.navigationmodels.Collection" />
+        <action
+            android:id="@+id/action_editCollectionFragment_to_collectionFragment"
+            app:destination="@id/collectionFragment"
+            app:popUpTo="@id/collectionFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/selectCollectionIconFragment"
         android:name="com.example.mobile_cinema_lab1.fragments.SelectCollectionIconFragment"
         android:label="SelectCollectionIconFragment"
-        tools:layout="@layout/all_collection_icons" >
-        <action
-            android:id="@+id/action_selectCollectionIconFragment_to_editCollectionFragment"
-            app:destination="@id/editCollectionFragment"
-            app:popUpTo="@id/editCollectionFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_selectCollectionIconFragment_to_createCollectionFragment"
-            app:destination="@id/createCollectionFragment"
-            app:popUpTo="@id/createCollectionFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/all_collection_icons" />
     <fragment
         tools:layout="@layout/active_user_chats_screen"
         android:id="@+id/activeUserChatsFragment"

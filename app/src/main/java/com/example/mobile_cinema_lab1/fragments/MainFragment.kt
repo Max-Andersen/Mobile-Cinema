@@ -182,7 +182,7 @@ class MainFragment : Fragment() {
         }
 
         viewModel.getLiveDataForLoadedItems().observe(viewLifecycleOwner){
-            if (it == 5){
+            if (it >= 5){
                 binding.progressBar.visibility = View.INVISIBLE
             }
         }

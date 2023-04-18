@@ -4,13 +4,14 @@ import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Collection
 import com.example.mobile_cinema_lab1.network.models.Movie
 import com.example.mobile_cinema_lab1.network.models.MovieId
+import com.example.mobile_cinema_lab1.network.models.Name
 import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 
 interface ICollectionRepository {
     fun getUserCollection(): Flow<ApiResponse<List<Collection>>>
 
-    fun createCollection(collectionName: String): Flow<ApiResponse<Collection>>
+    fun createCollection(collectionName: Name): Flow<ApiResponse<Collection>>
 
     fun deleteCollection(collectionId: String): Flow<ApiResponse<Void>>
 

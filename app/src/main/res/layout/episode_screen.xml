@@ -96,7 +96,7 @@
     <ImageView
         android:id="@+id/addToCollection"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/discussionButton"
         app:layout_constraintEnd_toStartOf="@+id/imageView14"
         app:layout_constraintStart_toEndOf="@+id/discussionButton"
@@ -106,7 +106,7 @@
     <ImageView
         android:id="@+id/imageView14"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/addToCollection"
         app:layout_constraintEnd_toEndOf="parent"

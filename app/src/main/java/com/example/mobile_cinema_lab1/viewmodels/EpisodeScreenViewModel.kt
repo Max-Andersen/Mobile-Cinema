@@ -3,14 +3,12 @@ package com.example.mobile_cinema_lab1.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.mobile_cinema_lab1.CollectionUIModel
 import com.example.mobile_cinema_lab1.network.ApiResponse
 import com.example.mobile_cinema_lab1.network.models.Collection
 import com.example.mobile_cinema_lab1.network.models.MovieId
 import com.example.mobile_cinema_lab1.network.models.Time
-import com.example.mobile_cinema_lab1.usecases.AddMovieToCollectionUseCase
-import com.example.mobile_cinema_lab1.usecases.GetCollectionsUseCase
-import com.example.mobile_cinema_lab1.usecases.GetEpisodeTimeUseCase
-import com.example.mobile_cinema_lab1.usecases.SaveEpisodeTimeUseCase
+import com.example.mobile_cinema_lab1.usecases.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,7 +26,7 @@ class EpisodeScreenViewModel: BaseViewModel() {
 
     var collectionsLoaded = false
 
-    lateinit var collectionList: List<Collection>
+    var collectionList = mutableListOf<CollectionUIModel>()
 
     fun getLiveDataForEpisodeTime() = episodeLiveData
     fun getLiveDataForAddToCollection() = addToCollectionLiveData
@@ -75,8 +73,22 @@ class EpisodeScreenViewModel: BaseViewModel() {
             GetCollectionsUseCase()().collect{
                 when (it){
                     is ApiResponse.Success -> {
+                        val list = mutableListOf<CollectionUIModel>()
+                        it.data.forEach { collection ->
+                            var collectionName = collection.name
+                            GetCollectionFromDatabaseUseCase(collection.collectionId)()?.let { dbModel ->
+                                collectionName = dbModel.name
+                            }
+                            list.add(CollectionUIModel(collection.collectionId, collectionName, "1"))
+                        }
+
+                        collectionList.clear()
+
+                        list.forEach{ brr ->
+                            collectionList.add(brr)
+                        }
+
                         collectionsLoaded = true
-                        collectionList = it.data
                     }
                     is ApiResponse.Failure -> { }
                     is ApiResponse.Loading -> { }
