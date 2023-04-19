@@ -1,7 +1,6 @@
 package com.example.mobile_cinema_lab1.navigationmodels
 
 import android.os.Parcelable
-import com.example.mobile_cinema_lab1.network.models.Collection
 
 @kotlinx.parcelize.Parcelize
 data class Collection(
@@ -10,7 +9,7 @@ data class Collection(
 ) : Parcelable
 
 
-fun Collection.getNavigationModel() = com.example.mobile_cinema_lab1.navigationmodels.Collection(
+fun com.example.mobile_cinema_lab1.datasource.network.models.Collection.getNavigationModel() = Collection(
     collectionId = collectionId,
     collectionName = name
 )

@@ -1,0 +1,21 @@
+package com.example.mobile_cinema_lab1.domain.usecases
+
+import com.example.mobile_cinema_lab1.domain.repositoryinterfaces.IMovieRepository
+import com.example.mobile_cinema_lab1.repositories.MovieRepository
+
+class GetMoviesUseCase(
+    private val filter: String,
+    //private val liveDataForResult: MutableLiveData<ApiResponse<List<Movie>>>
+) { //: BaseUseCase()
+    private val movieRepository: IMovieRepository = MovieRepository()
+
+    operator fun invoke() = movieRepository.getMoviesByFilter(filter)
+
+//    suspend operator fun invoke(): Job {
+//        return baseRequest(
+//            liveDataForResult,
+//            TroubleShooting.coroutinesErrorHandler,
+//            movieRepository.getMoviesByFilter(filter)
+//        )
+//    }
+}

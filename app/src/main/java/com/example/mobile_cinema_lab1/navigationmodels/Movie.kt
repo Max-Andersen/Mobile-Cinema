@@ -1,7 +1,6 @@
 package com.example.mobile_cinema_lab1.navigationmodels
 
 import android.os.Parcelable
-import com.example.mobile_cinema_lab1.network.models.Movie
 
 @kotlinx.parcelize.Parcelize
 data class Movie(
@@ -16,8 +15,8 @@ data class Movie(
 ) : Parcelable
 
 
-fun Movie.getNavigationModel() =
-    com.example.mobile_cinema_lab1.navigationmodels.Movie(
+fun com.example.mobile_cinema_lab1.datasource.network.models.Movie.getNavigationModel() =
+    Movie(
         movieId = this.movieId,
         name = this.name,
         description = this.description,

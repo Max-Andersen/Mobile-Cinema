@@ -1,7 +1,6 @@
 package com.example.mobile_cinema_lab1.navigationmodels
 
 import android.os.Parcelable
-import com.example.mobile_cinema_lab1.network.models.Chat
 
 @kotlinx.parcelize.Parcelize
 
@@ -11,7 +10,7 @@ data class Chat(
 ) : Parcelable
 
 
-fun Chat.getNavigationModel() = com.example.mobile_cinema_lab1.navigationmodels.Chat(
+fun com.example.mobile_cinema_lab1.datasource.network.models.Chat.getNavigationModel() = Chat(
     chatId = this.chatId,
     chatName = this.chatName
 )

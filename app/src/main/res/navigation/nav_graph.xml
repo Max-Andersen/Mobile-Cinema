@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.MainFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.main.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/main_frame">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/collectionFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.AllCollectionFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.collections.all.AllCollectionFragment"
         android:label="CollectionFragment"
         tools:layout="@layout/all_collection_screen" >
         <action
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/compilationFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.CompilationFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.compilation.CompilationFragment"
         android:label="CompilationFragment"
         tools:layout="@layout/compilation_screen">
         <action
@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.ProfileFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/profile_screen" >
         <action
@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.SignUpFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.auth.register.SignUpFragment"
         android:label="SignUpFragment"
         tools:layout="@layout/sign_up_screen">
         <action
@@ -67,7 +67,7 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.SignInFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.auth.login.SignInFragment"
         android:label="SignInFragment"
         tools:layout="@layout/sign_in_screen">
         <action
@@ -84,7 +84,7 @@
 
     <fragment
         android:id="@+id/movieFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.MovieFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.movie.MovieFragment"
         android:label="MovieFragment"
         tools:layout="@layout/movie_screen">
         <action
@@ -100,7 +100,7 @@
 
     <fragment
         android:id="@+id/episodeFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.EpisodeFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.episode.EpisodeFragment"
         android:label="EpisodeFragment"
         tools:layout="@layout/episode_screen">
         <argument
@@ -119,7 +119,7 @@
 
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.ChatFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.chat.ChatFragment"
         android:label="ChatFragment"
         tools:layout="@layout/chat_screen">
         <argument
@@ -128,7 +128,7 @@
     </fragment>
     <fragment
         android:id="@+id/specificCollectionFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.SpecificCollectionFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.collections.specific.SpecificCollectionFragment"
         android:label="SpecificCollectionFragment"
         tools:layout="@layout/specific_collection_screen" >
         <argument
@@ -147,7 +147,7 @@
 
     <fragment
         android:id="@+id/createCollectionFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.CreateCollectionFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.collections.create.CreateCollectionFragment"
         android:label="CreateCollectionFragment"
         tools:layout="@layout/create_collection" >
         <action
@@ -161,7 +161,7 @@
 
     <fragment
         android:id="@+id/editCollectionFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.EditCollectionFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.collections.edit.EditCollectionFragment"
         android:label="EditCollectionFragment"
         tools:layout="@layout/edit_collection" >
         <action
@@ -182,13 +182,13 @@
 
     <fragment
         android:id="@+id/selectCollectionIconFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.SelectCollectionIconFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.collections.SelectCollectionIconFragment"
         android:label="SelectCollectionIconFragment"
         tools:layout="@layout/all_collection_icons" />
     <fragment
         tools:layout="@layout/active_user_chats_screen"
         android:id="@+id/activeUserChatsFragment"
-        android:name="com.example.mobile_cinema_lab1.fragments.ActiveUserChatsFragment"
+        android:name="com.example.mobile_cinema_lab1.ui.profile.ActiveUserChatsFragment"
         android:label="ActiveUserChatsFragment" >
         <action
             android:id="@+id/action_activeUserChatsFragment_to_chatFragment"
