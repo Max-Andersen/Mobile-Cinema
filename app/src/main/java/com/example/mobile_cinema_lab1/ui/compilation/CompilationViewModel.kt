@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 import com.example.mobile_cinema_lab1.datasource.network.models.Movie
-import com.example.mobile_cinema_lab1.domain.usecases.GetMoviesUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.movie.GetMoviesUseCase
 import com.example.mobile_cinema_lab1.domain.usecases.SetDislikeOnMovie
 import com.example.mobile_cinema_lab1.ui.BaseViewModel
 import kotlinx.coroutines.Dispatchers

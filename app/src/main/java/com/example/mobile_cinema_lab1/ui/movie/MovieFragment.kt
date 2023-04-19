@@ -19,7 +19,9 @@ import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.EpisodeCardBinding
 import com.example.mobile_cinema_lab1.databinding.HorizontalImageItemForRecyclerviewBinding
 import com.example.mobile_cinema_lab1.databinding.MovieScreenBinding
+import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 import com.example.mobile_cinema_lab1.datasource.network.models.Episode
+import com.example.mobile_cinema_lab1.forapplication.errorhandling.ErrorDialogFragment
 import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
 import com.google.android.material.chip.Chip
 
@@ -105,13 +107,14 @@ class MovieFragment : Fragment() {
 
         viewModel.getLiveDataForEpisodes().observe(viewLifecycleOwner) {
             when (it) {
-                com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Loading -> {
+                ApiResponse.Loading -> {
 
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Failure -> {
-                    Log.d("!", "Fail")
+                is ApiResponse.Failure -> {
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_episodes))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Success -> {
+                is ApiResponse.Success -> {
                     binding.episodesProgressBar.visibility = View.INVISIBLE
                     viewModel.episodesList.clear()
                     it.data.forEach { movie ->

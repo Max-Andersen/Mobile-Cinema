@@ -17,8 +17,10 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.EpisodeScreenBinding
 import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
+import com.example.mobile_cinema_lab1.forapplication.errorhandling.ErrorDialogFragment
 
 class EpisodeFragment : Fragment() {
 
@@ -58,7 +60,10 @@ class EpisodeFragment : Fragment() {
         viewModel.getLiveDataForEpisodeTime().observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Loading -> {}
-                is ApiResponse.Failure -> {}
+                is ApiResponse.Failure -> {
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_episodes))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                }
                 is ApiResponse.Success -> {
                     player.seekTo((it.data.timeInSeconds * 1000).toLong())
                     player.play()

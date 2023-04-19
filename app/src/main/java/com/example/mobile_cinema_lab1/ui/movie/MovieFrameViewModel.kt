@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 import com.example.mobile_cinema_lab1.datasource.network.models.Episode
+import com.example.mobile_cinema_lab1.domain.usecases.episode.GetEpisodesOfMovieUseCase
 import com.example.mobile_cinema_lab1.ui.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ class MovieFrameViewModel : BaseViewModel() {
 
     fun getEpisodesOfMovie(movieId: String) {
         mJobs.add(viewModelScope.launch(Dispatchers.IO) {
-            com.example.mobile_cinema_lab1.domain.usecases.GetEpisodesOfMovieUseCase(
+            GetEpisodesOfMovieUseCase(
                 movieId
             )().collect { episodes ->
                 withContext(Dispatchers.Main) {

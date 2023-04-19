@@ -1,19 +1,15 @@
 package com.example.mobile_cinema_lab1.ui.chat
 
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.mobile_cinema_lab1.datasource.network.Network
 import com.example.mobile_cinema_lab1.datasource.network.models.ChatMessage
-import com.example.mobile_cinema_lab1.domain.usecases.GetSocketConnectionUseCase
-import com.example.mobile_cinema_lab1.domain.usecases.MyWebSocketListener
-import com.example.mobile_cinema_lab1.domain.usecases.SendMessageToSocketUseCase
-import com.example.mobile_cinema_lab1.domain.usecases.SharedPreferencesUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.*
+import com.example.mobile_cinema_lab1.domain.usecases.socket.CloseSocketUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.socket.GetMessagesFromSocketUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.socket.GetSocketConnectionUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.socket.SendMessageToSocketUseCase
 import com.example.mobile_cinema_lab1.ui.BaseViewModel
 import com.example.mobile_cinema_lab1.ui.chat.additionalmodels.*
-import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,7 +17,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import okhttp3.WebSocket
 
 class ChatViewModel : BaseViewModel() {
 
@@ -35,9 +30,6 @@ class ChatViewModel : BaseViewModel() {
 
     private var mySentMessageIdx = -1
 
-    private lateinit var socket: WebSocket
-    private lateinit var socketListener: MyWebSocketListener
-
     private val sharedPreferencesUseCase =
         SharedPreferencesUseCase()
 
@@ -46,31 +38,17 @@ class ChatViewModel : BaseViewModel() {
 
     fun getSocket(chatId: String) {
         mJobs.add(viewModelScope.launch(Dispatchers.IO) {
-            val url = Network.BASE_URL.replace("http", "ws") + "chats/$chatId/messages"
-            val networkData = GetSocketConnectionUseCase(
-                url
-            )()
-            socket = networkData.first
-            socketListener = networkData.second
-            socketListener.getFlow().collect {
-                try {
-                    val gson = Gson()
-                    val data = gson.fromJson(it, ChatMessage::class.java)
-                    Log.d("!", data.toString())
+            GetSocketConnectionUseCase(chatId)()
 
-
-                    Handler(Looper.getMainLooper()).post {
-                        onReceiveData(data)
-                    }
-                } catch (e: Exception) {
-                    Log.d("!", "FAIL TO PARSE!  ${e.message}")
+            GetMessagesFromSocketUseCase()().collect {
+                withContext(Dispatchers.Main){
+                    onReceiveData(it)
                 }
             }
         })
     }
 
     private fun onReceiveData(it: ChatMessage) {
-
         val uiModel: ChatUIModel
 
         if (messages.size != 0) {
@@ -104,10 +82,6 @@ class ChatViewModel : BaseViewModel() {
                     }
                     else -> {}
                 }
-//                if ((messages.last() as? ChatUIModel.MyMessageModel) != null)
-//                if ((messages.last() as? ) != null) {
-//
-//                }
             }
         } else {
             val dateModel =
@@ -157,7 +131,7 @@ class ChatViewModel : BaseViewModel() {
 
     fun closeSocket() {
         waitingForMyMessage = false
-        socket.close(1000, "Ok")
+        CloseSocketUseCase()()
     }
 
     fun sendMessage(messageText: String) {
@@ -184,8 +158,8 @@ class ChatViewModel : BaseViewModel() {
 
             waitingForMyMessage = true
             SendMessageToSocketUseCase(
-                socket
-            )(messageText)
+                messageText
+            )()
 
             viewModelScope.launch(Dispatchers.IO) {
                 Thread.sleep(5000)

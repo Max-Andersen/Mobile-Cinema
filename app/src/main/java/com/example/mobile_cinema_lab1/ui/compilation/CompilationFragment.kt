@@ -103,7 +103,8 @@ class CompilationFragment : Fragment(), CardStackListener {
 
                 }
                 is ApiResponse.Failure -> {
-                    Log.d("!", "Fail")
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_compilation))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
                     binding.progressBar.visibility = View.INVISIBLE

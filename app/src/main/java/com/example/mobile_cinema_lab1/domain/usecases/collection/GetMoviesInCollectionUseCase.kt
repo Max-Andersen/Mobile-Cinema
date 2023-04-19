@@ -1,4 +1,4 @@
-package com.example.mobile_cinema_lab1.domain.usecases
+package com.example.mobile_cinema_lab1.domain.usecases.collection
 
 import com.example.mobile_cinema_lab1.domain.repositoryinterfaces.ICollectionRepository
 import com.example.mobile_cinema_lab1.repositories.CollectionRepository

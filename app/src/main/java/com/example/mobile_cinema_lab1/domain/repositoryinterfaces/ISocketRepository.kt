@@ -11,4 +11,6 @@ interface ISocketRepository {
     fun getMessagesFlow(): MutableSharedFlow<String>
 
     fun sendMessage(message: String)
+
+    fun closeSocket()
 }

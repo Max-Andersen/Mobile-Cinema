@@ -6,10 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 import com.example.mobile_cinema_lab1.datasource.network.models.MovieId
 import com.example.mobile_cinema_lab1.datasource.network.models.Time
-import com.example.mobile_cinema_lab1.domain.usecases.AddMovieToCollectionUseCase
-import com.example.mobile_cinema_lab1.domain.usecases.GetCollectionFromDatabaseUseCase
-import com.example.mobile_cinema_lab1.domain.usecases.GetCollectionsUseCase
-import com.example.mobile_cinema_lab1.domain.usecases.GetEpisodeTimeUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.AddMovieToCollectionUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.db.GetCollectionFromDatabaseUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.GetCollectionsUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.episode.GetEpisodeTimeUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.episode.SaveEpisodeTimeUseCase
 import com.example.mobile_cinema_lab1.ui.BaseViewModel
 import com.example.mobile_cinema_lab1.ui.collections.CollectionUIModel
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +55,7 @@ class EpisodeScreenViewModel: BaseViewModel() {
 
     fun saveEpisodeTime(episodeId: String, currentTime: Int, isNavigateUp: Boolean = false){
         mJobs.add(viewModelScope.launch(Dispatchers.IO){
-            com.example.mobile_cinema_lab1.domain.usecases.SaveEpisodeTimeUseCase(
+            SaveEpisodeTimeUseCase(
                 episodeId,
                 currentTime
             )().collect{

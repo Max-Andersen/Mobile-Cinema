@@ -15,6 +15,7 @@ import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.ProfileScreenBinding
 import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 import com.example.mobile_cinema_lab1.domain.usecases.SharedPreferencesUseCase
+import com.example.mobile_cinema_lab1.forapplication.errorhandling.ErrorDialogFragment
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: ProfileScreenBinding
@@ -38,7 +39,8 @@ class ProfileFragment : Fragment() {
 
                 }
                 is ApiResponse.Failure -> {
-                    Log.d("!", "Fail")
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_user_data))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
                     binding.progressBar.visibility = View.INVISIBLE
@@ -66,7 +68,6 @@ class ProfileFragment : Fragment() {
         binding.discussionsLayer.setOnClickListener {
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToActiveUserChatsFragment())
         }
-
 
         return binding.root
     }

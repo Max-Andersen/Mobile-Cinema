@@ -16,6 +16,7 @@ import com.example.mobile_cinema_lab1.forapplication.MainActivity
 import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.MainFrameBinding
 import com.example.mobile_cinema_lab1.databinding.VerticalImageItemForRecyclerviewBinding
+import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 import com.example.mobile_cinema_lab1.datasource.network.models.Movie
 import com.example.mobile_cinema_lab1.forapplication.errorhandling.ErrorDialogFragment
 import com.example.mobile_cinema_lab1.navigationmodels.getNavigationModel
@@ -86,13 +87,14 @@ class MainFragment : Fragment() {
     private fun updateUi() {
         viewModel.getLiveDataForInTrendMovies().observe(requireActivity()) {
             when (it) {
-                com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Loading -> {
+                ApiResponse.Loading -> {
 
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Failure -> {
-                    Log.d("!", "Fail")
+                is ApiResponse.Failure -> {
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_in_trend_movies))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Success -> {
+                is ApiResponse.Success -> {
                     viewModel.itemLoaded()
                     if (it.data.isNotEmpty()) {
                         viewModel.saveInTrendMovies(it.data)
@@ -106,13 +108,14 @@ class MainFragment : Fragment() {
 
         viewModel.getLiveDataForMoviesForYou().observe(requireActivity()) {
             when (it) {
-                com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Loading -> {
+                ApiResponse.Loading -> {
 
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Failure -> {
-                    Log.d("!", "Fail")
+                is ApiResponse.Failure -> {
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_for_you_movies))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Success -> {
+                is ApiResponse.Success -> {
                     viewModel.itemLoaded()
                     if (it.data.isNotEmpty()) {
                         viewModel.saveForYouMovies(it.data)
@@ -125,13 +128,14 @@ class MainFragment : Fragment() {
 
         viewModel.getLiveDataForNewMovies().observe(requireActivity()) {
             when (it) {
-                com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Loading -> {
+                ApiResponse.Loading -> {
 
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Failure -> {
-                    Log.d("!", "Fail")
+                is ApiResponse.Failure -> {
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_new_movies))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Success -> {
+                is ApiResponse.Success -> {
                     viewModel.itemLoaded()
                     if (it.data.isNotEmpty()) {
                         viewModel.saveNewMovies(it.data)
@@ -144,13 +148,14 @@ class MainFragment : Fragment() {
 
         viewModel.getLiveDataForCoverImage().observe(viewLifecycleOwner) {
             when (it) {
-                com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Loading -> {
+                ApiResponse.Loading -> {
 
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Failure -> {
-                    Log.d("!", "Fail")
+                is ApiResponse.Failure -> {
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_cover_image))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Success -> {
+                is ApiResponse.Success -> {
                     viewModel.itemLoaded()
                     Glide.with(requireActivity()).load(it.data.backgroundImage)
                         .into(binding.backgroundImagePromotedMovie)
@@ -162,13 +167,14 @@ class MainFragment : Fragment() {
 
         viewModel.getLiveDataForYouWatchedMovie().observe(viewLifecycleOwner) {
             when (it) {
-                com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Loading -> {
+                ApiResponse.Loading -> {
 
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Failure -> {
-                    Log.d("!", "Fail")
+                is ApiResponse.Failure -> {
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_for_you_movies))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
-                is com.example.mobile_cinema_lab1.datasource.network.ApiResponse.Success -> {
+                is ApiResponse.Success -> {
                     viewModel.itemLoaded()
                     if (it.data.isNotEmpty()) {
                         lastWatchedMovie = it.data.first()

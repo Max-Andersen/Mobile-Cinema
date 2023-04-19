@@ -8,8 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.mobile_cinema_lab1.datasource.network.models.Collection
-import com.example.mobile_cinema_lab1.domain.usecases.CreateCollectionUseCase
-import com.example.mobile_cinema_lab1.domain.usecases.InsertCollectionToDatabaseUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.CreateCollectionUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.db.InsertCollectionToDatabaseUseCase
 
 class CreateCollectionViewModel: BaseViewModel() {
 

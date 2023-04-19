@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 import com.example.mobile_cinema_lab1.datasource.network.models.Movie
-import com.example.mobile_cinema_lab1.domain.usecases.DeleteMovieFromCollectionUseCase
-import com.example.mobile_cinema_lab1.domain.usecases.GetMoviesInCollectionUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.DeleteMovieFromCollectionUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.GetMoviesInCollectionUseCase
 import com.example.mobile_cinema_lab1.ui.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

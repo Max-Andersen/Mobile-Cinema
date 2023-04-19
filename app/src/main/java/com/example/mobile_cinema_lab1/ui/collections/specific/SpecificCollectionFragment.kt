@@ -12,9 +12,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.SpecificCollectionScreenBinding
 import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 import com.example.mobile_cinema_lab1.forapplication.MainActivity
+import com.example.mobile_cinema_lab1.forapplication.errorhandling.ErrorDialogFragment
 import com.example.mobile_cinema_lab1.ui.collections.SimpleItemTouchHelperCollectionCallback
 import com.example.mobile_cinema_lab1.ui.collections.ISwipeAction
 
@@ -65,7 +67,10 @@ class SpecificCollectionFragment : Fragment() {
                     binding.progressBar.visibility = View.INVISIBLE
                     adapter.notifyDataSetChanged()
                 }
-                is ApiResponse.Failure -> {} // FAIL TO GET DATA
+                is ApiResponse.Failure -> {
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_collection_movies))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                }
                 else -> {}
             }
         }

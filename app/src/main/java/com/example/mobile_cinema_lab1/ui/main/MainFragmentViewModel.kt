@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.mobile_cinema_lab1.datasource.network.*
+import com.example.mobile_cinema_lab1.domain.usecases.movie.GetMoviesUseCase
 
 class MainFragmentViewModel: BaseViewModel() {
 
@@ -61,7 +62,7 @@ class MainFragmentViewModel: BaseViewModel() {
 
     fun getMovies(){
         mJobs.add(viewModelScope.launch(Dispatchers.IO){
-            com.example.mobile_cinema_lab1.domain.usecases.GetMoviesUseCase("new")().collect{
+            GetMoviesUseCase("new")().collect{
                 withContext(Dispatchers.Main){
                     newMoviesLiveData.value = it
                 }
@@ -69,7 +70,7 @@ class MainFragmentViewModel: BaseViewModel() {
         })
 
         mJobs.add(viewModelScope.launch(Dispatchers.IO){
-            com.example.mobile_cinema_lab1.domain.usecases.GetMoviesUseCase("lastView")().collect{
+            GetMoviesUseCase("lastView")().collect{
                 withContext(Dispatchers.Main){
                     youWatchedMovieLiveData.value = it
                 }
@@ -77,7 +78,7 @@ class MainFragmentViewModel: BaseViewModel() {
         })
 
         mJobs.add(viewModelScope.launch(Dispatchers.IO){
-            com.example.mobile_cinema_lab1.domain.usecases.GetMoviesUseCase("forMe")().collect{
+            GetMoviesUseCase("forMe")().collect{
                 withContext(Dispatchers.Main){
                     moviesForYouLiveData.value = it
                 }
@@ -85,7 +86,7 @@ class MainFragmentViewModel: BaseViewModel() {
         })
 
         mJobs.add(viewModelScope.launch(Dispatchers.IO){
-            com.example.mobile_cinema_lab1.domain.usecases.GetMoviesUseCase("inTrend")().collect{
+            GetMoviesUseCase("inTrend")().collect{
                 withContext(Dispatchers.Main){
                     inTrendMoviesLiveData.value = it
                 }

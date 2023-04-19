@@ -9,9 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.mobile_cinema_lab1.forapplication.MainActivity
 import com.example.mobile_cinema_lab1.NavGraphXmlDirections
+import com.example.mobile_cinema_lab1.R
 import com.example.mobile_cinema_lab1.databinding.SignInScreenBinding
 import com.example.mobile_cinema_lab1.forapplication.errorhandling.ErrorDialogFragment
-import com.example.mobile_cinema_lab1.datasource.network.ApiResponse.*
+import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 
 class SignInFragment : Fragment() {
     private lateinit var binding: SignInScreenBinding
@@ -49,18 +50,18 @@ class SignInFragment : Fragment() {
 
         viewModel.getLiveDataForRequest().observe(viewLifecycleOwner){
             when (it){
-                is Failure -> {
+                is ApiResponse.Failure -> {
                     binding.progressBar.visibility = View.INVISIBLE
                     val dialogFragment = ErrorDialogFragment(it.errorMessage)
                     dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
                 }
-                is Success -> {
+                is ApiResponse.Success -> {
                     sharedPreferencesUseCase.updateAccessToken(it.data.accessToken)
                     sharedPreferencesUseCase.updateRefreshToken(it.data.refreshToken)
 
                     viewModel.getUserInfo()
                 }
-                is Loading -> {
+                is ApiResponse.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
                 }
             }
@@ -68,15 +69,16 @@ class SignInFragment : Fragment() {
 
         viewModel.getLiveDataForUserInfo().observe(viewLifecycleOwner){
             when (it){
-                is Failure -> {
-                    // TODO( Problems )
+                is ApiResponse.Failure -> {
+                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_user_data))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
-                is Success -> {
+                is ApiResponse.Success -> {
                     sharedPreferencesUseCase.updateUserId(it.data.userId)
                     sharedPreferencesUseCase.updateUserName(it.data.firstName + " " + it.data.lastName)
                     findNavController().navigate(NavGraphXmlDirections.actionGlobalMainFragment())
                 }
-                is Loading -> {
+                is ApiResponse.Loading -> {
 
                 }
             }

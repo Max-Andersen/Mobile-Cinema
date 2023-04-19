@@ -40,9 +40,24 @@
     <string name="delete">Удалить</string>
 
     <string name="error_update_token">Ошибка обновления токена</string>
-    <string name="error_get_collections">"Не удалось загрузить коллекции"</string>
+    <string name="error_get_collections">Не удалось загрузить коллекции</string>
+    <string name="error_get_compilation">Не удалось загрузить подборку</string>
     <string name="error_dont_touch_here">Не надо сюда нажимать!!</string>
     <string name="error_films_is_empty">Фильмы закончились! :(</string>
+    <string name="error_get_episode_time">Ошибка получения времени просмотра</string>
+    <string name="error_get_episodes">Ошибка получения эпизодов</string>
+    <string name="error_get_user_data">Ошибка получения информации о пользователе</string>
+    <string name="error_create_favourite_collection">Ошибка создания избранного</string>
+    <string name="error_get_collection_movies">Ошибка получения фильмов коллекции</string>
+
+
+    <string name="error_get_new_movies">Ошибка получения новых фильмов</string>
+    <string name="error_get_in_trend_movies">Ошибка получения фильмов в тренде</string>
+    <string name="error_get_for_you_movies">Ошибка получения фильмов для вас</string>
+    <string name="error_get_last_watched_movie">Ошибка получения последнего просмотренного фильма</string>
+    <string name="error_get_cover_image">Ошибка получения фильма для обложки</string>
+
+
 
     <string name="chat_short_name">%1$s%2$s</string>
 

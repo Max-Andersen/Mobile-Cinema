@@ -3,8 +3,10 @@ package com.example.mobile_cinema_lab1.ui.collections.all
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
-import com.example.mobile_cinema_lab1.domain.usecases.DeleteCollectionFromDatabaseUseCase
-import com.example.mobile_cinema_lab1.domain.usecases.DeleteCollectionUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.db.DeleteCollectionFromDatabaseUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.DeleteCollectionUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.db.GetCollectionFromDatabaseUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.GetCollectionsUseCase
 import com.example.mobile_cinema_lab1.ui.BaseViewModel
 import com.example.mobile_cinema_lab1.ui.collections.CollectionUIModel
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +24,7 @@ class AllCollectionsViewModel : BaseViewModel() {
 
     fun getCollections() {
         mJobs.add(viewModelScope.launch(Dispatchers.IO) {
-            com.example.mobile_cinema_lab1.domain.usecases.GetCollectionsUseCase()().collect { data ->
+            GetCollectionsUseCase()().collect { data ->
                 if (data is ApiResponse.Success){
                     val list = mutableListOf<CollectionUIModel>()
                     runBlocking {
@@ -31,7 +33,7 @@ class AllCollectionsViewModel : BaseViewModel() {
                             var collectionName = remoteCollection.name
                             val collectionId = remoteCollection.collectionId
 
-                            com.example.mobile_cinema_lab1.domain.usecases.GetCollectionFromDatabaseUseCase(
+                            GetCollectionFromDatabaseUseCase(
                                 collectionId
                             )()?.let {
                                 iconId = it.iconId
