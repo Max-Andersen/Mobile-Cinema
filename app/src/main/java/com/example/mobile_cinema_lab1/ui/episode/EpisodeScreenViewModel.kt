@@ -7,18 +7,21 @@ import com.example.mobile_cinema_lab1.datasource.network.ApiResponse
 import com.example.mobile_cinema_lab1.datasource.network.models.MovieId
 import com.example.mobile_cinema_lab1.datasource.network.models.Time
 import com.example.mobile_cinema_lab1.domain.usecases.collection.AddMovieToCollectionUseCase
-import com.example.mobile_cinema_lab1.domain.usecases.collection.db.GetCollectionFromDatabaseUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.DeleteMovieFromCollectionUseCase
 import com.example.mobile_cinema_lab1.domain.usecases.collection.GetCollectionsUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.GetMoviesInCollectionUseCase
+import com.example.mobile_cinema_lab1.domain.usecases.collection.db.GetCollectionFromDatabaseUseCase
 import com.example.mobile_cinema_lab1.domain.usecases.episode.GetEpisodeTimeUseCase
 import com.example.mobile_cinema_lab1.domain.usecases.episode.SaveEpisodeTimeUseCase
 import com.example.mobile_cinema_lab1.ui.BaseViewModel
 import com.example.mobile_cinema_lab1.ui.collections.CollectionUIModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 
-class EpisodeScreenViewModel: BaseViewModel() {
+class EpisodeScreenViewModel : BaseViewModel() {
 
     private val episodeLiveData = MutableLiveData<ApiResponse<Time>>()
 
@@ -26,40 +29,49 @@ class EpisodeScreenViewModel: BaseViewModel() {
 
     private val navigationUpAccept = MutableLiveData(false)
 
-    private val navigationToChatAccept = MutableLiveData(false)
+    private val likeState = MutableLiveData<Boolean>()
 
     var collectionsLoaded = false
 
+    var isFavouriteLoaded = false
+
     var collectionList = mutableListOf<CollectionUIModel>()
 
+    private lateinit var favouriteCollection: String
+
+    private lateinit var movieId: String
+
     fun getLiveDataForEpisodeTime() = episodeLiveData
+
     fun getLiveDataForAddToCollection() = addToCollectionLiveData
 
     fun getLiveDataForNavigationUp() = navigationUpAccept
 
-    fun navigationSuccessful(){
+    fun getLiveDataForLikeState() = likeState
+
+    fun navigationSuccessful() {
         navigationUpAccept.value = false
     }
 
-    fun getEpisodeTime(episodeId: String){
-        mJobs.add(viewModelScope.launch(Dispatchers.IO){
+    fun getEpisodeTime(episodeId: String) {
+        mJobs.add(viewModelScope.launch(Dispatchers.IO) {
             GetEpisodeTimeUseCase(
                 episodeId
-            )().collect{ data ->
-                withContext(Dispatchers.Main){
+            )().collect { data ->
+                withContext(Dispatchers.Main) {
                     episodeLiveData.value = data
                 }
             }
         })
     }
 
-    fun saveEpisodeTime(episodeId: String, currentTime: Int, isNavigateUp: Boolean = false){
-        mJobs.add(viewModelScope.launch(Dispatchers.IO){
+    fun saveEpisodeTime(episodeId: String, currentTime: Int, isNavigateUp: Boolean = false) {
+        mJobs.add(viewModelScope.launch(Dispatchers.IO) {
             SaveEpisodeTimeUseCase(
                 episodeId,
                 currentTime
-            )().collect{
-                withContext(Dispatchers.Main){
+            )().collect {
+                withContext(Dispatchers.Main) {
                     when (it) {
                         is ApiResponse.Loading -> {
                             Log.d("!", "LOAD")
@@ -77,10 +89,11 @@ class EpisodeScreenViewModel: BaseViewModel() {
         })
     }
 
-    fun getCollections(){
+    fun getCollections(movieId: String) {
+        this@EpisodeScreenViewModel.movieId = movieId
         mJobs.add(viewModelScope.launch(Dispatchers.IO) {
-            GetCollectionsUseCase()().collect{
-                when (it){
+            GetCollectionsUseCase()().collect {
+                when (it) {
                     is ApiResponse.Success -> {
                         val list = mutableListOf<CollectionUIModel>()
                         it.data.forEach { collection ->
@@ -90,35 +103,70 @@ class EpisodeScreenViewModel: BaseViewModel() {
                             )()?.let { dbModel ->
                                 collectionName = dbModel.name
                             }
-                            list.add(CollectionUIModel(collection.collectionId, collectionName, "1"))
+
+                            if (collectionName == "Избранное") {
+                                favouriteCollection = collection.collectionId
+                                GetMoviesInCollectionUseCase(collection.collectionId)().collect { favourite ->
+                                    if (favourite is ApiResponse.Success) {
+                                        withContext(Dispatchers.Main) {
+                                            isFavouriteLoaded = true
+                                            likeState.value = favourite.data.find { movie ->
+                                                movie.movieId == movieId
+                                            } != null
+                                        }
+                                    }
+                                }
+                            }
+
+                            list.add(
+                                CollectionUIModel(
+                                    collection.collectionId,
+                                    collectionName,
+                                    "1"
+                                )
+                            )
                         }
 
                         collectionList.clear()
 
-                        list.forEach{ brr ->
+                        list.forEach { brr ->
                             collectionList.add(brr)
                         }
 
                         collectionsLoaded = true
                     }
-                    is ApiResponse.Failure -> { }
-                    is ApiResponse.Loading -> { }
+                    is ApiResponse.Failure -> {}
+                    is ApiResponse.Loading -> {}
                 }
             }
         })
     }
 
-    fun addMovieToCollection(position: Int, movieId: String){
-        Log.d("!!!!", "$position   ${collectionList[position].collectionId}   ${collectionList[position].name}  ")
-        mJobs.add(viewModelScope.launch(Dispatchers.IO){
+    fun addMovieToCollection(position: Int, movieId: String) {
+        mJobs.add(viewModelScope.launch(Dispatchers.IO) {
             AddMovieToCollectionUseCase(
                 collectionList[position].collectionId,
                 MovieId(movieId = movieId)
-            )().collect{
-                withContext(Dispatchers.Main){
+            )().collect {
+                withContext(Dispatchers.Main) {
                     addToCollectionLiveData.value = it
                 }
             }
         })
     }
+
+    fun changeState(){
+        if (likeState.value == true){
+            mJobs.add(viewModelScope.launch(Dispatchers.IO){
+                DeleteMovieFromCollectionUseCase(favouriteCollection, movieId)().collect()
+            })
+        } else{
+            mJobs.add(viewModelScope.launch(Dispatchers.IO){
+                AddMovieToCollectionUseCase(favouriteCollection, MovieId(movieId = movieId))().collect()
+            })
+        }
+        likeState.value = !likeState.value!!
+    }
+
+
 }

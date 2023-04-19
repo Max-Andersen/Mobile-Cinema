@@ -37,7 +37,7 @@ class EpisodeFragment : Fragment() {
     ): View {
         binding = EpisodeScreenBinding.inflate(inflater, container, false)
 
-        viewModel.getCollections()
+        viewModel.getCollections(args.movieData.movieId)
 
         val episode = args.episodeData
 
@@ -61,7 +61,8 @@ class EpisodeFragment : Fragment() {
             when (it) {
                 is ApiResponse.Loading -> {}
                 is ApiResponse.Failure -> {
-                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_episodes))
+                    val errorDialog =
+                        ErrorDialogFragment(requireContext().getString(R.string.error_get_episodes))
                     errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
@@ -75,7 +76,7 @@ class EpisodeFragment : Fragment() {
             when (it) {
                 is ApiResponse.Loading -> {}
                 is ApiResponse.Failure -> {
-                    Toast.makeText(requireContext(), it.code.toString(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), it.code, Toast.LENGTH_LONG).show()
                 }
                 is ApiResponse.Success -> {
                     Log.d("!", "SUCCESS ADD TO COLLECTION")
@@ -83,8 +84,8 @@ class EpisodeFragment : Fragment() {
             }
         }
 
-        viewModel.getLiveDataForNavigationUp().observe(viewLifecycleOwner){
-            if (it == true){
+        viewModel.getLiveDataForNavigationUp().observe(viewLifecycleOwner) {
+            if (it == true) {
                 viewModel.navigationSuccessful()
                 findNavController().navigateUp()
             }
@@ -115,6 +116,34 @@ class EpisodeFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
+        viewModel.getLiveDataForLikeState().observe(viewLifecycleOwner) {
+            binding.likeButton.visibility = View.INVISIBLE
+
+            if (viewModel.isFavouriteLoaded) {     // first state, need only image without animation
+                viewModel.isFavouriteLoaded = false
+                binding.likeButton.visibility = View.VISIBLE
+                if (it) {
+                    binding.likeButton.setImageResource(R.drawable.full_heart)
+                } else {
+                    binding.likeButton.setImageResource(R.drawable.empty_heart)
+                }
+            } else{
+                when (it) {
+                    true -> {
+                        binding.unlikeAnimation.visibility = View.INVISIBLE
+                        binding.likeAnimation.visibility = View.VISIBLE
+                        binding.likeAnimation.playAnimation()
+                    }
+                    false -> {
+                        binding.likeAnimation.visibility = View.INVISIBLE
+                        binding.unlikeAnimation.visibility = View.VISIBLE
+                        binding.unlikeAnimation.playAnimation()
+                    }
+                }
+            }
+
+        }
+
         binding.backButton.setOnClickListener {
             callback.handleOnBackPressed()
         }
@@ -123,6 +152,26 @@ class EpisodeFragment : Fragment() {
             if (viewModel.collectionsLoaded) {
                 showPopupMenu(binding.addToCollection)
             }
+        }
+
+        binding.likeAnimation.addAnimatorUpdateListener {
+            if (it.animatedValue as Float == 0.98019606f) {
+                binding.likeAnimation.visibility = View.INVISIBLE
+                binding.likeButton.visibility = View.VISIBLE
+                binding.likeButton.setImageResource(R.drawable.full_heart)
+            }
+        }
+
+        binding.unlikeAnimation.addAnimatorUpdateListener {
+            if (it.animatedValue as Float == 0.9869719f) {
+                binding.unlikeAnimation.visibility = View.INVISIBLE
+                binding.likeButton.visibility = View.VISIBLE
+                binding.likeButton.setImageResource(R.drawable.empty_heart)
+            }
+        }
+
+        binding.likeButton.setOnClickListener {
+            changeLikeState()
         }
 
         binding.discussionButton.setOnClickListener {
@@ -139,6 +188,10 @@ class EpisodeFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun changeLikeState() {
+        viewModel.changeState()
     }
 
 

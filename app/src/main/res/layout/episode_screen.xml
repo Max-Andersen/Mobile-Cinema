@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
+
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="0dp"
@@ -98,20 +99,51 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/discussionButton"
-        app:layout_constraintEnd_toStartOf="@+id/imageView14"
+        app:layout_constraintEnd_toStartOf="@+id/likeButton"
         app:layout_constraintStart_toEndOf="@+id/discussionButton"
         app:layout_constraintTop_toTopOf="@+id/discussionButton"
         app:srcCompat="@drawable/plus" />
 
     <ImageView
-        android:id="@+id/imageView14"
+        android:id="@+id/likeButton"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/addToCollection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/addToCollection"
         app:srcCompat="@drawable/empty_heart" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/likeAnimation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="-12dp"
+        android:layout_marginTop="-13dp"
+        android:layout_marginEnd="-8dp"
+        android:layout_marginBottom="-8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/likeButton"
+        app:layout_constraintEnd_toEndOf="@+id/likeButton"
+        app:layout_constraintStart_toStartOf="@+id/likeButton"
+        app:layout_constraintTop_toTopOf="@+id/likeButton"
+        app:lottie_rawRes="@raw/heart_like_animation" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/unlikeAnimation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="-13dp"
+        android:layout_marginTop="-14dp"
+        android:layout_marginEnd="-9dp"
+        android:layout_marginBottom="-9dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/likeButton"
+        app:layout_constraintEnd_toEndOf="@+id/likeButton"
+        app:layout_constraintStart_toStartOf="@+id/likeButton"
+        app:layout_constraintTop_toTopOf="@+id/likeButton"
+        app:lottie_rawRes="@raw/heart_unlike_animation" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
