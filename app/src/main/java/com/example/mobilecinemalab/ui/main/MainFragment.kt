@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
-import com.example.mobilecinemalab.forapplication.MainActivity
 import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.databinding.MainFrameBinding
 import com.example.mobilecinemalab.databinding.VerticalImageItemForRecyclerviewBinding
 import com.example.mobilecinemalab.datasource.network.ApiResponse
 import com.example.mobilecinemalab.datasource.network.models.Movie
+import com.example.mobilecinemalab.forapplication.MainActivity
 import com.example.mobilecinemalab.forapplication.errorhandling.ErrorDialogFragment
 import com.example.mobilecinemalab.navigationmodels.getNavigationModel
 
@@ -73,6 +73,12 @@ class MainFragment : Fragment() {
             )
         }
 
+        binding.selectPreferencesButton.setOnClickListener {
+            val dialogFragment =
+                ErrorDialogFragment(requireContext().getString(R.string.error_dont_touch_here))
+            dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
+        }
+
         viewModel.getMovies()
         updateUi()
 
@@ -90,7 +96,8 @@ class MainFragment : Fragment() {
 
                 }
                 is ApiResponse.Failure -> {
-                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_in_trend_movies))
+                    val errorDialog =
+                        ErrorDialogFragment(requireContext().getString(R.string.error_get_in_trend_movies))
                     errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
@@ -111,7 +118,8 @@ class MainFragment : Fragment() {
 
                 }
                 is ApiResponse.Failure -> {
-                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_for_you_movies))
+                    val errorDialog =
+                        ErrorDialogFragment(requireContext().getString(R.string.error_get_for_you_movies))
                     errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
@@ -131,7 +139,8 @@ class MainFragment : Fragment() {
 
                 }
                 is ApiResponse.Failure -> {
-                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_new_movies))
+                    val errorDialog =
+                        ErrorDialogFragment(requireContext().getString(R.string.error_get_new_movies))
                     errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
@@ -151,7 +160,8 @@ class MainFragment : Fragment() {
 
                 }
                 is ApiResponse.Failure -> {
-                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_cover_image))
+                    val errorDialog =
+                        ErrorDialogFragment(requireContext().getString(R.string.error_get_cover_image))
                     errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
@@ -170,7 +180,8 @@ class MainFragment : Fragment() {
 
                 }
                 is ApiResponse.Failure -> {
-                    val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_for_you_movies))
+                    val errorDialog =
+                        ErrorDialogFragment(requireContext().getString(R.string.error_get_for_you_movies))
                     errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
@@ -187,8 +198,8 @@ class MainFragment : Fragment() {
             }
         }
 
-        viewModel.getLiveDataForLoadedItems().observe(viewLifecycleOwner){
-            if (it >= 5){
+        viewModel.getLiveDataForLoadedItems().observe(viewLifecycleOwner) {
+            if (it >= 5) {
                 binding.progressBar.visibility = View.INVISIBLE
             }
         }
