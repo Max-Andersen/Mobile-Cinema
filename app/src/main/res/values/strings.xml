@@ -56,9 +56,13 @@
     <string name="error_get_for_you_movies">Ошибка получения фильмов для вас</string>
     <string name="error_get_last_watched_movie">Ошибка получения последнего просмотренного фильма</string>
     <string name="error_get_cover_image">Ошибка получения фильма для обложки</string>
+    <string name="error_send_avatar">Ошибка загрузки аватарки</string>
+    <string name="error_get_permissions">Нет доступа к медиа</string>
 
 
 
     <string name="chat_short_name">%1$s%2$s</string>
+    <string name="gallery">Галерея</string>
+    <string name="camera">Камера</string>
 
 </resources>

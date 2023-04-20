@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.main.MainFragment"
+        android:name="com.example.mobilecinemalab.ui.main.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/main_frame">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/collectionFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.collections.all.AllCollectionFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.all.AllCollectionFragment"
         android:label="CollectionFragment"
         tools:layout="@layout/all_collection_screen" >
         <action
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/compilationFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.compilation.CompilationFragment"
+        android:name="com.example.mobilecinemalab.ui.compilation.CompilationFragment"
         android:label="CompilationFragment"
         tools:layout="@layout/compilation_screen">
         <action
@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.profile.ProfileFragment"
+        android:name="com.example.mobilecinemalab.ui.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/profile_screen" >
         <action
@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.auth.register.SignUpFragment"
+        android:name="com.example.mobilecinemalab.ui.auth.register.SignUpFragment"
         android:label="SignUpFragment"
         tools:layout="@layout/sign_up_screen">
         <action
@@ -67,7 +67,7 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.auth.login.SignInFragment"
+        android:name="com.example.mobilecinemalab.ui.auth.login.SignInFragment"
         android:label="SignInFragment"
         tools:layout="@layout/sign_in_screen">
         <action
@@ -84,7 +84,7 @@
 
     <fragment
         android:id="@+id/movieFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.movie.MovieFragment"
+        android:name="com.example.mobilecinemalab.ui.movie.MovieFragment"
         android:label="MovieFragment"
         tools:layout="@layout/movie_screen">
         <action
@@ -92,7 +92,7 @@
             app:destination="@id/episodeFragment" />
         <argument
             android:name="selectedMovie"
-            app:argType="com.example.mobile_cinema_lab1.navigationmodels.Movie" />
+            app:argType="com.example.mobilecinemalab.navigationmodels.Movie" />
         <action
             android:id="@+id/action_movieFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
@@ -100,18 +100,18 @@
 
     <fragment
         android:id="@+id/episodeFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.episode.EpisodeFragment"
+        android:name="com.example.mobilecinemalab.ui.episode.EpisodeFragment"
         android:label="EpisodeFragment"
         tools:layout="@layout/episode_screen">
         <argument
             android:name="episodeData"
-            app:argType="com.example.mobile_cinema_lab1.navigationmodels.Episode" />
+            app:argType="com.example.mobilecinemalab.navigationmodels.Episode" />
         <action
             android:id="@+id/action_episodeFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
         <argument
             android:name="movieData"
-            app:argType="com.example.mobile_cinema_lab1.navigationmodels.Movie" />
+            app:argType="com.example.mobilecinemalab.navigationmodels.Movie" />
         <argument
             android:name="movieYearDuration"
             app:argType="string" />
@@ -119,21 +119,21 @@
 
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.chat.ChatFragment"
+        android:name="com.example.mobilecinemalab.ui.chat.ChatFragment"
         android:label="ChatFragment"
         tools:layout="@layout/chat_screen">
         <argument
             android:name="chatInfo"
-            app:argType="com.example.mobile_cinema_lab1.navigationmodels.Chat" />
+            app:argType="com.example.mobilecinemalab.navigationmodels.Chat" />
     </fragment>
     <fragment
         android:id="@+id/specificCollectionFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.collections.specific.SpecificCollectionFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.specific.SpecificCollectionFragment"
         android:label="SpecificCollectionFragment"
         tools:layout="@layout/specific_collection_screen" >
         <argument
             android:name="collectionShortModel"
-            app:argType="com.example.mobile_cinema_lab1.navigationmodels.Collection" />
+            app:argType="com.example.mobilecinemalab.navigationmodels.Collection" />
         <action
             android:id="@+id/action_specificCollectionFragment_to_editCollectionFragment"
             app:destination="@id/editCollectionFragment" />
@@ -147,7 +147,7 @@
 
     <fragment
         android:id="@+id/createCollectionFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.collections.create.CreateCollectionFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.create.CreateCollectionFragment"
         android:label="CreateCollectionFragment"
         tools:layout="@layout/create_collection" >
         <action
@@ -161,7 +161,7 @@
 
     <fragment
         android:id="@+id/editCollectionFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.collections.edit.EditCollectionFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.edit.EditCollectionFragment"
         android:label="EditCollectionFragment"
         tools:layout="@layout/edit_collection" >
         <action
@@ -172,7 +172,7 @@
             app:argType="string" />
         <argument
             android:name="collectionShortModel"
-            app:argType="com.example.mobile_cinema_lab1.navigationmodels.Collection" />
+            app:argType="com.example.mobilecinemalab.navigationmodels.Collection" />
         <action
             android:id="@+id/action_editCollectionFragment_to_collectionFragment"
             app:destination="@id/collectionFragment"
@@ -182,13 +182,13 @@
 
     <fragment
         android:id="@+id/selectCollectionIconFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.collections.SelectCollectionIconFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.SelectCollectionIconFragment"
         android:label="SelectCollectionIconFragment"
         tools:layout="@layout/all_collection_icons" />
     <fragment
         tools:layout="@layout/active_user_chats_screen"
         android:id="@+id/activeUserChatsFragment"
-        android:name="com.example.mobile_cinema_lab1.ui.profile.ActiveUserChatsFragment"
+        android:name="com.example.mobilecinemalab.ui.profile.ActiveUserChatsFragment"
         android:label="ActiveUserChatsFragment" >
         <action
             android:id="@+id/action_activeUserChatsFragment_to_chatFragment"

@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.mobile_cinema_lab1'
+    namespace 'com.example.mobilecinemalab'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.mobile_cinema_lab1"
+        applicationId "com.example.mobilecinemalab"
         minSdk 26
         targetSdk 33
         versionCode 1
