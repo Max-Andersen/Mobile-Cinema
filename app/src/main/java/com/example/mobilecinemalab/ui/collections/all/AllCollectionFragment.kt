@@ -15,14 +15,15 @@ import com.example.mobilecinemalab.databinding.AllCollectionScreenBinding
 import com.example.mobilecinemalab.datasource.network.ApiResponse
 import com.example.mobilecinemalab.forapplication.errorhandling.ErrorDialogFragment
 import com.example.mobilecinemalab.forapplication.MainActivity
-import com.example.mobilecinemalab.ui.collections.*
+import com.example.mobilecinemalab.ui._custombehavior.ISwipeAction
+import com.example.mobilecinemalab.ui._custombehavior.SimpleItemTouchHelperCollectionCallback
 
 class AllCollectionFragment : Fragment() {
     private lateinit var binding: AllCollectionScreenBinding
 
     private val viewModel by lazy { ViewModelProvider(this)[AllCollectionsViewModel::class.java] }
 
-    private lateinit var adapter: CollectionActionI
+    private lateinit var adapter: CollectionSwipeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +34,7 @@ class AllCollectionFragment : Fragment() {
 
         (requireActivity() as MainActivity).showBottomNavigation()
 
-        adapter = CollectionActionI(viewModel.userCollections, object : ISwipeAction{
+        adapter = CollectionSwipeAdapter(viewModel.userCollections, object : ISwipeAction {
             override fun deleteElement(position: Int) {
                 viewModel.deleteCollection(position)
             }
@@ -78,7 +79,6 @@ class AllCollectionFragment : Fragment() {
 
         return binding.root
     }
-
 
 
 }

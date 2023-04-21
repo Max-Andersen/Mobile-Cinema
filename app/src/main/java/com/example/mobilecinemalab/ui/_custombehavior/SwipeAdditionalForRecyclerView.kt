@@ -1,4 +1,4 @@
-package com.example.mobilecinemalab.ui.collections
+package com.example.mobilecinemalab.ui._custombehavior
 
 import android.graphics.Canvas
 import android.graphics.Rect

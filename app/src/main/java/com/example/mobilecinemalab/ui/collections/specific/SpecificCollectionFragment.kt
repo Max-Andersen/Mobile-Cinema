@@ -17,8 +17,8 @@ import com.example.mobilecinemalab.databinding.SpecificCollectionScreenBinding
 import com.example.mobilecinemalab.datasource.network.ApiResponse
 import com.example.mobilecinemalab.forapplication.MainActivity
 import com.example.mobilecinemalab.forapplication.errorhandling.ErrorDialogFragment
-import com.example.mobilecinemalab.ui.collections.SimpleItemTouchHelperCollectionCallback
-import com.example.mobilecinemalab.ui.collections.ISwipeAction
+import com.example.mobilecinemalab.ui._custombehavior.SimpleItemTouchHelperCollectionCallback
+import com.example.mobilecinemalab.ui._custombehavior.ISwipeAction
 
 class SpecificCollectionFragment : Fragment() {
     private lateinit var binding: SpecificCollectionScreenBinding
@@ -75,7 +75,7 @@ class SpecificCollectionFragment : Fragment() {
             }
         }
 
-        adapter = CollectionMovieActionI(viewModel.movies, object : ISwipeAction{
+        adapter = CollectionMovieActionI(viewModel.movies, object : ISwipeAction {
             override fun deleteElement(position: Int) {
                 viewModel.deleteMovieFromCollection(position)
             }

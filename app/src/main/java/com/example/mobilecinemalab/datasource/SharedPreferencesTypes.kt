@@ -7,6 +7,8 @@ class SharedPreferencesTypes {
         const val UserId: String = "user_id"
         const val UserName: String = "user_name"
 
-        val allTypes = listOf(AccessToken, RefreshToken, UserName, UserId)
+        const val FirstLaunch: String = "first_launch"
+
+        val allCleanableTypes = listOf(AccessToken, RefreshToken, UserName, UserId)
     }
 }

@@ -11,17 +11,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.mobilecinemalab.forapplication.MainActivity
 import com.example.mobilecinemalab.R
-import com.example.mobilecinemalab.databinding.EpisodeCardBinding
-import com.example.mobilecinemalab.databinding.HorizontalImageItemForRecyclerviewBinding
 import com.example.mobilecinemalab.databinding.MovieScreenBinding
 import com.example.mobilecinemalab.datasource.network.ApiResponse
 import com.example.mobilecinemalab.datasource.network.models.Episode
 import com.example.mobilecinemalab.forapplication.errorhandling.ErrorDialogFragment
-import com.example.mobilecinemalab.navigationmodels.getNavigationModel
+import com.example.mobilecinemalab.ui._custombehavior.MarginItemDecoration
+import com.example.mobilecinemalab.ui._custombehavior.getYearDurationOfMovie
+import com.example.mobilecinemalab.ui.movie.episodes.EpisodeAdapter
+import com.example.mobilecinemalab.ui.movie.images.MovieImageAdapter
 import com.google.android.material.chip.Chip
 
 class MovieFragment : Fragment() {
@@ -46,16 +46,18 @@ class MovieFragment : Fragment() {
 
         viewModel.getEpisodesOfMovie(movie.movieId)
 
-        episodesAdapter = EpisodeAdapter(viewModel.episodesList)
+        episodesAdapter = EpisodeAdapter(viewModel.episodesList, movie){
+            getYearDurationOfMovie(viewModel.episodesList)
+        }
 
         binding.episodesRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.imagesRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
 
-        binding.imagesRecyclerView.adapter = MovieAdapter(movie)
+        binding.imagesRecyclerView.adapter = MovieImageAdapter(movie)
 
-        val itemDecoration = (requireActivity() as MainActivity).getMarginItemDecoration(16)
+        val itemDecoration = MarginItemDecoration(16)
 
         binding.imagesRecyclerView.addItemDecoration(itemDecoration)
 
@@ -79,17 +81,7 @@ class MovieFragment : Fragment() {
 
         binding.promotedMovieName.text = movie.name
 
-        movie.tags.forEach {
-            val chip = inflate(
-                context,
-                R.layout.tag_chip,
-                null
-            ) as Chip
-            chip.text = it.tagName
-
-            binding.chipGroup.addView(chip)
-        }
-
+        fillTags()
 
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
@@ -115,10 +107,7 @@ class MovieFragment : Fragment() {
                 }
                 is ApiResponse.Success -> {
                     binding.episodesProgressBar.visibility = View.INVISIBLE
-                    viewModel.episodesList.clear()
-                    it.data.forEach { movie ->
-                        viewModel.episodesList.add(movie)
-                    }
+                    viewModel.saveEpisodes(it.data)
                     episodesAdapter.notifyDataSetChanged()
                 }
             }
@@ -131,97 +120,17 @@ class MovieFragment : Fragment() {
         return binding.root
     }
 
+    private fun fillTags() {
+        movie.tags.forEach {
+            val chip = inflate(
+                context,
+                R.layout.tag_chip,
+                null
+            ) as Chip
+            chip.text = it.tagName
 
-    private inner class ImageHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val binding by viewBinding(HorizontalImageItemForRecyclerviewBinding::bind)
-
-        fun bind(data: String) {
-            Glide.with(requireActivity()).load(data).into(binding.collectionImage)
+            binding.chipGroup.addView(chip)
         }
     }
-
-    private inner class MovieAdapter(var movie: com.example.mobilecinemalab.navigationmodels.Movie) :
-        RecyclerView.Adapter<ImageHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
-            val view =
-                layoutInflater.inflate(
-                    R.layout.horizontal_image_item_for_recyclerview,
-                    parent,
-                    false
-                )
-            return ImageHolder(view)
-        }
-
-        override fun getItemCount(): Int {
-            return movie.imageUrls.size
-        }
-
-        override fun onBindViewHolder(holder: ImageHolder, position: Int) {
-            val movie = movie.imageUrls[position]
-            holder.bind(movie)
-        }
-
-
-    }
-
-
-    private inner class EpisodeHolder(view: View) : RecyclerView.ViewHolder(view),
-        View.OnClickListener {
-        private lateinit var data: Episode
-
-        private val binding by viewBinding(EpisodeCardBinding::bind)
-
-        fun bind(data: Episode) {
-            this.data = data
-            Glide.with(requireActivity()).load(data.preview).into(binding.episodeImage)
-            binding.episodeDescription.text = data.description
-            binding.episodeName.text = data.name
-            binding.episodeYear.text = data.year.toString()
-        }
-
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(p0: View?) {
-            findNavController().navigate(
-                MovieFragmentDirections.actionMovieFragmentToEpisodeFragment(
-                    data.getNavigationModel(),
-                    movie,
-                    getYearDurationOfMovie(viewModel.episodesList)
-                )
-            )
-        }
-    }
-
-    fun getYearDurationOfMovie(episodes: ArrayList<Episode>): String {
-        val list = mutableListOf<Int>()
-        episodes.forEach { list.add(it.year) }
-        list.sort()
-        return if (list.first() != list.last()) "${list.first()} - ${list.last()}" else "${list.first()}"
-    }
-
-    private inner class EpisodeAdapter(var movie: List<Episode>) :
-        RecyclerView.Adapter<EpisodeHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeHolder {
-            val view =
-                layoutInflater.inflate(
-                    R.layout.episode_card,
-                    parent,
-                    false
-                )
-            return EpisodeHolder(view)
-        }
-
-        override fun getItemCount(): Int {
-            return movie.size
-        }
-
-        override fun onBindViewHolder(holder: EpisodeHolder, position: Int) {
-            val movie = movie[position]
-            holder.bind(movie)
-        }
-    }
-
 
 }

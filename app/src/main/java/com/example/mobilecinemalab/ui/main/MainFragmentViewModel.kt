@@ -9,6 +9,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.mobilecinemalab.datasource.network.*
+import com.example.mobilecinemalab.datasource.network.models.EpisodeShort
+import com.example.mobilecinemalab.domain.usecases.GetCoverImageUseCase
+import com.example.mobilecinemalab.domain.usecases.movie.GetHistoryUseCase
 import com.example.mobilecinemalab.domain.usecases.movie.GetMoviesUseCase
 
 class MainFragmentViewModel: BaseViewModel() {
@@ -18,9 +21,9 @@ class MainFragmentViewModel: BaseViewModel() {
     private val newMoviesLiveData = MutableLiveData<ApiResponse<List<Movie>>>()
     private val moviesForYouLiveData = MutableLiveData<ApiResponse<List<Movie>>>()
     private val coverImageLiveData = MutableLiveData<ApiResponse<CoverImage>>()
+    private val historyLiveData = MutableLiveData<ApiResponse<List<EpisodeShort>>>()
 
     private val itemsLoadedLiveData = MutableLiveData(0)
-
 
     var inTrendMovies = arrayListOf<Movie>()
     var newMovies = arrayListOf<Movie>()
@@ -57,8 +60,8 @@ class MainFragmentViewModel: BaseViewModel() {
     fun getLiveDataForNewMovies() = newMoviesLiveData
     fun getLiveDataForMoviesForYou() = moviesForYouLiveData
     fun getLiveDataForCoverImage() = coverImageLiveData
-
     fun getLiveDataForLoadedItems() = itemsLoadedLiveData
+    fun getLiveDataForHistory() = historyLiveData
 
     fun getMovies(){
         mJobs.add(viewModelScope.launch(Dispatchers.IO){
@@ -94,9 +97,17 @@ class MainFragmentViewModel: BaseViewModel() {
         })
 
         mJobs.add(viewModelScope.launch(Dispatchers.IO){
-            com.example.mobilecinemalab.domain.usecases.GetCoverImageUseCase()().collect{
+            GetCoverImageUseCase()().collect{
                 withContext(Dispatchers.Main){
                     coverImageLiveData.value = it
+                }
+            }
+        })
+
+        mJobs.add(viewModelScope.launch(Dispatchers.IO){
+            GetHistoryUseCase()().collect{
+                withContext(Dispatchers.Main){
+                    historyLiveData.value = it
                 }
             }
         })

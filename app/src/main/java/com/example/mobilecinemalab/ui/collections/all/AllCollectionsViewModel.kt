@@ -48,7 +48,9 @@ class AllCollectionsViewModel : BaseViewModel() {
                         userCollections.add(it)
                     }
 
-                    Collections.swap(userCollections, userCollections.indexOfFirst { it.name == "Избранное" }, 0)
+                    val index = userCollections.indexOfFirst { it.name == "Избранное" }
+
+                    Collections.swap(userCollections, if (index == -1) 0 else index, 0)
 
 
                     withContext(Dispatchers.Main) {
@@ -56,11 +58,6 @@ class AllCollectionsViewModel : BaseViewModel() {
                     }
                 }
 
-                if (data is ApiResponse.Failure){
-                    withContext(Dispatchers.Main) {
-                        _collections.value = ApiResponse.Success(listOf())
-                    }
-                }
 
             }
         })

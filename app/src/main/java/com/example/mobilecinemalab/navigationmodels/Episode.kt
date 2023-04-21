@@ -2,6 +2,7 @@ package com.example.mobilecinemalab.navigationmodels
 
 import android.os.Parcelable
 
+
 @kotlinx.parcelize.Parcelize
 data class Episode(
     val episodeId: String,
@@ -25,6 +26,20 @@ fun com.example.mobilecinemalab.datasource.network.models.Episode.getNavigationM
     year = this.year,
     images = this.images,
     runtime = this.runtime,
+    preview = this.preview,
+    filePath = this.filePath
+)
+
+
+fun com.example.mobilecinemalab.datasource.network.models.EpisodeShort.getNavigationModel() = Episode(
+    episodeId = this.episodeId,
+    name = episodeName,
+    description = "",
+    director = "",
+    stars = listOf(),
+    year = 0,
+    images = listOf(),
+    runtime = 0,
     preview = this.preview,
     filePath = this.filePath
 )

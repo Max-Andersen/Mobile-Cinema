@@ -23,8 +23,12 @@ class SharedPreferencesUseCase {
 
     fun updateUserName(newUserName: String) = SharedPreferences.updateSharedPrefs(types.UserName, newUserName)
 
+    fun getIsFirstLaunch() = SharedPreferences.getSharedPrefs(types.FirstLaunch)
+
+    fun updateIsFirstLaunch(newValue: String) = SharedPreferences.updateSharedPrefs(types.FirstLaunch, newValue)
+
     fun clearUserData(){
-        types.allTypes.forEach {
+        types.allCleanableTypes.forEach {
             SharedPreferences.updateSharedPrefs(it, "")
         }
     }

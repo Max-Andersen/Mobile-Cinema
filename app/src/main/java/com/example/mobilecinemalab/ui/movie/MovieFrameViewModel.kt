@@ -11,9 +11,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MovieFrameViewModel : BaseViewModel() {
-    var episodesList = arrayListOf<Episode>()
+    var episodesList = mutableListOf<Episode>()
 
     private val episodesLiveData = MutableLiveData<ApiResponse<List<Episode>>>()
+
+    fun saveEpisodes(episodes: List<Episode>){
+        episodesList.clear()
+        episodes.forEach { movie ->
+            episodesList.add(movie)
+        }
+    }
 
     fun getLiveDataForEpisodes() = episodesLiveData
 

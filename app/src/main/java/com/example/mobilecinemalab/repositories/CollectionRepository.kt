@@ -20,8 +20,8 @@ class CollectionRepository: ICollectionRepository, BaseRepository() {
     override fun getMoviesInCollection(collectionId: String) =
         apiRequestFlow { collectionsApi.getMoviesInCollection(collectionId) }
 
-    override fun addMoviesInCollection(collectionId: String, movieId: MovieId) =
-        apiRequestFlow { collectionsApi.addMovieInCollection(collectionId, movieId) }
+    override fun addMoviesInCollection(collectionId: String, movieId: String) =
+        apiRequestFlow { collectionsApi.addMovieInCollection(collectionId, MovieId(movieId) ) }
 
     override fun deleteMovieFromCollection(collectionId: String, movieId: String) =
         apiRequestFlow { collectionsApi.deleteMovieFromCollection(collectionId, movieId) }

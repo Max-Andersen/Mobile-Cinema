@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_movieFragment"
             app:destination="@id/movieFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_episodeFragment"
+            app:destination="@id/episodeFragment" />
     </fragment>
 
     <fragment
@@ -194,4 +197,5 @@
             android:id="@+id/action_activeUserChatsFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
     </fragment>
+    <action android:id="@+id/action_global_signUpFragment" app:destination="@id/signUpFragment" />
 </navigation>

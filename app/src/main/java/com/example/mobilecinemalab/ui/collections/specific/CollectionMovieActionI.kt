@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.datasource.network.models.Movie
-import com.example.mobilecinemalab.ui.collections.ISwipeAction
+import com.example.mobilecinemalab.ui._custombehavior.ISwipeAction
 
 class CollectionMovieActionI(
     private var movies: ArrayList<Movie>,

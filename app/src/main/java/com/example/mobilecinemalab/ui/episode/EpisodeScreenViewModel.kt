@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mobilecinemalab.datasource.network.ApiResponse
-import com.example.mobilecinemalab.datasource.network.models.MovieId
 import com.example.mobilecinemalab.datasource.network.models.Time
 import com.example.mobilecinemalab.domain.usecases.collection.AddMovieToCollectionUseCase
 import com.example.mobilecinemalab.domain.usecases.collection.DeleteMovieFromCollectionUseCase
@@ -146,7 +145,7 @@ class EpisodeScreenViewModel : BaseViewModel() {
         mJobs.add(viewModelScope.launch(Dispatchers.IO) {
             AddMovieToCollectionUseCase(
                 collectionList[position].collectionId,
-                MovieId(movieId = movieId)
+                movieId
             )().collect {
                 withContext(Dispatchers.Main) {
                     addToCollectionLiveData.value = it
@@ -155,14 +154,14 @@ class EpisodeScreenViewModel : BaseViewModel() {
         })
     }
 
-    fun changeState(){
-        if (likeState.value == true){
-            mJobs.add(viewModelScope.launch(Dispatchers.IO){
+    fun changeState() {
+        if (likeState.value == true) {
+            mJobs.add(viewModelScope.launch(Dispatchers.IO) {
                 DeleteMovieFromCollectionUseCase(favouriteCollection, movieId)().collect()
             })
-        } else{
-            mJobs.add(viewModelScope.launch(Dispatchers.IO){
-                AddMovieToCollectionUseCase(favouriteCollection, MovieId(movieId = movieId))().collect()
+        } else {
+            mJobs.add(viewModelScope.launch(Dispatchers.IO) {
+                AddMovieToCollectionUseCase(favouriteCollection, movieId)().collect()
             })
         }
         likeState.value = !likeState.value!!

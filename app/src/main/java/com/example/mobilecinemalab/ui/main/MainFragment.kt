@@ -5,20 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.databinding.MainFrameBinding
-import com.example.mobilecinemalab.databinding.VerticalImageItemForRecyclerviewBinding
 import com.example.mobilecinemalab.datasource.network.ApiResponse
+import com.example.mobilecinemalab.datasource.network.models.EpisodeShort
 import com.example.mobilecinemalab.datasource.network.models.Movie
 import com.example.mobilecinemalab.forapplication.MainActivity
 import com.example.mobilecinemalab.forapplication.errorhandling.ErrorDialogFragment
+import com.example.mobilecinemalab.navigationmodels.Episode
 import com.example.mobilecinemalab.navigationmodels.getNavigationModel
+import com.example.mobilecinemalab.ui._custombehavior.MarginItemDecoration
+import com.example.mobilecinemalab.navigationmodels.Movie as MovieNavigationModel
 
 
 class MainFragment : Fragment() {
@@ -30,7 +33,9 @@ class MainFragment : Fragment() {
     private lateinit var newMovieAdapter: MovieAdapter
     private lateinit var forYouAdapter: MovieAdapter
 
-    private lateinit var lastWatchedMovie: Movie
+    private lateinit var lastWatchedMovie: MovieNavigationModel
+    private lateinit var lastWatchedEpisode: Episode
+    private lateinit var lastWatchedMovieYearDuration: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,15 +43,23 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = MainFrameBinding.inflate(inflater, container, false)
+
         binding.watchPromotedMovie.setOnClickListener {
             val dialogFragment =
                 ErrorDialogFragment(requireContext().getString(R.string.error_dont_touch_here))
-            activity?.let { it1 -> dialogFragment.show(it1.supportFragmentManager, "Problems") }
+            dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
         }
 
-        inTrendAdapter = MovieAdapter(viewModel.inTrendMovies)
-        newMovieAdapter = MovieAdapter(viewModel.newMovies)
-        forYouAdapter = MovieAdapter(viewModel.moviesForYou)
+        binding.selectPreferencesButton.setOnClickListener {
+            val dialogFragment =
+                ErrorDialogFragment(requireContext().getString(R.string.error_dont_touch_here))
+            dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
+        }
+
+
+        inTrendAdapter = MovieAdapter(viewModel.inTrendMovies, "vertical")
+        newMovieAdapter = MovieAdapter(viewModel.newMovies, "horizontal")
+        forYouAdapter = MovieAdapter(viewModel.moviesForYou, "vertical")
 
         binding.inTrendRecyclerView.adapter = inTrendAdapter
         binding.newMoviesRecyclerView.adapter = newMovieAdapter
@@ -59,7 +72,7 @@ class MainFragment : Fragment() {
         binding.moviesForYouRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        val itemDecoration = (requireActivity() as MainActivity).getMarginItemDecoration(16)
+        val itemDecoration = MarginItemDecoration(16)
 
         binding.inTrendRecyclerView.addItemDecoration(itemDecoration)
         binding.newMoviesRecyclerView.addItemDecoration(itemDecoration)
@@ -67,22 +80,16 @@ class MainFragment : Fragment() {
 
         binding.lastWatchedMovieButton.setOnClickListener {
             findNavController().navigate(
-                MainFragmentDirections.actionMainFragmentToMovieFragment(
-                    lastWatchedMovie.getNavigationModel()
+                MainFragmentDirections.actionMainFragmentToEpisodeFragment(
+                    lastWatchedEpisode,
+                    lastWatchedMovie,
+                    lastWatchedMovieYearDuration
                 )
             )
         }
 
-        binding.selectPreferencesButton.setOnClickListener {
-            val dialogFragment =
-                ErrorDialogFragment(requireContext().getString(R.string.error_dont_touch_here))
-            dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
-        }
-
         viewModel.getMovies()
         updateUi()
-
-        binding.forYouGroup.visibility = View.GONE
 
         (requireActivity() as MainActivity).showBottomNavigation()
 
@@ -90,11 +97,10 @@ class MainFragment : Fragment() {
     }
 
     private fun updateUi() {
+
         viewModel.getLiveDataForInTrendMovies().observe(requireActivity()) {
             when (it) {
-                ApiResponse.Loading -> {
-
-                }
+                ApiResponse.Loading -> {  }
                 is ApiResponse.Failure -> {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_in_trend_movies))
@@ -114,9 +120,7 @@ class MainFragment : Fragment() {
 
         viewModel.getLiveDataForMoviesForYou().observe(requireActivity()) {
             when (it) {
-                ApiResponse.Loading -> {
-
-                }
+                ApiResponse.Loading -> {  }
                 is ApiResponse.Failure -> {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_for_you_movies))
@@ -135,9 +139,7 @@ class MainFragment : Fragment() {
 
         viewModel.getLiveDataForNewMovies().observe(requireActivity()) {
             when (it) {
-                ApiResponse.Loading -> {
-
-                }
+                ApiResponse.Loading -> {  }
                 is ApiResponse.Failure -> {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_new_movies))
@@ -156,9 +158,7 @@ class MainFragment : Fragment() {
 
         viewModel.getLiveDataForCoverImage().observe(viewLifecycleOwner) {
             when (it) {
-                ApiResponse.Loading -> {
-
-                }
+                ApiResponse.Loading -> {  }
                 is ApiResponse.Failure -> {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_cover_image))
@@ -174,77 +174,52 @@ class MainFragment : Fragment() {
             }
         }
 
-        viewModel.getLiveDataForYouWatchedMovie().observe(viewLifecycleOwner) {
-            when (it) {
-                ApiResponse.Loading -> {
+        viewModel.getLiveDataForHistory().combineWith(viewModel.getLiveDataForYouWatchedMovie())
+            .observe(viewLifecycleOwner) { lastPairState ->
 
-                }
-                is ApiResponse.Failure -> {
-                    val errorDialog =
-                        ErrorDialogFragment(requireContext().getString(R.string.error_get_for_you_movies))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
-                }
-                is ApiResponse.Success -> {
-                    viewModel.itemLoaded()
-                    if (it.data.isNotEmpty()) {
-                        lastWatchedMovie = it.data.first()
+                if (lastPairState.first is ApiResponse.Success && lastPairState.second is ApiResponse.Success) {
+                    val lastEpisode =
+                        (lastPairState.first as ApiResponse.Success<List<EpisodeShort>>).data.firstOrNull()
 
-                        Glide.with(requireActivity()).load(lastWatchedMovie.imageUrls.first())
+                    if (lastEpisode != null) {
+                        val movie =
+                            (lastPairState.second as ApiResponse.Success<List<Movie>>).data.find { it.movieId == lastEpisode.movieId }
+
+                        lastWatchedMovie = movie!!.getNavigationModel()
+                        lastWatchedEpisode = lastEpisode.getNavigationModel()
+                        lastWatchedMovieYearDuration = ""
+
+                        Glide.with(requireActivity()).load(movie.imageUrls.first())
                             .into(binding.lastWatchedMovie)
                         binding.lastWatchedMovieTitle.text = lastWatchedMovie.name
                         binding.lastWatchedMovieGroup.visibility = View.VISIBLE
+
+                        binding.lastWatchedMovieButton.isActivated = true
+                    } else {
+                        binding.lastWatchedMovieButton.isActivated = false
                     }
+
+                }
+
+                if (lastPairState.first is ApiResponse.Failure || lastPairState.second is ApiResponse.Failure) {
+                    val errorDialog =
+                        ErrorDialogFragment(requireContext().getString(R.string.error_get_last_watched_movie))
+                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
             }
-        }
+
 
         viewModel.getLiveDataForLoadedItems().observe(viewLifecycleOwner) {
-            if (it >= 5) {
+            if (it >= 4) {
                 binding.progressBar.visibility = View.INVISIBLE
             }
         }
     }
 
-    private inner class MovieHolder(view: View) : RecyclerView.ViewHolder(view),
-        View.OnClickListener {
-        private lateinit var data: Movie
-
-        private val binding by viewBinding(VerticalImageItemForRecyclerviewBinding::bind)
-
-        init {
-            itemView.setOnClickListener(this)
+    private fun <T, S> LiveData<T?>.combineWith(other: LiveData<S?>): LiveData<Pair<T?, S?>> =
+        MediatorLiveData<Pair<T?, S?>>().apply {
+            addSource(this@combineWith) { value = Pair(it, other.value) }
+            addSource(other) { value = Pair(this@combineWith.value, it) }
         }
 
-        fun bind(data: Movie) {
-            this.data = data
-            Glide.with(requireActivity()).load(data.poster).into(binding.collectionImage)
-        }
-
-        override fun onClick(p0: View?) {
-            findNavController().navigate(
-                MainFragmentDirections.actionMainFragmentToMovieFragment(
-                    data.getNavigationModel()
-                )
-            )
-        }
-    }
-
-    private inner class MovieAdapter(var movies: List<Movie>) :
-        RecyclerView.Adapter<MovieHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
-            val view =
-                layoutInflater.inflate(R.layout.vertical_image_item_for_recyclerview, parent, false)
-            return MovieHolder(view)
-        }
-
-        override fun getItemCount(): Int {
-            return movies.size
-        }
-
-        override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-            val movie = movies[position]
-            holder.bind(movie)
-        }
-
-    }
 }

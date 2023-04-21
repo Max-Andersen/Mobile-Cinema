@@ -1,6 +1,5 @@
 package com.example.mobilecinemalab.forapplication
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -8,11 +7,9 @@ import androidx.core.view.forEach
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilecinemalab.NavGraphXmlDirections
 import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.databinding.ActivityMainBinding
-
 import com.example.mobilecinemalab.domain.usecases.SharedPreferencesUseCase
 import com.example.mobilecinemalab.forapplication.errorhandling.ErrorDialogFragment
 import com.example.mobilecinemalab.forapplication.errorhandling.TroubleShooting
@@ -46,9 +43,15 @@ class MainActivity : AppCompatActivity() {
         dialogFragment = ErrorDialogFragment(getString(R.string.error_update_token))
 
 
-        if (SharedPreferencesUseCase().getAccessToken() != "") {
-            navController.navigate(NavGraphXmlDirections.actionGlobalMainFragment())
+        if (SharedPreferencesUseCase().getIsFirstLaunch() == ""){
+            navController.navigate(NavGraphXmlDirections.actionGlobalSignUpFragment())
+            SharedPreferencesUseCase().updateIsFirstLaunch("1")
+        } else{
+            if (SharedPreferencesUseCase().getAccessToken() != "") {
+                navController.navigate(NavGraphXmlDirections.actionGlobalMainFragment())
+            }
         }
+
 
         TroubleShooting.getLiveDataForRefreshTrouble().observe(this) {
             if (it == true) {
@@ -67,24 +70,5 @@ class MainActivity : AppCompatActivity() {
 
     fun hideBottomNavigation() {
         binding.bottomNavigation.visibility = View.INVISIBLE
-    }
-
-    class MarginItemDecoration(private val spaceSize: Int) : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect, view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            with(outRect) {
-                top = spaceSize
-                bottom = spaceSize
-                left = spaceSize
-                right = spaceSize
-            }
-        }
-    }
-
-    fun getMarginItemDecoration(dp: Int): MarginItemDecoration {
-        return MarginItemDecoration(dp)
     }
 }

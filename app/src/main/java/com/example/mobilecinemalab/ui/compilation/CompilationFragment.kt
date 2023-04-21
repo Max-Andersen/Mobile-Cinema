@@ -39,23 +39,7 @@ class CompilationFragment : Fragment(), CardStackListener {
 
         viewModel.getCompilation()
 
-        cardStackView = binding.stackView
-
-        manager = CardStackLayoutManager(requireContext(), this)
-        manager.setStackFrom(StackFrom.Top)
-        manager.setVisibleCount(3)
-        manager.setTranslationInterval(8.0f)
-        manager.setScaleInterval(0.95f)
-        manager.setSwipeThreshold(0.3f)
-        manager.setMaxDegree(30.0f)
-        manager.setDirections(Direction.HORIZONTAL)
-        manager.setCanScrollHorizontal(true)
-        manager.setCanScrollVertical(false)
-        manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
-        manager.setOverlayInterpolator(LinearInterpolator())
-        cardStackView.layoutManager = manager
-        cardStackView.adapter = adapter
-
+        iniStackView()
 
         binding.likeLayer.setOnClickListener {
             val setting = SwipeAnimationSetting.Builder()
@@ -95,6 +79,25 @@ class CompilationFragment : Fragment(), CardStackListener {
         return binding.root
     }
 
+    private fun iniStackView(){
+        cardStackView = binding.stackView
+
+        manager = CardStackLayoutManager(requireContext(), this)
+        manager.setStackFrom(StackFrom.Top)
+        manager.setVisibleCount(3)
+        manager.setTranslationInterval(8.0f)
+        manager.setScaleInterval(0.95f)
+        manager.setSwipeThreshold(0.3f)
+        manager.setMaxDegree(30.0f)
+        manager.setDirections(Direction.HORIZONTAL)
+        manager.setCanScrollHorizontal(true)
+        manager.setCanScrollVertical(false)
+        manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
+        manager.setOverlayInterpolator(LinearInterpolator())
+        cardStackView.layoutManager = manager
+        cardStackView.adapter = adapter
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getCompilationLiveData().observe(viewLifecycleOwner){
@@ -116,7 +119,6 @@ class CompilationFragment : Fragment(), CardStackListener {
         }
     }
 
-
     override fun onCardDragging(direction: Direction, ratio: Float) {
         Log.d("CardStackView", "onCardDragging: d = ${direction.name}, r = $ratio")
     }
@@ -125,11 +127,12 @@ class CompilationFragment : Fragment(), CardStackListener {
 
         if (direction == Direction.Left){
             viewModel.onDislikeClick()
+        } else{
+            viewModel.onLikeClick()
         }
 
         viewModel.nextItem()
         binding.titleText.text = viewModel.getCurrentItemText()
-        Log.d("CardStackView", "onCardSwiped: p = ${manager.topPosition}, d = $direction")
     }
 
     override fun onCardRewound() {

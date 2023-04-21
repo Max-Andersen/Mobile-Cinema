@@ -4,16 +4,23 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mobilecinemalab.datasource.network.ApiResponse
+import com.example.mobilecinemalab.datasource.network.models.Collection
 import com.example.mobilecinemalab.datasource.network.models.Movie
 import com.example.mobilecinemalab.domain.usecases.movie.GetMoviesUseCase
 import com.example.mobilecinemalab.domain.usecases.SetDislikeOnMovie
+import com.example.mobilecinemalab.domain.usecases.collection.AddMovieToCollectionUseCase
+import com.example.mobilecinemalab.domain.usecases.collection.GetCollectionsUseCase
 import com.example.mobilecinemalab.ui.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CompilationViewModel : BaseViewModel() {
-    private val compilationLiveData = MutableLiveData<com.example.mobilecinemalab.datasource.network.ApiResponse<List<Movie>>>()
+
+    private val compilationLiveData = MutableLiveData<ApiResponse<List<Movie>>>()
+
+    private var favouriteCollection: Collection? = null
 
     var compilationMovies = arrayListOf<Movie>()
 
@@ -47,6 +54,12 @@ class CompilationViewModel : BaseViewModel() {
                     compilationLiveData.value = it
                 }
             }
+
+            GetCollectionsUseCase()().collect{
+                if (it is ApiResponse.Success){
+                    favouriteCollection = it.data.find { item -> item.name == "Избранное" }
+                }
+            }
         })
 
     }
@@ -72,5 +85,13 @@ class CompilationViewModel : BaseViewModel() {
             }
         })
 
+    }
+
+    fun onLikeClick(){
+        mJobs.add(viewModelScope.launch(Dispatchers.IO){
+            if (favouriteCollection != null && getCurrentItem() != null){
+                AddMovieToCollectionUseCase(favouriteCollection!!.collectionId, getCurrentItem()!!.movieId)().collect()
+            }
+        })
     }
 }

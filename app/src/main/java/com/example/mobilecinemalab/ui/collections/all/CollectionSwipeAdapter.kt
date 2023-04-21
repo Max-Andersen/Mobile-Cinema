@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.ui.collections.CollectionUIModel
-import com.example.mobilecinemalab.ui.collections.ISwipeAction
+import com.example.mobilecinemalab.ui._custombehavior.ISwipeAction
 
-class CollectionActionI(private val collections: MutableList<CollectionUIModel>, private val swipeAction: ISwipeAction) :
+class CollectionSwipeAdapter(private val collections: MutableList<CollectionUIModel>, private val swipeAction: ISwipeAction) :
     RecyclerView.Adapter<CollectionItemViewHolder>(), ISwipeAction {
 
     override fun onCreateViewHolder(
@@ -31,8 +31,6 @@ class CollectionActionI(private val collections: MutableList<CollectionUIModel>,
 
     override fun deleteElement(position: Int) {
         swipeAction.deleteElement(position)
-        //viewModel.deleteCollection(collections[position].collectionId)
-        //collections.removeAt(position)
         notifyDataSetChanged()
     }
 }
