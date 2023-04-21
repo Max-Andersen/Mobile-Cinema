@@ -12,8 +12,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -21,6 +19,11 @@ import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.databinding.EpisodeScreenBinding
 import com.example.mobilecinemalab.datasource.network.ApiResponse
 import com.example.mobilecinemalab.forapplication.errorhandling.ErrorDialogFragment
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem.fromUri
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.trackselection.TrackSelector
+
 
 class EpisodeFragment : Fragment() {
 
@@ -29,6 +32,8 @@ class EpisodeFragment : Fragment() {
     private val args: EpisodeFragmentArgs by navArgs()
 
     private val viewModel by lazy { ViewModelProvider(this)[EpisodeScreenViewModel::class.java] }
+
+    private lateinit var player: ExoPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,20 +45,9 @@ class EpisodeFragment : Fragment() {
         viewModel.getCollections(args.movieData.movieId)
 
         val episode = args.episodeData
-
         val movie = args.movieData
 
-        val player = ExoPlayer.Builder(requireContext()).build()
-
-        binding.playerView.player = player
-
-        val url = episode.filePath
-        // Build the media item.
-        val mediaItem = MediaItem.fromUri(url)
-        // Set the media item to be played.
-        player.setMediaItem(mediaItem)
-        // Prepare the player.
-        player.prepare()
+        initPlayer()
 
         viewModel.getEpisodeTime(args.episodeData.episodeId)
 
@@ -62,7 +56,7 @@ class EpisodeFragment : Fragment() {
                 is ApiResponse.Loading -> {}
                 is ApiResponse.Failure -> {
                     val errorDialog =
-                        ErrorDialogFragment(requireContext().getString(R.string.error_get_episodes))
+                        ErrorDialogFragment(requireContext().getString(R.string.error_get_episode_time))
                     errorDialog.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
@@ -190,6 +184,24 @@ class EpisodeFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun initPlayer() {
+        player = ExoPlayer.Builder(requireContext()).build()
+        player.playWhenReady = true
+
+        binding.playerView.setOnClickListener {
+            if (player.isPlaying) player.pause()
+            else player.play()
+        }
+
+        binding.playerView.player = player
+
+        val url = args.episodeData.filePath
+        val mediaItem = fromUri(url)
+
+        player.setMediaItem(mediaItem)
+        player.prepare()
     }
 
     private fun changeLikeState() {

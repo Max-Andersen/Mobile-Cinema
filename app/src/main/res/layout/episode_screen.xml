@@ -7,19 +7,20 @@
     android:background="@color/background">
 
 
-    <androidx.media3.ui.PlayerView
+    <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="0dp"
         android:layout_height="210dp"
-
+        app:controller_layout_id="@layout/player_controller"
+        app:hide_on_touch="true"
+        app:keep_content_on_player_reset="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:resize_mode="fit"
-        app:use_controller="true" >
-
-    </androidx.media3.ui.PlayerView>
+        app:player_layout_id="@layout/exo_player_view"
+        app:show_buffering="when_playing"
+        app:use_controller="true" />
 
     <TextView
         android:id="@+id/episodeTitle"
@@ -54,8 +55,8 @@
         android:id="@+id/movieImage"
         android:layout_width="60dp"
         android:layout_height="90dp"
-        android:scaleType="centerCrop"
         android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/episodeTitle"
         app:srcCompat="@drawable/lucifer" />

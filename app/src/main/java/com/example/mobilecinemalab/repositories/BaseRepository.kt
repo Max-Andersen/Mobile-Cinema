@@ -14,7 +14,7 @@ abstract class BaseRepository {
     protected fun <T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T>> = flow {
         emit(ApiResponse.Loading)
 
-        withTimeoutOrNull(15000L) {
+        withTimeoutOrNull(20000L) {
             val response = call()
 
             try {

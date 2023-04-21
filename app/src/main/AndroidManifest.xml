@@ -33,6 +33,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <!--            android:theme="@style/splashScreenTheme"-->
 
         <activity
             android:screenOrientation="portrait"

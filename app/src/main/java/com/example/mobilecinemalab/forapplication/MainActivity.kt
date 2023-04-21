@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dialogFragment: ErrorDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //setTheme(R.style.splashScreenTheme);
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)

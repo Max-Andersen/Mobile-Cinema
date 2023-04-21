@@ -60,7 +60,7 @@ class SignUpFragment : Fragment() {
             when (it) {
                 is ApiResponse.Failure -> {
                     binding.progressBar.visibility = View.INVISIBLE
-                    val dialogFragment = ErrorDialogFragment(it.errorMessage)
+                    val dialogFragment = ErrorDialogFragment(it.code)
                     dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
                 }
                 is ApiResponse.Success -> {
