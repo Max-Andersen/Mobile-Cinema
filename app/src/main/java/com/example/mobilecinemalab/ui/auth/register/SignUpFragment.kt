@@ -53,7 +53,7 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getLiveDataForValidation().observe(viewLifecycleOwner) {
             val dialogFragment = ErrorDialogFragment(it)
-            dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
+            dialogFragment.show(requireActivity().supportFragmentManager, getString(R.string.problems))
         }
 
         viewModel.getLiveDataForRequest().observe(viewLifecycleOwner) {
@@ -61,7 +61,7 @@ class SignUpFragment : Fragment() {
                 is ApiResponse.Failure -> {
                     binding.progressBar.visibility = View.INVISIBLE
                     val dialogFragment = ErrorDialogFragment(it.code)
-                    dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
+                    dialogFragment.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     sharedPreferencesUseCase.updateAccessToken(it.data.accessToken)
@@ -78,7 +78,7 @@ class SignUpFragment : Fragment() {
             when (it) {
                 is ApiResponse.Failure -> {
                     val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_user_data))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     sharedPreferencesUseCase.updateUserId(it.data.userId)
@@ -95,7 +95,7 @@ class SignUpFragment : Fragment() {
             when (it) {
                 is ApiResponse.Failure -> {
                     val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_create_favourite_collection))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     findNavController().navigate(NavGraphXmlDirections.actionGlobalMainFragment())

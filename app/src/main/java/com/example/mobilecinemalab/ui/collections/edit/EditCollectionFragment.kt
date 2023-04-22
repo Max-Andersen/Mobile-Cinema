@@ -10,12 +10,13 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.mobilecinemalab.ui.collections.CollectionIconsEnum
-import com.example.mobilecinemalab.forapplication.MainActivity
+import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.databinding.EditCollectionBinding
+import com.example.mobilecinemalab.forapplication.MainActivity
+import com.example.mobilecinemalab.ui.collections.CollectionIconsEnum
 import com.example.mobilecinemalab.ui.collections.SelectCollectionIconFragment
 
-class EditCollectionFragment: Fragment() {
+class EditCollectionFragment : Fragment() {
     private lateinit var binding: EditCollectionBinding
 
     private val args: EditCollectionFragmentArgs by navArgs()
@@ -32,10 +33,14 @@ class EditCollectionFragment: Fragment() {
         (requireActivity() as MainActivity).hideBottomNavigation()
 
         setFragmentResultListener(SelectCollectionIconFragment.ICON_RESULT_KEY) { _, bundle ->
-            viewModel.selectedIcon = bundle.getString("icon")!!
-            binding.selectedCollectionIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), CollectionIconsEnum.icons[viewModel.selectedIcon]!!))
+            viewModel.selectedIcon = bundle.getString(getString(R.string.icon))!!
+            binding.selectedCollectionIcon.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    CollectionIconsEnum.icons[viewModel.selectedIcon]!!
+                )
+            )
         }
-
 
         args.iconId.let {
             binding.selectedCollectionIcon.setImageResource(CollectionIconsEnum.icons[it]!!)
@@ -50,7 +55,10 @@ class EditCollectionFragment: Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            viewModel.saveChanges(args.collectionShortModel.collectionId, binding.enterCollectionName.text.toString())
+            viewModel.saveChanges(
+                args.collectionShortModel.collectionId,
+                binding.enterCollectionName.text.toString()
+            )
             findNavController().navigateUp()
         }
 

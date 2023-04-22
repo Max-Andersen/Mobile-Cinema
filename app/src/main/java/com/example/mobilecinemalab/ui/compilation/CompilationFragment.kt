@@ -71,7 +71,7 @@ class CompilationFragment : Fragment(), CardStackListener {
                 )
             } else{
                 val dialogFragment = ErrorDialogFragment(requireContext().getString(R.string.error_films_is_empty))
-                requireActivity().let { it1 -> dialogFragment.show(it1.supportFragmentManager, "Problems") }
+                requireActivity().let { it1 -> dialogFragment.show(it1.supportFragmentManager, getString(R.string.problems)) }
             }
 
         }
@@ -107,7 +107,7 @@ class CompilationFragment : Fragment(), CardStackListener {
                 }
                 is ApiResponse.Failure -> {
                     val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_compilation))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     binding.progressBar.visibility = View.INVISIBLE

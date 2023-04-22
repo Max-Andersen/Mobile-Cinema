@@ -68,7 +68,7 @@ class AllCollectionFragment : Fragment() {
                 is ApiResponse.Failure -> {
                     val dialogFragment =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_collections))
-                    dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
+                    dialogFragment.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     binding.progressBar.visibility = View.INVISIBLE

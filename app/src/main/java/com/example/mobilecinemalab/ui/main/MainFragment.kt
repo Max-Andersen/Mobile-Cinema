@@ -47,13 +47,13 @@ class MainFragment : Fragment() {
         binding.watchPromotedMovie.setOnClickListener {
             val dialogFragment =
                 ErrorDialogFragment(requireContext().getString(R.string.error_dont_touch_here))
-            dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
+            dialogFragment.show(requireActivity().supportFragmentManager, getString(R.string.problems))
         }
 
         binding.selectPreferencesButton.setOnClickListener {
             val dialogFragment =
                 ErrorDialogFragment(requireContext().getString(R.string.error_dont_touch_here))
-            dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
+            dialogFragment.show(requireActivity().supportFragmentManager, getString(R.string.problems))
         }
 
 
@@ -104,7 +104,7 @@ class MainFragment : Fragment() {
                 is ApiResponse.Failure -> {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_in_trend_movies))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     viewModel.itemLoaded()
@@ -124,7 +124,7 @@ class MainFragment : Fragment() {
                 is ApiResponse.Failure -> {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_for_you_movies))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     viewModel.itemLoaded()
@@ -143,7 +143,7 @@ class MainFragment : Fragment() {
                 is ApiResponse.Failure -> {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_new_movies))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     viewModel.itemLoaded()
@@ -162,7 +162,7 @@ class MainFragment : Fragment() {
                 is ApiResponse.Failure -> {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_cover_image))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     viewModel.itemLoaded()
@@ -204,7 +204,7 @@ class MainFragment : Fragment() {
                 if (lastPairState.first is ApiResponse.Failure || lastPairState.second is ApiResponse.Failure) {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_last_watched_movie))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
             }
 

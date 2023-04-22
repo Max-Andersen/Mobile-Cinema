@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.ui.chat.additionalmodels.ChatUIModel
 import com.example.mobilecinemalab.ui.chat.chatlogic.ChatAdapter
 import com.example.mobilecinemalab.databinding.ChatScreenBinding
@@ -52,7 +53,7 @@ class ChatFragment : Fragment() {
 
         viewModel.getValidationLiveData().observe(viewLifecycleOwner) {
             val dialogFragment = ErrorDialogFragment(it)
-            dialogFragment.show(requireActivity().supportFragmentManager, "Problems")
+            dialogFragment.show(requireActivity().supportFragmentManager, getString(R.string.problems))
         }
 
         val callback: OnBackPressedCallback =

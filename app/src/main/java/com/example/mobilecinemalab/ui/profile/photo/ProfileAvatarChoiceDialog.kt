@@ -116,7 +116,7 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
                     binding.progressBarProfileDialog.visibility = View.INVISIBLE
 
                     val errorDialog = ErrorDialogFragment(getString(R.string.error_send_avatar))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     binding.progressBarProfileDialog.visibility = View.INVISIBLE
@@ -194,7 +194,7 @@ class ProfileAvatarChoiceDialog : DialogFragment() {
                 getCameraImageActivityResultLauncher.launch(imageUri)
             } else {
                 val errorDialog = ErrorDialogFragment(getString(R.string.error_get_permissions))
-                errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
             }
         }
 

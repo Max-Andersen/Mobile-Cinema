@@ -57,7 +57,7 @@ class SpecificCollectionFragment : Fragment() {
                     )
                 )
             } else{
-                Toast.makeText(requireContext(), "You cannot edit favourite collection!", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.error_edit_favourite_collection), Toast.LENGTH_LONG).show()
             }
         }
 
@@ -69,7 +69,7 @@ class SpecificCollectionFragment : Fragment() {
                 }
                 is ApiResponse.Failure -> {
                     val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_collection_movies))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 else -> {}
             }

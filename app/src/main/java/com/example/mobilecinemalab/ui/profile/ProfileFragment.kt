@@ -40,7 +40,7 @@ class ProfileFragment : Fragment(), ProfileAvatarChoiceDialog.IReloadListener {
                 }
                 is ApiResponse.Failure -> {
                     val errorDialog = ErrorDialogFragment(requireContext().getString(R.string.error_get_user_data))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     binding.progressBar.visibility = View.INVISIBLE

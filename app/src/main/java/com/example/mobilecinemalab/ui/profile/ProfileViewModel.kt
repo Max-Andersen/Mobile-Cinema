@@ -35,8 +35,4 @@ class ProfileViewModel: BaseViewModel() {
         )
     }
 
-    fun loadUserAvatar(){
-
-    }
-
 }

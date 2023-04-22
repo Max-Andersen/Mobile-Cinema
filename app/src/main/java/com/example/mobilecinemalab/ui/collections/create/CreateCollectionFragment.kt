@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.ui.collections.CollectionIconsEnum
 import com.example.mobilecinemalab.databinding.CreateCollectionBinding
 import com.example.mobilecinemalab.datasource.network.ApiResponse
@@ -30,7 +31,7 @@ class CreateCollectionFragment : Fragment() {
         binding = CreateCollectionBinding.inflate(inflater, container, false)
 
         setFragmentResultListener(SelectCollectionIconFragment.ICON_RESULT_KEY) { _, bundle ->
-            viewModel.selectedIcon = bundle.getString("icon")!!
+            viewModel.selectedIcon = bundle.getString(getString(R.string.icon))!!
             binding.selectedCollectionIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), icons[viewModel.selectedIcon]!!))
         }
 

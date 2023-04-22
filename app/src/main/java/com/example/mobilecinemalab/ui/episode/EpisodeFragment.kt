@@ -57,7 +57,7 @@ class EpisodeFragment : Fragment() {
                 is ApiResponse.Failure -> {
                     val errorDialog =
                         ErrorDialogFragment(requireContext().getString(R.string.error_get_episode_time))
-                    errorDialog.show(requireActivity().supportFragmentManager, "Problems")
+                    errorDialog.show(requireActivity().supportFragmentManager, getString(R.string.problems))
                 }
                 is ApiResponse.Success -> {
                     player.seekTo((it.data.timeInSeconds * 1000).toLong())

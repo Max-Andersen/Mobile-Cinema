@@ -2,6 +2,7 @@ package com.example.mobilecinemalab.ui.auth.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.mobilecinemalab.datasource.network.ApiResponse
 import com.example.mobilecinemalab.datasource.network.models.LoginRequestBody
 import com.example.mobilecinemalab.datasource.network.models.LoginResponse
 import com.example.mobilecinemalab.datasource.network.models.UserInfo
@@ -14,10 +15,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SignInViewModel : BaseViewModel() {
-    private val _data = MutableLiveData<com.example.mobilecinemalab.datasource.network.ApiResponse<LoginResponse>>()
+    private val _data = MutableLiveData<ApiResponse<LoginResponse>>()
     private val _validation = MutableLiveData<String>()
 
-    private val _userData = MutableLiveData<com.example.mobilecinemalab.datasource.network.ApiResponse<UserInfo>>()
+    private val _userData = MutableLiveData<ApiResponse<UserInfo>>()
 
     fun getLiveDataForRequest() = _data
     fun getLiveDataForValidation() = _validation
