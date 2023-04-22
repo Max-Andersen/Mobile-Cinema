@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">Mobile-Cinema-Lab1</string>
+    <string name="sign_up">Sign up</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="register">Register</string>
+    <string name="i_have_already_account">I already have an account</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="watch">Watch</string>
+    <string name="in_trend">In trend</string>
+    <string name="you_watched">You watched</string>
+    <string name="newMovies">New</string>
+    <string name="for_you">For you</string>
+    <string name="select_preferences">Select preferences</string>
+    <string name="main">Main</string>
+    <string name="compilation">Compilation</string>
+    <string name="collections">Collection</string>
+    <string name="profile">Profile</string>
+    <string name="empty_compilation">The new films in the compilation \n are over</string>
+    <string name="shots">Frames</string>
+    <string name="episodes">Episodes</string>
+    <string name="edit">Edit</string>
+    <string name="discussions">Discussions</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    <string name="exit">Exit</string>
+    <string name="description">Description</string>
+    <string name="type_message">Type message…</string>
+
+
+    <string name="author_plus_time">%1$s • %2$s</string>
+    <string name="first_and_last_name">%1$s %2$s</string>
+    <string name="create_collection">Create collection</string>
+    <string name="collection_naming">Title</string>
+    <string name="select_icon">Select icon</string>
+    <string name="save">Save</string>
+    <string name="edit_collection">Edit collection</string>
+    <string name="delete">Delete</string>
+
+    <string name="error_update_token">Token Update Error</string>
+    <string name="error_get_collections">Failed to load collections</string>
+    <string name="error_get_compilation">Failed to load a compilation</string>
+    <string name="error_dont_touch_here">Do not click here!!</string>
+    <string name="error_films_is_empty">Movies are over! :(</string>
+    <string name="error_get_episode_time">Error getting the viewing time</string>
+    <string name="error_get_episodes">Error receiving episodes</string>
+    <string name="error_get_user_data">Error getting user information</string>
+    <string name="error_create_favourite_collection">Error creating favorites</string>
+    <string name="error_get_collection_movies">Error getting collection movies</string>
+    <string name="error_empty_chat_message">The message is empty</string>
+    <string name="error_edit_favourite_collection">You cannot edit/delete Favorites</string>
+
+
+    <string name="error_get_new_movies">Error receiving new movies</string>
+    <string name="error_get_in_trend_movies">Error getting movies trending</string>
+    <string name="error_get_for_you_movies">Error getting movies for you</string>
+    <string name="error_get_last_watched_movie">Error getting the last viewed movie</string>
+    <string name="error_get_cover_image">Error getting the movie for the cover</string>
+    <string name="error_send_avatar">Avatar loading error</string>
+    <string name="error_get_permissions">No access to media</string>
+
+
+    <string name="chat_short_name">%1$s%2$s</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+
+
+    <string name="today">Today</string>
+    <string name="date_short">%1$s %2$s</string>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">april</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+
+
+    <!--  not need to translate  -->
+    <string name="icon">icon</string>
+    <string name="problems">Problems</string>
+
+
+</resources>

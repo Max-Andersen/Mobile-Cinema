@@ -23,11 +23,11 @@
         style="@style/orange_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/edit"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintEnd_toEndOf="@+id/userImageView"
+        app:layout_constraintStart_toStartOf="@+id/userImageView"
         app:layout_constraintTop_toBottomOf="@+id/userImageView" />
 
     <androidx.constraintlayout.widget.Guideline
