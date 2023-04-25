@@ -20,7 +20,6 @@ class SpecificCollectionViewModel : BaseViewModel() {
 
     val movies = arrayListOf<Movie>()
 
-
     fun getItems(collectionId: String) {
         mJobs.add(viewModelScope.launch(Dispatchers.IO) {
             GetMoviesInCollectionUseCase(

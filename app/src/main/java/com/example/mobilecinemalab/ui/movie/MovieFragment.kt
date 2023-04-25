@@ -18,6 +18,7 @@ import com.example.mobilecinemalab.databinding.MovieScreenBinding
 import com.example.mobilecinemalab.datasource.network.ApiResponse
 import com.example.mobilecinemalab.datasource.network.models.Episode
 import com.example.mobilecinemalab.forapplication.errorhandling.ErrorDialogFragment
+import com.example.mobilecinemalab.navigationmodels.Movie
 import com.example.mobilecinemalab.ui._custombehavior.MarginItemDecoration
 import com.example.mobilecinemalab.ui._custombehavior.getYearDurationOfMovie
 import com.example.mobilecinemalab.ui.movie.episodes.EpisodeAdapter
@@ -33,7 +34,7 @@ class MovieFragment : Fragment() {
 
     private val args: MovieFragmentArgs by navArgs()
 
-    private lateinit var movie: com.example.mobilecinemalab.navigationmodels.Movie
+    private lateinit var movie: Movie
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +61,6 @@ class MovieFragment : Fragment() {
         val itemDecoration = MarginItemDecoration(16)
 
         binding.imagesRecyclerView.addItemDecoration(itemDecoration)
-
 
         binding.episodesRecyclerView.adapter = episodesAdapter
         binding.episodesRecyclerView.addItemDecoration(itemDecoration)

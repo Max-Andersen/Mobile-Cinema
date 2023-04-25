@@ -13,14 +13,14 @@ import com.example.mobilecinemalab.R
 import com.example.mobilecinemalab.databinding.SignInScreenBinding
 import com.example.mobilecinemalab.forapplication.errorhandling.ErrorDialogFragment
 import com.example.mobilecinemalab.datasource.network.ApiResponse
+import com.example.mobilecinemalab.domain.usecases.SharedPreferencesUseCase
 
 class SignInFragment : Fragment() {
     private lateinit var binding: SignInScreenBinding
 
     private val viewModel by lazy { ViewModelProvider(this)[SignInViewModel::class.java] }
 
-    private val sharedPreferencesUseCase =
-        com.example.mobilecinemalab.domain.usecases.SharedPreferencesUseCase()
+    private val sharedPreferencesUseCase = SharedPreferencesUseCase()
 
     override fun onCreateView(
         inflater: LayoutInflater,

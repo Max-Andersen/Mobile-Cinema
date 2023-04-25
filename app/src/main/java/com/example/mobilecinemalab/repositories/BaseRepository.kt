@@ -24,15 +24,12 @@ abstract class BaseRepository {
                     }
 
                 } else {
-                    val code = response.code()
-                    //emit(ApiResponse.Failure("Жесть", code))
 
                     response.errorBody()?.let { error ->
                         val parsedError: ErrorMessage =
                             Gson().fromJson(error.charStream(), ErrorMessage::class.java)
                         emit(ApiResponse.Failure(parsedError.message.orEmpty(), parsedError.code))
                         error.close()
-
                     }
 
                 }

@@ -15,7 +15,6 @@ class GetMessagesFromSocketUseCase {
             try {
                 val gson = Gson()
                 val data = gson.fromJson(it, ChatMessage::class.java)
-                Log.d("!", data.toString())
 
                 emit(data)
             } catch (e: Exception) {

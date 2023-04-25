@@ -29,7 +29,6 @@ class SpecificCollectionFragment : Fragment() {
 
     private lateinit var adapter: CollectionMovieActionI
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

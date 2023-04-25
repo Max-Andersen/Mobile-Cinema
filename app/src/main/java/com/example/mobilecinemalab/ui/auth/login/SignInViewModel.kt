@@ -16,6 +16,7 @@ import kotlinx.coroutines.withContext
 
 class SignInViewModel : BaseViewModel() {
     private val _data = MutableLiveData<ApiResponse<LoginResponse>>()
+
     private val _validation = MutableLiveData<String>()
 
     private val _userData = MutableLiveData<ApiResponse<UserInfo>>()

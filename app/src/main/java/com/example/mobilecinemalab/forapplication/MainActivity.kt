@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //setTheme(R.style.splashScreenTheme);
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -45,10 +44,10 @@ class MainActivity : AppCompatActivity() {
         dialogFragment = ErrorDialogFragment(getString(R.string.error_update_token))
 
 
-        if (SharedPreferencesUseCase().getIsFirstLaunch() == ""){
+        if (SharedPreferencesUseCase().getIsFirstLaunch() == "") {
             navController.navigate(NavGraphXmlDirections.actionGlobalSignUpFragment())
             SharedPreferencesUseCase().updateIsFirstLaunch("1")
-        } else{
+        } else {
             if (SharedPreferencesUseCase().getAccessToken() != "") {
                 navController.navigate(NavGraphXmlDirections.actionGlobalMainFragment())
             }
@@ -58,10 +57,18 @@ class MainActivity : AppCompatActivity() {
         TroubleShooting.getLiveDataForRefreshTrouble().observe(this) {
             if (it == true) {
                 TroubleShooting.updateLiveDataForRefreshTrouble(false)
-                dialogFragment.show(this.supportFragmentManager, "Problems")
-                SharedPreferencesUseCase()
-                    .clearUserData()
-                navController.navigate(NavGraphXmlDirections.actionGlobalSignInFragment())
+
+                this.supportFragmentManager.fragments.firstOrNull() { fragment -> fragment == dialogFragment }
+                    .let { targetFragment ->
+                        if (targetFragment == null) {
+                            dialogFragment.show(
+                                this.supportFragmentManager,
+                                getString(R.string.error_update_token)
+                            )
+                            SharedPreferencesUseCase().clearUserData()
+                            navController.navigate(NavGraphXmlDirections.actionGlobalSignInFragment())
+                        }
+                    }
             }
         }
     }

@@ -25,7 +25,6 @@ class CompilationFragment : Fragment(), CardStackListener {
     private lateinit var cardStackView: CardStackView
     private lateinit var manager: CardStackLayoutManager
 
-
     private val adapter by lazy { CardStackAdapter(viewModel.compilationMovies) }
 
     override fun onCreateView(

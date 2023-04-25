@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface IAuthRepository {
+
     fun register(registerData: RegisterRequestBody): Flow<ApiResponse<LoginResponse>>
 
     fun login(loginData: LoginRequestBody): Flow<ApiResponse<LoginResponse>>
