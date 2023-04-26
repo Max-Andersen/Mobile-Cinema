@@ -75,15 +75,37 @@ Auth Регистрация и получение токена<br>
 
 
 ### **Визуальная составляющая**:
-|__Launch Register__|__Main&Movie Screen__|__Episode Screen__|
-|:------------------| :---------:|-----------:|
-[launch_register.mp4](media/launch_register.mp4) | [main_movie_screen](media/main_movie_screen.mp4)| [episode_screen](media/episode_screen.mp4)
 
 
-|__Chat Screen__|__Compilation Screen__|__Collection Screen__|
-|:------------------| :---------:|-----------:|
-[chat_screen](media/chat_screen.mp4)| [compilation_screen](media/compilation_screen.mp4) | [collection_screen](media/collection.mp4)
+https://user-images.githubusercontent.com/44117017/234635582-7b5b6bc9-d9fe-468c-bbff-cc105e652018.mp4
 
-|__Create Collection Screen__|__Edit Collection Screen__|__...__|
-|:------------------| :---------:|-----------:|
-[create_collection](media/create_collection.mp4) | [edit_collection](media/edit_collection.mp4) | ...
+
+
+https://user-images.githubusercontent.com/44117017/234635671-fc2fccef-b778-40b1-9dff-ce2a8204ab25.mp4
+
+
+
+
+https://user-images.githubusercontent.com/44117017/234635691-c96baaac-64ae-4961-be02-63f5548e8d72.mp4
+
+
+
+https://user-images.githubusercontent.com/44117017/234635745-e1cde002-f8a6-47c1-8f66-5fb6ef7f58e8.mp4
+
+
+
+https://user-images.githubusercontent.com/44117017/234635784-b3262a03-4cda-47a7-a908-16e04c1e317e.mp4
+
+
+
+https://user-images.githubusercontent.com/44117017/234635796-2d503de9-7990-4f2c-a318-76c0b1c44ed6.mp4
+
+
+
+https://user-images.githubusercontent.com/44117017/234635859-1cc7fd37-0732-46d6-ab1b-4b78ea1df36c.mp4
+
+
+
+https://user-images.githubusercontent.com/44117017/234635882-ee17b294-f3f1-42e8-9b9f-d7e8774dd964.mp4
+
+
