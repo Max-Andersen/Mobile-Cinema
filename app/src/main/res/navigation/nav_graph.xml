@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.mobilecinemalab.ui.main.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/main_frame">
+        <action
+            android:id="@+id/action_mainFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_episodeFragment"
+            app:destination="@id/episodeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectionFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.all.AllCollectionFragment"
+        android:label="CollectionFragment"
+        tools:layout="@layout/all_collection_screen" >
+        <action
+            android:id="@+id/action_collectionFragment_to_specificCollectionFragment"
+            app:destination="@id/specificCollectionFragment" />
+        <action
+            android:id="@+id/action_collectionFragment_to_createCollectionFragment"
+            app:destination="@id/createCollectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/compilationFragment"
+        android:name="com.example.mobilecinemalab.ui.compilation.CompilationFragment"
+        android:label="CompilationFragment"
+        tools:layout="@layout/compilation_screen">
+        <action
+            android:id="@+id/action_compilationFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.mobilecinemalab.ui.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/profile_screen" >
+        <action
+            android:id="@+id/action_profileFragment_to_activeUserChatsFragment"
+            app:destination="@id/activeUserChatsFragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_mainFragment"
+        app:destination="@id/mainFragment"
+        app:launchSingleTop="false"
+        app:popUpTo="@id/nav_graph.xml"
+        app:popUpToInclusive="false" />
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.mobilecinemalab.ui.auth.register.SignUpFragment"
+        android:label="SignUpFragment"
+        tools:layout="@layout/sign_up_screen">
+        <action
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:popUpTo="@id/signInFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.mobilecinemalab.ui.auth.login.SignInFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/sign_in_screen">
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_signInFragment"
+        app:destination="@id/signInFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_graph.xml"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/movieFragment"
+        android:name="com.example.mobilecinemalab.ui.movie.MovieFragment"
+        android:label="MovieFragment"
+        tools:layout="@layout/movie_screen">
+        <action
+            android:id="@+id/action_movieFragment_to_episodeFragment"
+            app:destination="@id/episodeFragment" />
+        <argument
+            android:name="selectedMovie"
+            app:argType="com.example.mobilecinemalab.navigationmodels.Movie" />
+        <action
+            android:id="@+id/action_movieFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/episodeFragment"
+        android:name="com.example.mobilecinemalab.ui.episode.EpisodeFragment"
+        android:label="EpisodeFragment"
+        tools:layout="@layout/episode_screen">
+        <argument
+            android:name="episodeData"
+            app:argType="com.example.mobilecinemalab.navigationmodels.Episode" />
+        <action
+            android:id="@+id/action_episodeFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <argument
+            android:name="movieData"
+            app:argType="com.example.mobilecinemalab.navigationmodels.Movie" />
+        <argument
+            android:name="movieYearDuration"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.mobilecinemalab.ui.chat.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/chat_screen">
+        <argument
+            android:name="chatInfo"
+            app:argType="com.example.mobilecinemalab.navigationmodels.Chat" />
+    </fragment>
+    <fragment
+        android:id="@+id/specificCollectionFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.specific.SpecificCollectionFragment"
+        android:label="SpecificCollectionFragment"
+        tools:layout="@layout/specific_collection_screen" >
+        <argument
+            android:name="collectionShortModel"
+            app:argType="com.example.mobilecinemalab.navigationmodels.Collection" />
+        <action
+            android:id="@+id/action_specificCollectionFragment_to_editCollectionFragment"
+            app:destination="@id/editCollectionFragment" />
+        <action
+            android:id="@+id/action_specificCollectionFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+        <argument
+            android:name="iconId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createCollectionFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.create.CreateCollectionFragment"
+        android:label="CreateCollectionFragment"
+        tools:layout="@layout/create_collection" >
+        <action
+            android:id="@+id/action_createCollectionFragment_to_selectCollectionIconFragment"
+            app:destination="@id/selectCollectionIconFragment" />
+        <argument
+            android:name="iconId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editCollectionFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.edit.EditCollectionFragment"
+        android:label="EditCollectionFragment"
+        tools:layout="@layout/edit_collection" >
+        <action
+            android:id="@+id/action_editCollectionFragment_to_selectCollectionIconFragment"
+            app:destination="@id/selectCollectionIconFragment" />
+        <argument
+            android:name="iconId"
+            app:argType="string" />
+        <argument
+            android:name="collectionShortModel"
+            app:argType="com.example.mobilecinemalab.navigationmodels.Collection" />
+        <action
+            android:id="@+id/action_editCollectionFragment_to_collectionFragment"
+            app:destination="@id/collectionFragment"
+            app:popUpTo="@id/collectionFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectCollectionIconFragment"
+        android:name="com.example.mobilecinemalab.ui.collections.SelectCollectionIconFragment"
+        android:label="SelectCollectionIconFragment"
+        tools:layout="@layout/all_collection_icons" />
+    <fragment
+        tools:layout="@layout/active_user_chats_screen"
+        android:id="@+id/activeUserChatsFragment"
+        android:name="com.example.mobilecinemalab.ui.profile.ActiveUserChatsFragment"
+        android:label="ActiveUserChatsFragment" >
+        <action
+            android:id="@+id/action_activeUserChatsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_signUpFragment" app:destination="@id/signUpFragment" />
+</navigation>
