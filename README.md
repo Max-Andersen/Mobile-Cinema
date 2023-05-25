@@ -71,9 +71,21 @@ Auth Регистрация и получение токена<br>
 - Single Activity
 - MVVM
 - Clean Architecture(далеко не идеальная, но за неимением времени пока что такая, в будущем планирую доделать)
+- Загрузка фото из галереи/камеры
 - Английская локализация
 
 
 ### **Визуальная составляющая**:
+(извиняюсь за качество, ошибку нашёл, но api уже не работает:( )
+|__Launch&Register__|__MainScreen__|__EpisodeScreen__|
+| ------------- |:-------------:| -----:|
+| <img src="media/launch_register (2).gif" width=250>      | <img src="media/main_movie_screen.gif" width=250> | <img src="media/episode_screen.gif" width=250> |
 
+|__Collections__|__CreateCollection__ |__EditCollection__|
+| ------------- |:-------------:| -----:|
+| <img src="media/collection.gif" width=250>      | <img src="media/create_collection.gif" width=250> | <img src="media/edit_collection.gif" width=250> |
+
+|__Compilation__| __ChatScreen__|
+| ------------- |   -----|
+| <img src="media/compilation_screen.gif" width=250>      | <img src="media/chat_screen.gif" width=250> |
 
